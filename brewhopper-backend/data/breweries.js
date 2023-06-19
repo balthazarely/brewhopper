@@ -25,6 +25,30 @@ const breweries = [
     phone_number: 5413829242,
     check_in_code: "deschutes-brewing",
   },
+  {
+    name: "The Ale Apothecary",
+    description:
+      "Bend's only sour brewery, The Ale Apothecary, creates totally natural, barrel-aged beer using ingredients off our land or sourced nearby, direct from Oregon farms. ",
+    type: "brewery",
+    address: "30 SW Century Dr #140, Bend, OR 97702",
+    lat: "44.051787548499355",
+    long: "-121.33104877197222",
+    website: "https://thealeapothecary.com/",
+    phone_number: 5417976265,
+    check_in_code: "ale-apothecary",
+  },
+  {
+    name: "Boss Rambler Beer Club",
+    description:
+      "Bend's only sour brewery, The Ale Apothecary, creates totally natural, barrel-aged beer using ingredients off our land or sourced nearby, direct from Oregon farms. ",
+    type: "brewery",
+    address: "1009 NW Galveston Ave, Bend, OR 97701",
+    lat: "44.056668259985216",
+    long: "-121.32748508975222",
+    website: "https://bossrambler.com/",
+    phone_number: 5417976265,
+    check_in_code: "boss-rambler",
+  },
 ];
 
 export default breweries;

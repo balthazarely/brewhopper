@@ -8,7 +8,7 @@ const beers = [
     style: "IPA",
     abv: 6.5,
     ibu: 65,
-    breweryId: new mongoose.Types.ObjectId("64909e2740435fe8508b28e6"), // Use the mongoose.Types.ObjectId() method
+    breweryId: new mongoose.Types.ObjectId("6490e51b7d74f4333b583160"), // Use the mongoose.Types.ObjectId() method
     seasonal: false,
   },
   {
@@ -19,7 +19,7 @@ const beers = [
     abv: 7.5,
     ibu: 31,
     description: "text here",
-    breweryId: new mongoose.Types.ObjectId("64909e2740435fe8508b28e6"), // Use the mongoose.Types.ObjectId() method
+    breweryId: new mongoose.Types.ObjectId("6490e51b7d74f4333b583160"), // Use the mongoose.Types.ObjectId() method
     seasonal: false,
   },
   {
@@ -29,7 +29,7 @@ const beers = [
     style: "Sour Ale",
     abv: 4.5,
     ibu: 5,
-    breweryId: new mongoose.Types.ObjectId("64909e2740435fe8508b28e6"), // Use the mongoose.Types.ObjectId() method
+    breweryId: new mongoose.Types.ObjectId("6490e51b7d74f4333b583160"), // Use the mongoose.Types.ObjectId() method
     seasonal: false,
   },
 
@@ -40,7 +40,7 @@ const beers = [
     style: "IPA",
     abv: 6.4,
     ibu: 60,
-    breweryId: new mongoose.Types.ObjectId("64909e2740435fe8508b28e7"), // Use the mongoose.Types.ObjectId() method
+    breweryId: new mongoose.Types.ObjectId("6490e51b7d74f4333b583161"), // Use the mongoose.Types.ObjectId() method
     seasonal: false,
   },
   {
@@ -50,7 +50,7 @@ const beers = [
     style: "Pale Ale",
     abv: 5,
     ibu: 40,
-    breweryId: new mongoose.Types.ObjectId("64909e2740435fe8508b28e7"), // Use the mongoose.Types.ObjectId() method
+    breweryId: new mongoose.Types.ObjectId("6490e51b7d74f4333b583161"), // Use the mongoose.Types.ObjectId() method
     seasonal: false,
   },
   {
@@ -60,7 +60,7 @@ const beers = [
     style: "Porter",
     abv: 5.5,
     ibu: 30,
-    breweryId: new mongoose.Types.ObjectId("64909e2740435fe8508b28e7"), // Use the mongoose.Types.ObjectId() method
+    breweryId: new mongoose.Types.ObjectId("6490e51b7d74f4333b583161"), // Use the mongoose.Types.ObjectId() method
     seasonal: false,
   },
 ];

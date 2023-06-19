@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useContext, useState } from "react";
 import mapboxgl, { LngLatLike, Map } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { convertToGeoJSON } from "../utils/convertToGeoJson";
-import customMarkerImg from "../../public/teest.png";
+import customMarkerImg from "../../public/hop.png";
 
 export default function Brew({ breweries }: any) {
   const geoJSON = convertToGeoJSON(breweries);
@@ -13,16 +13,18 @@ export default function Brew({ breweries }: any) {
   const [lng, setLng] = useState(-105.9);
   const [lat, setLat] = useState(39.35);
   const [zoom, setZoom] = useState(10);
+
   const MAPBOX_TOKEN =
     "pk.eyJ1IjoiYmFsdGhhemFyZWx5IiwiYSI6ImNrZzQ3YjMxcjBocTcyc2xwMG96MGQ4Y24ifQ.SHxeF6FTzlNpMSnfGz-qqg";
   mapboxgl.accessToken = MAPBOX_TOKEN;
+
   useEffect(() => {
     if (map.current) return;
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/dark-v11",
-      center: [-103.5917, 40.6699],
-      zoom: 3,
+      center: [-121.31, 44.06],
+      zoom: 12,
     });
   }, [lng, lat, zoom]);
 
@@ -46,11 +48,11 @@ export default function Brew({ breweries }: any) {
           "circle-color": [
             "step",
             ["get", "point_count"],
-            "#51bbd6",
+            "#93BF60",
             100,
-            "#f1f075",
+            "#93BF60",
             750,
-            "#f28cb1",
+            "#93BF60",
           ],
           "circle-radius": [
             "step",

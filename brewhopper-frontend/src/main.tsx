@@ -11,12 +11,14 @@ import {
 } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen.tsx";
 import BreweryScreen from "./screens/BreweryScreen.tsx";
+import AdminScreen from "./screens/AdminScreen.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index={true} path="/" element={<HomeScreen />} />
       <Route path="/brewery/:id" element={<BreweryScreen />} />
+      <Route path="/admin" element={<AdminScreen />} />
     </Route>
   )
 );

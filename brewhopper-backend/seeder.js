@@ -35,7 +35,7 @@ const importBreweryData = async () => {
 
 const importBeerData = async () => {
   try {
-    const findAdminUser = await User.findById("64909e2640435fe8508b28e2");
+    const findAdminUser = await User.findById("6490e51b7d74f4333b58315c");
     const adminUser = findAdminUser._id;
     await Beers.deleteMany();
     const beerData = beers.map((beers) => {
