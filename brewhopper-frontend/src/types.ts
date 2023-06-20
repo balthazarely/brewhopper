@@ -8,4 +8,6 @@ export interface Brewery {
   website: String;
   phone_number: Number;
   check_in_code: String;
+  user: String;
+  _id: String;
 }

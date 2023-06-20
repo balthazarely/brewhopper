@@ -1,0 +1,1 @@
+export { BreweriesPanel } from "./BreweriesPanel";
