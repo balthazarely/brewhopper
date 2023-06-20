@@ -49,6 +49,19 @@ const breweries = [
     phone_number: 5417976265,
     check_in_code: "boss-rambler",
   },
+
+  {
+    name: "Crux Fermentation Project",
+    description:
+      "Welcome To Crux. A brewer-owned and operated community, where passion for the craft intersects with uncompromising quality. · From hoppy pilsners to crisp IPAs",
+    type: "brewery",
+    address: "50 SW Division St, Bend, OR 97702",
+    lat: "44.050991288892156",
+    long: "-121.30796661743516",
+    website: "https://www.cruxfermentation.com/",
+    phone_number: 5413853333,
+    check_in_code: "crux",
+  },
 ];
 
 export default breweries;

@@ -48,7 +48,7 @@ const brewerySchema = mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Beer",
-        required: true,
+        // required: true,
       },
     ],
   },

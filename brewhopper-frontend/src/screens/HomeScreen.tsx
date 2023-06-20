@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import BreweryMap from "../components/BreweryMap";
-import BreweryMapTwo from "../components/BreweryMapTwo";
-import Brew from "../components/Brew";
+
+import BrewMap from "../components/BrewMap";
 
 export default function HomeScreen() {
   const [breweries, setBreweries] = useState([]);
@@ -23,7 +22,7 @@ export default function HomeScreen() {
         <div>
           <h2>Brewries</h2>
           {/* <BreweryMapTwo breweries={breweries} /> */}
-          <Brew breweries={breweries} />
+          <BrewMap breweries={breweries} />
           {/* <BreweryMap breweries={breweries} /> */}
           <div>
             {breweries.map((brewery: any) => {

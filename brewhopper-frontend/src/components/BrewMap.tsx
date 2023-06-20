@@ -5,7 +5,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { convertToGeoJSON } from "../utils/convertToGeoJson";
 import customMarkerImg from "../../public/hop.png";
 
-export default function Brew({ breweries }: any) {
+export default function BrewMap({ breweries }: any) {
   const geoJSON = convertToGeoJSON(breweries);
   const [selectedBrewery, setSelectedBrewery] = useState();
   const mapContainer = useRef(null);

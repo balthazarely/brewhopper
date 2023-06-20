@@ -15,4 +15,42 @@ const getBreweryById = asyncHandler(async (req, res) => {
   res.json({ breweryInfo: brewery, beers });
 });
 
-export { getBreweryById, getBreweries };
+// Admin Routes
+const addNewBrewery = asyncHandler(async (req, res) => {
+  const {
+    name,
+    description,
+    type,
+    address,
+    lat,
+    long,
+    website,
+    phone_number,
+    check_in_code,
+  } = req.body;
+  const newBrewery = await Brewery.create({
+    user: "6490e51b7d74f4333b58315c",
+    name,
+    description,
+    type,
+    address,
+    lat,
+    long,
+    website,
+    phone_number,
+    check_in_code,
+  });
+  res.status(201).json(newBrewery);
+});
+
+const deleteBrewery = asyncHandler(async (req, res) => {
+  const brewery = await Brewery.findById(req.params.id);
+  if (!brewery) {
+    res.status(404).json({ message: "Brewery not found" });
+    return;
+  }
+  await brewery.deleteOne();
+  res.json({ message: "Brewery removed successfully" });
+});
+
+export { getBreweryById, getBreweries, addNewBrewery, deleteBrewery };

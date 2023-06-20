@@ -1,6 +1,16 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
+const breweriesVisitedSchema = mongoose.Schema(
+  {
+    breweryName: { type: String, required: true },
+    breweryId: { type: Number, required: true },
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const userSchema = mongoose.Schema(
   {
     name: {
@@ -21,6 +31,7 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
+    breweriesVisited: [breweriesVisitedSchema],
   },
   {
     timestamps: true,
