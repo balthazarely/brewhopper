@@ -27,10 +27,8 @@ export function Navbar() {
       .map((word: string) => word[0].toUpperCase())
       .join("");
 
-  parseNameForAvatar("ben");
-  parseNameForAvatar("ben avalon");
   return (
-    <div className="w-full h-20 flex items-center bg-base-100 z-50 ">
+    <div className="w-full h-20 flex items-center bg-base-100 shadow-md z-50 ">
       <PageWrapper classname="w-full gap-4 flex justify-between  items-center">
         <div className="text-2xl font-bold text-primary">BrewHopper</div>
         <div>

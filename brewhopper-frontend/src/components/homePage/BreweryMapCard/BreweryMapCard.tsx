@@ -17,11 +17,15 @@ export function BreweryMapCard({
   return (
     <div
       onClick={() => setSelectedBrewery(brewery)}
-      className={`flex flex-col border-2 p-2 shadow rounded-lg   ${
-        selectedBrewery?._id === brewery._id ? "border-2 border-black" : ""
+      className={` cursor-pointer flex flex-col  p-2  rounded-lg   ${
+        selectedBrewery?._id === brewery._id ? "shadow-lg " : "shadow"
       }`}
     >
-      <div className="w-full h-32 bg-gray-300 rounded-lg"></div>
+      <div className="w-full h-32 bg-gray-300 rounded-lg relative">
+        <div className="badge-sm capitalize absolute right-2 top-2 badge badge-primary">
+          {brewery.type}
+        </div>
+      </div>
       <div className="flex justify-between">
         <div className="font-extrabold">{brewery.name}</div>
         <div className="text-sm flex items-center gap-1">

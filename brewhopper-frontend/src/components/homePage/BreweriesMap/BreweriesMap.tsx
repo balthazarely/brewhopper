@@ -4,17 +4,20 @@ import mapboxgl, { LngLatLike, Map, Popup } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { convertToGeoJSON } from "../../../utils/convertToGeoJson";
 import customMarkerImg from "../../../../public/hop.png";
+import customMarkerImgWine from "../../../../public/wine.png";
 
 export function BreweriesMap({
   breweries,
   setSelectedBrewery,
   selectedBrewery,
+  sortFilterBy,
 }: any) {
-  const geoJSON = convertToGeoJSON(breweries);
+  const geoJSONBreweries = convertToGeoJSON(breweries, "brewery");
+  const geoJSONWineries = convertToGeoJSON(breweries, "winery");
+
   const [selectedPoint, setSelectedPoint] = useState(null);
   const popupRef = useRef(new mapboxgl.Popup({ closeOnClick: false }));
 
-  // const [selectedBrewery, setSelectedBrewery] = useState();
   const mapContainer = useRef(null);
   const map = useRef(null);
   const [lng, setLng] = useState(-105.9);
@@ -29,15 +32,26 @@ export function BreweriesMap({
     if (map.current) return;
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "mapbox://styles/mapbox/dark-v11",
+      style: "mapbox://styles/mapbox/streets-v12",
       center: [-121.31, 44.06],
       zoom: 12,
     });
   }, [lng, lat, zoom]);
 
   useEffect(() => {
-    console.log(geoJSON, "selectedBrewery");
-  }, [geoJSON]);
+    if (selectedBrewery) {
+      flyToCoords(selectedBrewery?.lat, selectedBrewery?.long);
+    }
+  }, [selectedBrewery]);
+
+  const flyToCoords = (long, lat) => {
+    map.current?.flyTo({
+      center: [Number(lat), Number(long)],
+      zoom: 16,
+      duration: 2000,
+      essential: true,
+    });
+  };
 
   useEffect(() => {
     if (selectedPoint) {
@@ -49,14 +63,11 @@ export function BreweriesMap({
         <p class="font-bold">${brewery.phone_number}</p>
       </div>
       `;
-
-      // Set the popup coordinates and content
       popupRef.current
         .setLngLat(coordinates)
         .setHTML(popupContent)
         .addTo(map.current);
     } else {
-      // If no point is selected, remove the popup from the map
       popupRef.current.remove();
     }
   }, [selectedPoint]);
@@ -65,10 +76,10 @@ export function BreweriesMap({
     if (!map.current) return;
 
     map.current.on("load", () => {
-      if (!map.current?.getSource("earthquakes")) {
-        map.current?.addSource("earthquakes", {
+      if (!map.current?.getSource("breweries")) {
+        map.current?.addSource("breweries", {
           type: "geojson",
-          data: geoJSON,
+          data: geoJSONBreweries,
           cluster: true,
           clusterMaxZoom: 14,
           clusterRadius: 50,
@@ -76,7 +87,7 @@ export function BreweriesMap({
         map.current?.addLayer({
           id: "clusters",
           type: "circle",
-          source: "earthquakes",
+          source: "breweries",
           filter: ["has", "point_count"],
           paint: {
             "circle-color": [
@@ -102,7 +113,7 @@ export function BreweriesMap({
         map.current?.addLayer({
           id: "cluster-count",
           type: "symbol",
-          source: "earthquakes",
+          source: "breweries",
           filter: ["has", "point_count"],
           layout: {
             "text-field": "{point_count_abbreviated}",
@@ -113,51 +124,36 @@ export function BreweriesMap({
             "text-color": "#ffffff",
           },
         });
-        map.current?.loadImage(customMarkerImg, (error, image) => {
-          if (error) throw error;
-          map.current?.addImage("custom-marker", image);
-          map.current?.addLayer({
-            id: "unclustered-point",
-            type: "symbol",
-            source: "earthquakes",
-            filter: ["!", ["has", "point_count"]],
-            layout: {
-              "icon-image": "custom-marker",
-              "icon-size": 0.8,
-            },
+        map.current?.addLayer({
+          id: "unclustered-breweries",
+          type: "circle",
+          source: "breweries",
+          filter: ["!", ["has", "point_count"]],
+          paint: {
+            "circle-color": "#93BF60",
+            "circle-radius": 10,
+            "circle-stroke-width": 5,
+            "circle-stroke-color": "#fff",
+          },
+        });
+
+        map.current?.on("click", "unclustered-breweries", (e) => {
+          const coordinates = e.features[0].geometry.coordinates.slice();
+          const brewery = e.features[0].properties;
+          setSelectedPoint({
+            coordinates: coordinates,
+            brewery: brewery,
           });
         });
 
-        // map.current?.addLayer({
-        //   id: "unclustered-point",
-        //   type: "circle",
-        //   source: "earthquakes",
-        //   filter: ["!", ["has", "point_count"]],
-        //   paint: {
-        //     "circle-color": "#11b4da",
-        //     "circle-radius": 8,
-        //     "circle-stroke-width": 1,
-        //     "circle-stroke-color": "#fff",
-        //   },
-        // });
-
-        map.current?.addControl(
-          new mapboxgl.GeolocateControl({
-            positionOptions: {
-              enableHighAccuracy: true,
-            },
-            trackUserLocation: true,
-            showUserHeading: true,
-          })
-        );
-        map.current.on("click", "clusters", (e) => {
+        map.current?.on("click", "clusters", (e) => {
           const features = map.current.queryRenderedFeatures(e.point, {
             layers: ["clusters"],
           });
           const clusterId = features[0].properties.cluster_id;
 
           map.current
-            .getSource("earthquakes")
+            .getSource("breweries")
             .getClusterExpansionZoom(clusterId, (err, zoom) => {
               if (err) return;
 
@@ -167,18 +163,119 @@ export function BreweriesMap({
               });
             });
         });
-        map.current.on("click", "unclustered-point", (e) => {
+        map.current?.addControl(
+          new mapboxgl.GeolocateControl({
+            positionOptions: {
+              enableHighAccuracy: true,
+            },
+            trackUserLocation: true,
+            showUserHeading: true,
+          })
+        );
+      }
+
+      // WINE TIME
+      if (!map.current?.getSource("wineries")) {
+        map.current?.addSource("wineries", {
+          type: "geojson",
+          data: geoJSONWineries,
+          cluster: true,
+          clusterMaxZoom: 14,
+          clusterRadius: 50,
+        });
+        map.current?.addLayer({
+          id: "clusters-wine",
+          type: "circle",
+          source: "wineries",
+          filter: ["has", "point_count"],
+          paint: {
+            "circle-color": [
+              "step",
+              ["get", "point_count"],
+              "#ad0b09",
+              100,
+              "#ad0b09",
+              750,
+              "#ad0b09",
+            ],
+            "circle-radius": [
+              "step",
+              ["get", "point_count"],
+              20,
+              100,
+              30,
+              750,
+              40,
+            ],
+          },
+        });
+        map.current?.addLayer({
+          id: "cluster-count-wineries",
+          type: "symbol",
+          source: "wineries",
+          filter: ["has", "point_count"],
+          layout: {
+            "text-field": "{point_count_abbreviated}",
+            "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+            "text-size": 16,
+          },
+          paint: {
+            "text-color": "#ffffff",
+          },
+        });
+        map.current?.addLayer({
+          id: "unclustered-wineries",
+          type: "circle",
+          source: "wineries",
+          filter: ["!", ["has", "point_count"]],
+          paint: {
+            "circle-color": "#ad0b09",
+            "circle-radius": 10,
+            "circle-stroke-width": 5,
+            "circle-stroke-color": "#fff",
+          },
+        });
+
+        map.current?.on("click", "unclustered-wineries", (e) => {
           const coordinates = e.features[0].geometry.coordinates.slice();
           const brewery = e.features[0].properties;
-          setSelectedBrewery(brewery);
           setSelectedPoint({
             coordinates: coordinates,
             brewery: brewery,
           });
         });
+
+        map.current?.on("click", "clusters", (e) => {
+          const features = map.current.queryRenderedFeatures(e.point, {
+            layers: ["clusters"],
+          });
+          const clusterId = features[0].properties.cluster_id;
+
+          map.current
+            .getSource("wineries")
+            .getClusterExpansionZoom(clusterId, (err, zoom) => {
+              if (err) return;
+
+              map.current.easeTo({
+                center: features[0].geometry.coordinates,
+                zoom: zoom,
+              });
+            });
+        });
       }
     });
   }, []);
+
+  // useEffect(() => {
+  //   const hideTheBeer = () => {
+  //     map.current?.setLayoutProperty(
+  //       "unclustered-breweries",
+  //       "visibility",
+  //       "none"
+  //     );
+  //   };
+  //   hideTheBeer()
+  // }, [sortFilterBy]);
 
   return <div className="map-container w-full h-full " ref={mapContainer} />;
 }

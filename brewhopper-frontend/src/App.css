@@ -2,3 +2,11 @@
   height: calc(100vh -  5rem ); 
 }
 
+.custom-marker {
+  background-image: url("../public/custom-marker.png");
+  background-size: cover;
+  width: 30px; /* Adjust the size of the marker if needed */
+  height: 30px; /* Adjust the size of the marker if needed */
+  border-radius: 50%;
+  cursor: pointer;
+}
