@@ -5,9 +5,9 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { convertToGeoJSON } from "../utils/convertToGeoJson";
 import customMarkerImg from "../../public/hop.png";
 
-export default function BrewMap({ breweries }: any) {
+export default function BrewMap({ breweries, setSelectedBrewery }: any) {
   const geoJSON = convertToGeoJSON(breweries);
-  const [selectedBrewery, setSelectedBrewery] = useState();
+  // const [selectedBrewery, setSelectedBrewery] = useState();
   const mapContainer = useRef(null);
   const map = useRef(null);
   const [lng, setLng] = useState(-105.9);
@@ -116,16 +116,16 @@ export default function BrewMap({ breweries }: any) {
       });
       map.current.on("click", "unclustered-point", (e) => {
         const coordinates = e.features[0].geometry.coordinates.slice();
-        const mag = e.features[0].properties;
-        setSelectedBrewery(mag);
+        const brewery = e.features[0].properties;
+        setSelectedBrewery(brewery);
       });
     });
   }, []);
 
   return (
-    <div className="relative dashboard">
-      <div className="map-container" ref={mapContainer} />
-      {selectedBrewery && JSON.stringify(selectedBrewery)}
-    </div>
+    // <div className="relative w-1/22">
+    <div className="map-container w-full h-full " ref={mapContainer} />
+    //  {selectedBrewery && JSON.stringify(selectedBrewery)}
+    // </div>
   );
 }

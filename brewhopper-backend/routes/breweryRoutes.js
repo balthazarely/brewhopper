@@ -9,12 +9,9 @@ import { admin, protect } from "../middleware/authMiddleware.js";
 
 const router = Router();
 
-router.route("/").get(protect, getBreweries);
+router.route("/").get(getBreweries);
 router.route("/add-brewery").get(protect, admin, addNewBrewery);
-router
-  .route("/:id")
-  .get(protect, getBreweryById)
-  .delete(protect, admin, deleteBrewery);
+router.route("/:id").get(getBreweryById).delete(protect, admin, deleteBrewery);
 
 // Admin Routes
 

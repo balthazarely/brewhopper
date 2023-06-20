@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
+import store from "./store.js";
 
 import {
   createBrowserRouter,
@@ -12,6 +13,9 @@ import {
 import HomeScreen from "./screens/HomeScreen.tsx";
 import BreweryScreen from "./screens/BreweryScreen.tsx";
 import AdminScreen from "./screens/AdminScreen.tsx";
+import { Provider } from "react-redux";
+import LoginScreen from "./screens/LoginScreen.tsx";
+import RegisterScreen from "./screens/RegisterScreen.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -19,12 +23,16 @@ const router = createBrowserRouter(
       <Route index={true} path="/" element={<HomeScreen />} />
       <Route path="/brewery/:id" element={<BreweryScreen />} />
       <Route path="/admin" element={<AdminScreen />} />
+      <Route path="/login" element={<LoginScreen />} />
+      <Route path="/register" element={<RegisterScreen />} />
     </Route>
   )
 );
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );

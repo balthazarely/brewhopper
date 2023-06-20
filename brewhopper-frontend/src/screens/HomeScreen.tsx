@@ -1,42 +1,32 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-
 import BrewMap from "../components/BrewMap";
+import { useGetBreweriesQuery } from "../slices/brewerySlice";
+import { BreweryMapCard } from "../components/elements";
+import { useState } from "react";
+import { Brewery } from "../types";
 
 export default function HomeScreen() {
-  const [breweries, setBreweries] = useState([]);
-
-  useEffect(() => {
-    const getBreweryData = async () => {
-      const data = await fetch("/api/breweries");
-      const json = await data.json();
-      console.log(json);
-      setBreweries(json);
-    };
-    getBreweryData();
-  }, []);
+  const { data: breweries, isLoading } = useGetBreweriesQuery({});
+  const [selectedBrewery, setSelectedBrewery] = useState<Brewery | null>();
 
   return (
     <>
-      {breweries && breweries.length ? (
-        <div>
-          <h2>Brewries</h2>
-          {/* <BreweryMapTwo breweries={breweries} /> */}
-          <BrewMap breweries={breweries} />
-          {/* <BreweryMap breweries={breweries} /> */}
-          <div>
+      {!isLoading ? (
+        <div className="flex justify-between border-2 border-blue-500">
+          <div className="relative w-1/3  overflow-hidden bg-base-200">
+            <div>selected: {selectedBrewery?.name}</div>
             {breweries.map((brewery: any) => {
-              return (
-                <div key={brewery._id}>
-                  {/* {brewery.name} */}
-                  <Link to={`/brewery/${brewery._id}`}>{brewery.name}</Link>
-                </div>
-              );
+              return <BreweryMapCard key={brewery._id} brewery={brewery} />;
             })}
+          </div>
+          <div className="relative w-2/3 brewery-map-wrapper overflow-hidden">
+            <BrewMap
+              breweries={breweries}
+              setSelectedBrewery={setSelectedBrewery}
+            />
           </div>
         </div>
       ) : (
-        <div>no brew</div>
+        <div>loading</div>
       )}
     </>
   );
