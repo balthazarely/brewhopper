@@ -1,6 +1,6 @@
 interface PageWrapperProps {
   children: React.ReactNode;
-  classname: string;
+  classname?: string;
 }
 
 export function PageWrapper({ children, classname }: PageWrapperProps) {

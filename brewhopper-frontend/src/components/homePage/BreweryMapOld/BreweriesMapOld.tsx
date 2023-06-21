@@ -285,8 +285,10 @@ export function BreweriesMap({
   //   if (!map.current) return;
 
   //   // Update the data source for wineries
-  //   if (map.current.getSource("wineries")) {
-  //     map.current.getSource("wineries").setData(geoJSONWineries);
+  //   if (map.current) {
+  //     if (map.current.getSource("wineries")) {
+  //       map.current.getSource("wineries").setData(geoJSONWineries);
+  //     }
   //   }
   // }, [geoJSONWineries]);
   return <div className="map-container w-full h-full " ref={mapContainer} />;

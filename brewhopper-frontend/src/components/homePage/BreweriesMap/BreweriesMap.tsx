@@ -23,6 +23,7 @@ export function BreweriesMap({
   const [lng, setLng] = useState(-105.9);
   const [lat, setLat] = useState(39.35);
   const [zoom, setZoom] = useState(10);
+  const [styleDataSet, setStyleDataSet] = useState(false);
 
   const MAPBOX_TOKEN =
     "pk.eyJ1IjoiYmFsdGhhemFyZWx5IiwiYSI6ImNrZzQ3YjMxcjBocTcyc2xwMG96MGQ4Y24ifQ.SHxeF6FTzlNpMSnfGz-qqg";
@@ -36,6 +37,17 @@ export function BreweriesMap({
       center: [-121.31, 44.06],
       zoom: 12,
     });
+
+    // const geolocate = new mapboxgl.GeolocateControl();
+
+    // geolocate.on("geolocate", function (e) {
+    //   const lon = e.coords.longitude;
+    //   const lat = e.coords.latitude;
+    //   const position = [lon, lat];
+    //   console.log(position);
+    // });
+
+    // map.current?.addControl(geolocate);
   }, [lng, lat, zoom]);
 
   useEffect(() => {
@@ -43,15 +55,6 @@ export function BreweriesMap({
       flyToCoords(selectedBrewery?.lat, selectedBrewery?.long);
     }
   }, [selectedBrewery]);
-
-  const flyToCoords = (long, lat) => {
-    map.current?.flyTo({
-      center: [Number(lat), Number(long)],
-      zoom: 16,
-      duration: 2000,
-      essential: true,
-    });
-  };
 
   useEffect(() => {
     if (selectedPoint) {
@@ -74,7 +77,6 @@ export function BreweriesMap({
 
   useEffect(() => {
     if (!map.current) return;
-
     map.current.on("load", () => {
       if (!map.current?.getSource("breweries")) {
         map.current?.addSource("breweries", {
@@ -136,7 +138,6 @@ export function BreweriesMap({
             "circle-stroke-color": "#fff",
           },
         });
-
         map.current?.on("click", "unclustered-breweries", (e) => {
           const coordinates = e.features[0].geometry.coordinates.slice();
           const brewery = e.features[0].properties;
@@ -145,7 +146,6 @@ export function BreweriesMap({
             brewery: brewery,
           });
         });
-
         map.current?.on("click", "clusters", (e) => {
           const features = map.current.queryRenderedFeatures(e.point, {
             layers: ["clusters"],
@@ -172,9 +172,11 @@ export function BreweriesMap({
             showUserHeading: true,
           })
         );
+        map.current?.on("styledata", () => {
+          setStyleDataSet(true);
+        });
+        // WINE TIME
       }
-
-      // WINE TIME
       if (!map.current?.getSource("wineries")) {
         map.current?.addSource("wineries", {
           type: "geojson",
@@ -235,7 +237,6 @@ export function BreweriesMap({
             "circle-stroke-color": "#fff",
           },
         });
-
         map.current?.on("click", "unclustered-wineries", (e) => {
           const coordinates = e.features[0].geometry.coordinates.slice();
           const brewery = e.features[0].properties;
@@ -244,7 +245,6 @@ export function BreweriesMap({
             brewery: brewery,
           });
         });
-
         map.current?.on("click", "clusters", (e) => {
           const features = map.current.queryRenderedFeatures(e.point, {
             layers: ["clusters"],
@@ -266,16 +266,51 @@ export function BreweriesMap({
     });
   }, []);
 
-  // useEffect(() => {
-  //   const hideTheBeer = () => {
-  //     map.current?.setLayoutProperty(
-  //       "unclustered-breweries",
-  //       "visibility",
-  //       "none"
-  //     );
-  //   };
-  //   hideTheBeer()
-  // }, [sortFilterBy]);
+  const flyToCoords = (long, lat) => {
+    map.current?.flyTo({
+      center: [Number(lat), Number(long)],
+      zoom: 16,
+      duration: 2000,
+      essential: true,
+    });
+  };
 
-  return <div className="map-container w-full h-full " ref={mapContainer} />;
+  const visibilityLookup = {
+    brewery: {
+      clusters: "visible",
+      "unclustered-breweries": "visible",
+      "clusters-wine": "none",
+      "unclustered-wineries": "none",
+    },
+    winery: {
+      clusters: "none",
+      "unclustered-breweries": "none",
+      "clusters-wine": "visible",
+      "unclustered-wineries": "visible",
+    },
+    all: {
+      clusters: "visible",
+      "unclustered-breweries": "visible",
+      "clusters-wine": "visible",
+      "unclustered-wineries": "visible",
+    },
+  };
+
+  const toggleCategory = (str, property) => {
+    map.current?.setLayoutProperty(str, "visibility", property);
+  };
+
+  useEffect(() => {
+    if (map.current && styleDataSet) {
+      const visibility = visibilityLookup[sortFilterBy];
+
+      if (visibility) {
+        for (const category in visibility) {
+          toggleCategory(category, visibility[category]);
+        }
+      }
+    }
+  }, [sortFilterBy, styleDataSet]);
+
+  return <div className="map-container w-full h-full" ref={mapContainer} />;
 }

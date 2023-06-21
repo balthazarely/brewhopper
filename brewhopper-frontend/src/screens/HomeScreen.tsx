@@ -1,16 +1,28 @@
 import { useGetBreweriesQuery } from "../slices/brewerySlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Brewery } from "../types";
 import {
   BreweriesMap,
   BreweriesPanel,
   BreweriesFilter,
 } from "../components/homePage";
+import { PageWrapper } from "../components/elements";
+import {
+  getUserCoordinates,
+  sortBreweriesByDistance,
+} from "../utils/mapFunctions";
+
+export type UserLocation = {
+  longitude: number;
+  latitude: number;
+};
 
 export default function HomeScreen() {
   const { data: breweries, isLoading } = useGetBreweriesQuery({});
   const [selectedBrewery, setSelectedBrewery] = useState<Brewery | null>(null);
   const [sortFilterBy, setSortFilterBy] = useState("all");
+  const [userLocation, setUserLocation] = useState<UserLocation | null>(null);
+  const [isSortingEnabled, setIsSortingEnabled] = useState(false);
 
   const filteredBreweriesForPanel = breweries?.filter((brew: Brewery) => {
     if (sortFilterBy !== "all") {
@@ -20,9 +32,33 @@ export default function HomeScreen() {
     }
   });
 
+  let sortedBreweriesForPanel = filteredBreweriesForPanel;
+  if (isSortingEnabled && userLocation !== null) {
+    sortedBreweriesForPanel = sortBreweriesByDistance(
+      filteredBreweriesForPanel,
+      userLocation.latitude,
+      userLocation.longitude
+    );
+  }
+
+  useEffect(() => {
+    const fetchUserLocation = async () => {
+      try {
+        const userLocation = await getUserCoordinates();
+        setUserLocation(userLocation);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchUserLocation();
+  }, []);
+
   return (
-    <>
+    <PageWrapper>
       <BreweriesFilter
+        userLocation={userLocation}
+        isSortingEnabled={isSortingEnabled}
+        setIsSortingEnabled={setIsSortingEnabled}
         setSortFilterBy={setSortFilterBy}
         sortFilterBy={sortFilterBy}
       />
@@ -30,7 +66,7 @@ export default function HomeScreen() {
         <div className="flex justify-between relative">
           <div className="w-1/2 bg-base-100 ">
             <BreweriesPanel
-              breweries={filteredBreweriesForPanel}
+              breweries={sortedBreweriesForPanel}
               selectedBrewery={selectedBrewery}
               setSelectedBrewery={setSelectedBrewery}
             />
@@ -52,6 +88,6 @@ export default function HomeScreen() {
       ) : (
         <div>loading</div>
       )}
-    </>
+    </PageWrapper>
   );
 }
