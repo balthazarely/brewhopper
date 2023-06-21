@@ -7,10 +7,7 @@ import {
   BreweriesFilter,
 } from "../components/homePage";
 import { PageWrapper } from "../components/elements";
-import {
-  getUserCoordinates,
-  sortBreweriesByDistance,
-} from "../utils/mapFunctions";
+import { calcBreweryDistance, getUserCoordinates } from "../utils/mapFunctions";
 
 export type UserLocation = {
   longitude: number;
@@ -33,12 +30,17 @@ export default function HomeScreen() {
   });
 
   let sortedBreweriesForPanel = filteredBreweriesForPanel;
-  if (isSortingEnabled && userLocation !== null) {
-    sortedBreweriesForPanel = sortBreweriesByDistance(
+  if (userLocation !== null) {
+    sortedBreweriesForPanel = calcBreweryDistance(
       filteredBreweriesForPanel,
       userLocation.latitude,
       userLocation.longitude
     );
+  }
+  if (isSortingEnabled && userLocation !== null) {
+    sortedBreweriesForPanel.sort((a: any, b: any) => {
+      return a.distanceTo - b.distanceTo;
+    });
   }
 
   useEffect(() => {

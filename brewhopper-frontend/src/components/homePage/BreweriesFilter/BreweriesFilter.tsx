@@ -7,6 +7,7 @@ import {
 } from "react-icons/fa";
 import { RiPinDistanceFill } from "react-icons/ri";
 import { UserLocation } from "../../../screens/HomeScreen";
+import { HiX } from "react-icons/hi";
 
 interface BreweriesFilterProps {
   sortFilterBy: string;
@@ -49,7 +50,7 @@ export function BreweriesFilter({
             onClick={() => setSortFilterBy("all")}
             className="btn btn-circle btn-sm capitalize"
           >
-            <FaRegTimesCircle className="text-lg" />
+            <HiX className="text-lg" />
           </button>
         )}
       </div>

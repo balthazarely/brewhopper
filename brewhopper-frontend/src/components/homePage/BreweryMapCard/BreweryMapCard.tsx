@@ -37,13 +37,18 @@ export function BreweryMapCard({
         <HiLocationMarker className="text-sm" />
         <div className="text-sm">{brewery.address.split(",")[0]}</div>
       </div>
-      <div className="flex justify-end mt-1">
+      <div className="flex justify-between mt-1">
         <Link
           className="text-xs font-bold hover:text-black text-neutral"
           to={`/brewery/${brewery._id}`}
         >
           See More
         </Link>
+        {brewery.distanceTo && (
+          <div className="text-xs font bold">
+            {brewery.distanceTo.toFixed(1)} miles away
+          </div>
+        )}
       </div>
     </div>
   );

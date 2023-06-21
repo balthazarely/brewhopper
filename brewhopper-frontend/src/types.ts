@@ -10,4 +10,5 @@ export interface Brewery {
   check_in_code: String;
   user: String;
   _id: String;
+  distanceTo?: number;
 }

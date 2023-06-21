@@ -42,16 +42,16 @@ export const getUserCoordinates = () => {
   });
 };
 
-export function sortBreweriesByDistance(
+export function calcBreweryDistance(
   breweries: Brewery[],
   lat: number,
   long: number
 ) {
-  const sortedBreweries = [...breweries].sort((a: any, b: any) => {
-    const distanceA = calculateDistance(lat, long, a.lat, a.long);
-    const distanceB = calculateDistance(lat, long, b.lat, b.long);
-
-    return distanceA - distanceB;
+  return breweries?.map((brewery: any) => {
+    const distanceTo = calculateDistance(lat, long, brewery.lat, brewery.long);
+    return { ...brewery, distanceTo };
   });
-  return sortedBreweries;
+  // .sort((a: any, b: any) => {
+  //   return a.distanceTo - b.distanceTo;
+  // });
 }
