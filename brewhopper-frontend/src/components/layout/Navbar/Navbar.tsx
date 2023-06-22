@@ -30,7 +30,9 @@ export function Navbar() {
   return (
     <div className="w-full h-20 flex items-center bg-base-100 shadow-md z-50 ">
       <PageWrapper classname="w-full gap-4 flex justify-between  items-center">
-        <div className="text-2xl font-bold text-primary">BrewHopper</div>
+        <Link to="/" className="text-2xl font-bold text-primary">
+          BrewHopper
+        </Link>
         <div>
           {userInfo ? (
             <LoggedInView />
@@ -62,9 +64,15 @@ export function Navbar() {
           tabIndex={0}
           className="dropdown-content menu w-52 rounded-md bg-base-100 shadow  "
         >
-          <li>
-            <a>Profile</a>
-          </li>
+          {userInfo?.isAdmin ? (
+            <li>
+              <Link to="/admin">Admin Dashboard</Link>
+            </li>
+          ) : (
+            <li>
+              <a>Profile</a>
+            </li>
+          )}
           <li>
             <a>Settings</a>
           </li>

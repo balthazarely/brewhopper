@@ -12,19 +12,29 @@ import {
 } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen.tsx";
 import BreweryScreen from "./screens/BreweryScreen.tsx";
-import AdminScreen from "./screens/AdminScreen.tsx";
+import AdminScreen from "./screens/admin/AdminScreen.tsx";
 import { Provider } from "react-redux";
 import LoginScreen from "./screens/LoginScreen.tsx";
 import RegisterScreen from "./screens/RegisterScreen.tsx";
+import PrivateRoute from "./components/PrivateRoute.tsx";
+import AdminRoute from "./components/AdminRoute.tsx";
+import AdminEditBrewery from "./screens/admin/AdminEditBrewery.tsx";
+import AdminCreateBrewery from "./screens/admin/AdminCreateBrewery.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route index={true} path="/" element={<HomeScreen />} />
-      <Route path="/brewery/:id" element={<BreweryScreen />} />
-      <Route path="/admin" element={<AdminScreen />} />
       <Route path="/login" element={<LoginScreen />} />
       <Route path="/register" element={<RegisterScreen />} />
+      <Route path="" element={<PrivateRoute />}>
+        <Route index={true} path="/" element={<HomeScreen />} />
+        <Route path="/brewery/:id" element={<BreweryScreen />} />
+      </Route>
+      <Route path="" element={<AdminRoute />}>
+        <Route path="/admin" element={<AdminScreen />} />
+        <Route path="/admin/create-brewery" element={<AdminCreateBrewery />} />
+        <Route path="/admin/edit-brewery/:id" element={<AdminEditBrewery />} />
+      </Route>
     </Route>
   )
 );

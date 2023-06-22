@@ -18,6 +18,7 @@ const getBreweryById = asyncHandler(async (req, res) => {
 // Admin Routes
 const addNewBrewery = asyncHandler(async (req, res) => {
   const {
+    user,
     name,
     description,
     type,
@@ -25,11 +26,28 @@ const addNewBrewery = asyncHandler(async (req, res) => {
     lat,
     long,
     website,
-    phone_number,
-    check_in_code,
+    phoneNumber,
+    checkInCode,
   } = req.body;
+
   const newBrewery = await Brewery.create({
-    user: "6490e51b7d74f4333b58315c",
+    user: user,
+    name: name,
+    description: description,
+    type: type,
+    address: address,
+    lat: lat,
+    long: long,
+    website: website,
+    phone_number: phoneNumber,
+    check_in_code: checkInCode,
+  });
+  res.status(200).json(newBrewery);
+});
+
+const updateBrewery = asyncHandler(async (req, res) => {
+  const {
+    user,
     name,
     description,
     type,
@@ -37,13 +55,31 @@ const addNewBrewery = asyncHandler(async (req, res) => {
     lat,
     long,
     website,
-    phone_number,
-    check_in_code,
-  });
-  res.status(201).json(newBrewery);
+    phoneNumber,
+    checkInCode,
+  } = req.body;
+  const brewery = await Brewery.findById(req.params.id);
+  if (brewery) {
+    brewery.user = user;
+    brewery.name = name;
+    brewery.description = description;
+    brewery.type = type;
+    brewery.address = address;
+    brewery.lat = lat;
+    brewery.long = long;
+    brewery.website = website;
+    brewery.phone_number = phoneNumber;
+    brewery.check_in_code = checkInCode;
+    const updatedBrewery = await brewery.save();
+    res.json(updatedBrewery);
+  } else {
+    res.status(404);
+    throw new Error("resrouce not found");
+  }
 });
 
 const deleteBrewery = asyncHandler(async (req, res) => {
+  console.log(req.params.id);
   const brewery = await Brewery.findById(req.params.id);
   if (!brewery) {
     res.status(404).json({ message: "Brewery not found" });
@@ -53,4 +89,10 @@ const deleteBrewery = asyncHandler(async (req, res) => {
   res.json({ message: "Brewery removed successfully" });
 });
 
-export { getBreweryById, getBreweries, addNewBrewery, deleteBrewery };
+export {
+  getBreweryById,
+  getBreweries,
+  addNewBrewery,
+  updateBrewery,
+  deleteBrewery,
+};
