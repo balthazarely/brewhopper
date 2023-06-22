@@ -1,28 +1,25 @@
 import { Link } from "react-router-dom";
 import { Brewery } from "../../../types";
 import { HiLocationMarker } from "react-icons/hi";
-import { useDeleteBreweryMutation } from "../../../slices/brewerySlice";
 
 interface AdminBreweryCardProps {
   brewery: Brewery;
   handleDeleteBrewery: (modalState: boolean, id: String) => void;
 }
+const imageUrl = "http://localhost:5001";
 
 export function AdminBreweryCard({
   brewery,
   handleDeleteBrewery,
 }: AdminBreweryCardProps) {
-  // const [deleteBrewery, { isLoading: loadingDelete }] =
-  // useDeleteBreweryMutation({});
-
-  // const handleDeleteBrewery = async (id: String) => {
-  //   console.log(id);
-  //   await deleteBrewery(id);
-  // };
-
   return (
     <div className={`flex flex-col  p-2 shadow-md  rounded-lg`}>
-      <div className="w-full h-32 bg-gray-300 rounded-lg relative">
+      <div className="w-full h-32  bg-gray-300 rounded-lg relative">
+        <img
+          className="h-full w-full object-cover rounded-lg "
+          src={`${imageUrl}${brewery.image}`}
+          alt="brewery-image"
+        />
         <div className="badge-sm capitalize absolute right-2 top-2 badge badge-primary">
           {brewery.type}
         </div>

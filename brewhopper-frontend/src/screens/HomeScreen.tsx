@@ -1,6 +1,6 @@
 import { useGetBreweriesQuery } from "../slices/brewerySlice";
 import { useEffect, useState } from "react";
-import { Brewery } from "../types";
+import { Brewery, UserLocation } from "../types";
 import {
   BreweriesMap,
   BreweriesPanel,
@@ -8,11 +8,6 @@ import {
 } from "../components/homePage";
 import { PageWrapper } from "../components/elements";
 import { calcBreweryDistance, getUserCoordinates } from "../utils/mapFunctions";
-
-export type UserLocation = {
-  longitude: number;
-  latitude: number;
-};
 
 export default function HomeScreen() {
   const { data: breweries, isLoading } = useGetBreweriesQuery({});
@@ -65,13 +60,16 @@ export default function HomeScreen() {
         sortFilterBy={sortFilterBy}
       />
       {!isLoading ? (
-        <div className="flex justify-between relative">
-          <div className="w-1/2 bg-base-100 ">
-            <BreweriesPanel
-              breweries={sortedBreweriesForPanel}
-              selectedBrewery={selectedBrewery}
-              setSelectedBrewery={setSelectedBrewery}
-            />
+        <div className="flex gap-6 justify-between relative ">
+          <div className="w-1/2 bg-base-100 brewery-panel-map-wrapper  relative">
+            <div className="overflow-y-scroll h-full pb-10">
+              <BreweriesPanel
+                breweries={sortedBreweriesForPanel}
+                selectedBrewery={selectedBrewery}
+                setSelectedBrewery={setSelectedBrewery}
+              />
+            </div>
+            <div className="bg-gradient-to-b from-transparent to-white w-full h-10 absolute bottom-0 left-0 z-50 "></div>
           </div>
           <div
             className={`${

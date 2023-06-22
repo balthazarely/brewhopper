@@ -21,12 +21,13 @@ export default function AdminScreen() {
   return (
     <>
       <PageWrapper>
-        <div className="py-8">
-          <Link to={"/admin/create-brewery"} className="btn">
-            Create New
+        <div className="text-2xl font-bold my-4">Admin Dashboard</div>
+        <div className="my-4">
+          <Link to={"/admin/create-brewery"} className="btn btn-sm">
+            Create New Listing
           </Link>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 mt-8 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {breweries?.map((brewery: any) => {
             return (
               <AdminBreweryCard

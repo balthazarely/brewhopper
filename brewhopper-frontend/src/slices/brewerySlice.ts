@@ -1,4 +1,4 @@
-import { BREWERY_URL } from "../constants";
+import { BREWERY_URL, UPLOAD_URL } from "../constants";
 import { apiSlice } from "./apiSlice";
 
 export const breweryApiSlice = apiSlice.injectEndpoints({
@@ -40,6 +40,13 @@ export const breweryApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Breweries"],
     }),
+    uploadProductImage: builder.mutation({
+      query: (data) => ({
+        url: `${UPLOAD_URL}`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -49,4 +56,5 @@ export const {
   useCreateBreweryMutation,
   useUpdatedBreweryMutation,
   useDeleteBreweryMutation,
+  useUploadProductImageMutation,
 } = breweryApiSlice;

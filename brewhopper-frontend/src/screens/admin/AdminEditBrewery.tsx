@@ -2,9 +2,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   useGetBreweryQuery,
   useUpdatedBreweryMutation,
+  useUploadProductImageMutation,
 } from "../../slices/brewerySlice";
 import { PageWrapper } from "../../components/elements";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { toast } from "react-toastify";
+import { useState } from "react";
 
 type Inputs = {
   name: string;
@@ -21,10 +24,12 @@ type Inputs = {
 export default function AdminEditBreweryScreen() {
   const { id } = useParams();
   const { data: brewery, isLoading } = useGetBreweryQuery(id);
-  console.log(brewery);
+  const [uploadedImage, setUploadedImage] = useState("");
 
   const navigate = useNavigate();
   const [updateBrewery] = useUpdatedBreweryMutation();
+  const [uploadProductImage, { isLoading: loadingUpload }] =
+    useUploadProductImageMutation();
 
   const {
     register,
@@ -36,11 +41,23 @@ export default function AdminEditBreweryScreen() {
       ...data,
       breweryId: id,
       user: brewery.breweryInfo?.user,
+      image: uploadedImage,
     };
-    console.log(udpatedBrewery);
-
     await updateBrewery(udpatedBrewery);
     navigate("/admin");
+  };
+
+  const uploadFileHandler = async (e: any) => {
+    const formData = new FormData();
+    formData.append("image", e.target.files[0]);
+    try {
+      const res = await uploadProductImage(formData).unwrap();
+      toast.success("image uploaded");
+      setUploadedImage(res.image);
+    } catch (error) {
+      toast.error("error");
+      console.error(error, "err");
+    }
   };
 
   return (
@@ -173,6 +190,17 @@ export default function AdminEditBreweryScreen() {
                 {...register("long", { required: true })}
               />
             </div>
+            <div className={`flex flex-col col-span-1`}>
+              <label htmlFor="photo" className="capitalize text-sm">
+                Photo
+              </label>
+              <input
+                id="photo"
+                type="file"
+                onChange={(e) => uploadFileHandler(e)}
+                className="file-input file-input-sm   file-input-bordered file-input-primary w-full max-w-xs"
+              />
+            </div>
             <select
               className={`input input-bordered w-full  col-span-2   input-sm mt-4 ${
                 errors.type ? "input-error" : ""
@@ -186,6 +214,7 @@ export default function AdminEditBreweryScreen() {
               <option value="distillery">Distillery</option>
               <option value="cidery">Cidery</option>
             </select>
+
             <input className="btn btn-primary mt-4" type="submit" />
             {isLoading && "loading"}
           </div>

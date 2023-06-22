@@ -11,4 +11,10 @@ export interface Brewery {
   user: String;
   _id: String;
   distanceTo?: number;
+  image?: string;
 }
+
+export type UserLocation = {
+  longitude: number;
+  latitude: number;
+};

@@ -44,6 +44,10 @@ const brewerySchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    image: {
+      type: String,
+      // required: true,
+    },
     beers: [
       {
         type: mongoose.Schema.Types.ObjectId,

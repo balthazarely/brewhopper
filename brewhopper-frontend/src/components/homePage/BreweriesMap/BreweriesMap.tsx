@@ -37,17 +37,6 @@ export function BreweriesMap({
       center: [-121.31, 44.06],
       zoom: 12,
     });
-
-    // const geolocate = new mapboxgl.GeolocateControl();
-
-    // geolocate.on("geolocate", function (e) {
-    //   const lon = e.coords.longitude;
-    //   const lat = e.coords.latitude;
-    //   const position = [lon, lat];
-    //   console.log(position);
-    // });
-
-    // map.current?.addControl(geolocate);
   }, [lng, lat, zoom]);
 
   useEffect(() => {
@@ -175,8 +164,8 @@ export function BreweriesMap({
         map.current?.on("styledata", () => {
           setStyleDataSet(true);
         });
-        // WINE TIME
       }
+      // WINE TIME
       if (!map.current?.getSource("wineries")) {
         map.current?.addSource("wineries", {
           type: "geojson",
@@ -245,9 +234,9 @@ export function BreweriesMap({
             brewery: brewery,
           });
         });
-        map.current?.on("click", "clusters", (e) => {
+        map.current?.on("click", "clusters-wine", (e) => {
           const features = map.current.queryRenderedFeatures(e.point, {
-            layers: ["clusters"],
+            layers: ["clusters-wine"],
           });
           const clusterId = features[0].properties.cluster_id;
 

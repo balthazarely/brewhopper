@@ -1,6 +1,3 @@
-.brewery-map-wrapper {
-  height: calc(100vh -  5rem ); 
-}
 
 .custom-marker {
   background-image: url("../public/custom-marker.png");
@@ -9,4 +6,12 @@
   height: 30px; /* Adjust the size of the marker if needed */
   border-radius: 50%;
   cursor: pointer;
+}
+
+/* .brewery-map-wrapper {
+  height:  calc(100vh - 200px); 
+} */
+
+.brewery-panel-map-wrapper {
+  height:  calc(100vh - 200px); 
 }

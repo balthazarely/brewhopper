@@ -9,6 +9,8 @@ interface BreweryMapCardProps {
   setSelectedBrewery: (brewery: Brewery) => void;
 }
 
+const imageUrl = "http://localhost:5001";
+
 export function BreweryMapCard({
   brewery,
   selectedBrewery,
@@ -21,8 +23,19 @@ export function BreweryMapCard({
         selectedBrewery?._id === brewery._id ? "shadow-lg " : "shadow"
       }`}
     >
-      <div className="w-full h-32 bg-gray-300 rounded-lg relative">
-        <div className="badge-sm capitalize absolute right-2 top-2 badge badge-primary">
+      <div className="w-full h-32  bg-gray-300 rounded-lg relative">
+        <img
+          className="h-full w-full object-cover rounded-md"
+          src={`${imageUrl}${brewery.image}`}
+          alt="brewery-image"
+        />
+        <div
+          className={`badge-sm capitalize absolute right-2 top-2 badge  ${
+            brewery.type === "brewery" && "badge-primary"
+          }
+          ${brewery.type === "winery" && "badge-warning"}
+         `}
+        >
           {brewery.type}
         </div>
       </div>
@@ -34,10 +47,10 @@ export function BreweryMapCard({
         </div>
       </div>
       <div className="flex items-center gap-1">
-        <HiLocationMarker className="text-sm" />
+        <HiLocationMarker className="text-sm text-primary" />
         <div className="text-sm">{brewery.address.split(",")[0]}</div>
       </div>
-      <div className="flex justify-between mt-1">
+      <div className="flex justify-between mt-2">
         <Link
           className="text-xs font-bold hover:text-black text-neutral"
           to={`/brewery/${brewery._id}`}

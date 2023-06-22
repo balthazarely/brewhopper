@@ -6,6 +6,14 @@ export default {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["emerald"],
+    themes: [
+      {
+        lemonade: {
+          ...require("daisyui/src/theming/themes")["[data-theme=lemonade]"],
+          // primary: "#6FBD43",
+          // "primary-focus": "mediumblue",
+        },
+      },
+    ],
   },
 };
