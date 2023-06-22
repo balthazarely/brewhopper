@@ -4,7 +4,7 @@ import { HiLocationMarker } from "react-icons/hi";
 
 interface AdminBreweryCardProps {
   brewery: Brewery;
-  handleDeleteBrewery: (modalState: boolean, id: String) => void;
+  handleDeleteBrewery: (modalState: boolean, id: String, name: String) => void;
 }
 const imageUrl = "http://localhost:5001";
 
@@ -36,7 +36,7 @@ export function AdminBreweryCard({
           Edit
         </Link>
         <button
-          onClick={() => handleDeleteBrewery(true, brewery._id)}
+          onClick={() => handleDeleteBrewery(true, brewery._id, brewery.name)}
           className="btn btn-xs"
         >
           Delete

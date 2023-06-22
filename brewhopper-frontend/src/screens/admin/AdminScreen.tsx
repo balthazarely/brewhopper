@@ -2,7 +2,7 @@ import {
   AdminBreweryCard,
   DeleteBreweryModal,
 } from "../../components/adminScreen";
-import { PageWrapper } from "../../components/elements";
+import { PageHeader, PageWrapper } from "../../components/elements";
 import { useGetBreweriesQuery } from "../../slices/brewerySlice";
 import { useState } from "react";
 
@@ -11,17 +11,21 @@ import { Link } from "react-router-dom";
 export default function AdminScreen() {
   const { data: breweries, isLoading, refetch } = useGetBreweriesQuery({});
   const [deleteBreweryModalOpen, setDeleteBreweryModalOpen] = useState(false);
-  const [breweryToDelete, setBreweryToDelete] = useState<String>("");
+  const [breweryToDelete, setBreweryToDelete] = useState<any>({});
 
-  const handleDeleteBrewery = (modalState: boolean, id: String) => {
+  const handleDeleteBrewery = (
+    modalState: boolean,
+    id: String,
+    name: String
+  ) => {
     setDeleteBreweryModalOpen(modalState);
-    setBreweryToDelete(id);
+    setBreweryToDelete({ id, name });
   };
 
   return (
     <>
       <PageWrapper>
-        <div className="text-2xl font-bold my-4">Admin Dashboard</div>
+        <PageHeader title="Admin Dashboard" />
         <div className="my-4">
           <Link to={"/admin/create-brewery"} className="btn btn-sm">
             Create New Listing

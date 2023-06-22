@@ -1,3 +1,4 @@
+import { HiX } from "react-icons/hi";
 import { useDeleteBreweryMutation } from "../../../../slices/brewerySlice";
 
 export function DeleteBreweryModal({
@@ -9,9 +10,11 @@ export function DeleteBreweryModal({
     useDeleteBreweryMutation({});
 
   const deleteBreweryHandler = async () => {
-    await deleteBrewery(breweryToDelete);
+    await deleteBrewery(breweryToDelete.id);
     setDeleteBreweryModalOpen(false);
   };
+
+  console.log(breweryToDelete);
 
   return (
     <div>
@@ -28,22 +31,23 @@ export function DeleteBreweryModal({
             className="absolute top-2 right-2 btn btn-sm btn-ghost"
             onClick={() => setDeleteBreweryModalOpen(false)}
           >
-            Close
+            <HiX />
           </button>
           <div className="flex justify-between ">
-            <h3 className="font-bold text-lg">Delete Location</h3>
+            <h3 className="font-bold text-lg">Delete Listing</h3>
           </div>
-          {breweryToDelete && JSON.stringify(breweryToDelete)}
-
+          Are you sure you want to delete {breweryToDelete.name}
           <div className="modal-action">
             <button
               // disabled={!selectedExercise}
               className={`btn-primary btn px-2 py-1 `}
               onClick={deleteBreweryHandler}
             >
+              {loadingDelete && (
+                <span className="loading loading-spinner"></span>
+              )}
               Delete
             </button>
-            {loadingDelete && "loading"}
           </div>
         </div>
       </div>

@@ -52,7 +52,7 @@ export function BreweryMapCard({
       </div>
       <div className="flex justify-between mt-2">
         <Link
-          className="text-xs font-bold hover:text-black text-neutral"
+          className="text-xs btn-xs btn font-bold hover:text-black text-neutral"
           to={`/brewery/${brewery._id}`}
         >
           See More

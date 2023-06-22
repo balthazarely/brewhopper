@@ -4,6 +4,7 @@ import { useLogoutMutation } from "../../../slices/usersApiSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../../slices/authSlice";
 import { PageWrapper } from "../../elements";
+import { TbBeer } from "react-icons/tb";
 
 export function Navbar() {
   const dispatch = useDispatch();
@@ -28,9 +29,13 @@ export function Navbar() {
       .join("");
 
   return (
-    <div className="w-full h-20 flex items-center bg-base-100 shadow-md z-50 ">
+    <div className="w-full fixed h-20 flex items-center bg-base-100 shadow-md z-50 ">
       <PageWrapper classname="w-full gap-4 flex justify-between  items-center">
-        <Link to="/" className="text-2xl font-bold text-primary">
+        <Link
+          to="/"
+          className="text-2xl font-bold text-primary flex items-center"
+        >
+          <TbBeer className="text-4xl" />
           BrewHopper
         </Link>
         <div>
