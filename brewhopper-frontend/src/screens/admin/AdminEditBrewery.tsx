@@ -20,12 +20,12 @@ type Inputs = {
   website: string;
   checkInCode: string;
 };
+const imageUrl = "http://localhost:5001";
 
 export default function AdminEditBreweryScreen() {
   const { id } = useParams();
   const { data: brewery, isLoading } = useGetBreweryQuery(id);
   const [uploadedImage, setUploadedImage] = useState("");
-
   const navigate = useNavigate();
   const [updateBrewery] = useUpdatedBreweryMutation();
   const [uploadProductImage, { isLoading: loadingUpload }] =
@@ -41,11 +41,13 @@ export default function AdminEditBreweryScreen() {
       ...data,
       breweryId: id,
       user: brewery.breweryInfo?.user,
-      image: uploadedImage,
+      image: uploadedImage ? uploadedImage : brewery.breweryInfo.image,
     };
     await updateBrewery(udpatedBrewery);
     navigate("/admin");
   };
+
+  console.log(brewery);
 
   const uploadFileHandler = async (e: any) => {
     const formData = new FormData();
@@ -190,6 +192,7 @@ export default function AdminEditBreweryScreen() {
                 {...register("long", { required: true })}
               />
             </div>
+
             <div className={`flex flex-col col-span-1`}>
               <label htmlFor="photo" className="capitalize text-sm">
                 Photo
@@ -199,6 +202,17 @@ export default function AdminEditBreweryScreen() {
                 type="file"
                 onChange={(e) => uploadFileHandler(e)}
                 className="file-input file-input-sm   file-input-bordered file-input-primary w-full max-w-xs"
+              />
+            </div>
+            <div className="w-full h-32 col-span-1 bg-gray-300 rounded-lg relative">
+              <img
+                className="h-full w-full object-cover rounded-lg"
+                src={
+                  uploadedImage
+                    ? `${imageUrl}${uploadedImage}`
+                    : `${imageUrl}${brewery.breweryInfo.image}`
+                }
+                alt="brewery-image"
               />
             </div>
             <select

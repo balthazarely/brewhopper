@@ -59,6 +59,7 @@ const updateBrewery = asyncHandler(async (req, res) => {
     checkInCode,
     image,
   } = req.body;
+
   const brewery = await Brewery.findById(req.params.id);
   if (brewery) {
     brewery.user = user;

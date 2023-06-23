@@ -25,6 +25,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/users", userRoutes);
 app.use("/api/breweries", breweryRoutes);
+app.use("/api/beer", breweryRoutes);
 app.use("/api/passport", passportRoutes);
 app.use("/api/upload", uploadRoutes);
 
