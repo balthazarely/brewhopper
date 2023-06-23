@@ -8,10 +8,6 @@
   cursor: pointer;
 }
 
-/* .brewery-map-wrapper {
-  height:  calc(100vh - 200px); 
-} */
-
 .brewery-panel-map-wrapper {
   height:  calc(100vh - 200px); 
 }

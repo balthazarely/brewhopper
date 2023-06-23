@@ -33,12 +33,15 @@ export function Navbar() {
       <PageWrapper classname="w-full gap-4 flex justify-between  items-center">
         <Link
           to="/"
-          className="text-2xl font-bold text-primary flex items-center"
+          className="text-2xl font-bold text-accent-content flex items-center"
         >
           <TbBeer className="text-4xl" />
-          BrewHopper
+          <span className="text-primary">Brew</span>Hopper
         </Link>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <Link to="/" className="btn btn-ghost btn-sm capitalize">
+            Map
+          </Link>
           <Link to="/passport" className="btn btn-ghost btn-sm capitalize">
             My Passport
           </Link>
