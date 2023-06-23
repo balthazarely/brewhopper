@@ -15,7 +15,7 @@ const addNewBeer = asyncHandler(async (req, res) => {
     abv,
     ibu,
     breweryId,
-    seasonal,
+
     image,
   } = req.body;
 
@@ -27,10 +27,42 @@ const addNewBeer = asyncHandler(async (req, res) => {
     abv: abv,
     ibu: ibu,
     breweryId: breweryId,
-    seasonal: seasonal,
+
     image: image,
   });
   res.status(200).json(newBeer);
+});
+
+const updateBeer = asyncHandler(async (req, res) => {
+  const {
+    user,
+    name,
+    description,
+    style,
+    abv,
+    ibu,
+    breweryId,
+
+    image,
+  } = req.body;
+
+  const beer = await Beer.findById(req.params.id);
+
+  if (beer) {
+    beer.user = user;
+    beer.name = name;
+    beer.description = description;
+    beer.style = style;
+    beer.abv = abv;
+    beer.ibu = ibu;
+    beer.breweryId = breweryId;
+    beer.image = image;
+    const beerToUpdate = await beer.save();
+    res.json(beerToUpdate);
+  } else {
+    res.status(404);
+    throw new Error("resrouce not found");
+  }
 });
 
 const deleteBeer = asyncHandler(async (req, res) => {
@@ -43,4 +75,4 @@ const deleteBeer = asyncHandler(async (req, res) => {
   res.json({ message: "beer removed successfully" });
 });
 
-export { getAllBeersAtBrewery, addNewBeer, deleteBeer };
+export { getAllBeersAtBrewery, addNewBeer, deleteBeer, updateBeer };

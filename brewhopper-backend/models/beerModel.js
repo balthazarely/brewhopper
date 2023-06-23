@@ -34,7 +34,7 @@ const beerSchema = mongoose.Schema(
     },
     seasonal: {
       type: Boolean,
-      required: true,
+      // required: true,
     },
     image: {
       type: String,

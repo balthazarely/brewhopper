@@ -4,7 +4,10 @@ import {
   useDeleteBeerMutation,
   useGetBeersAtBreweryQuery,
 } from "../../slices/beerSlice";
-import { AddBeerModal } from "../../components/adminScreen/modals";
+import {
+  AddBeerModal,
+  EditBeerModal,
+} from "../../components/adminScreen/modals";
 import { useState } from "react";
 
 const imageUrl = "http://localhost:5001";
@@ -18,10 +21,14 @@ export default function AdminEditBeers() {
   } = useGetBeersAtBreweryQuery(breweryId);
   const [deleteBeer, { isLoading: loadingDelete }] = useDeleteBeerMutation({});
   const [addBeerModalOpen, setAddBeerModalOpen] = useState(false);
+  const [editBeerModalOpen, setEditBeerModalOpen] = useState(false);
+  const [beerToEdit, setBeerToEdit] = useState(null);
 
   const deleteBeerHandler = async (id: string) => {
     await deleteBeer(id);
   };
+
+  console.log("beer to edit", beerToEdit);
 
   return (
     <PageWrapper>
@@ -36,7 +43,6 @@ export default function AdminEditBeers() {
       </div>
       {!isLoading ? (
         <div className="">
-          <div className="text-2xl font-bold mb-4 ">Current Beers</div>
           <div className="flex flex-wrap gap-6">
             {beers.map((beer: any) => {
               return (
@@ -54,7 +60,10 @@ export default function AdminEditBeers() {
                   <div className="font-bold text-sm">{beer.name}</div>
                   <div className="flex gap-2 mb-2">
                     <button
-                      // onClick={() => deleteBeerHandler(beer._id)}
+                      onClick={() => {
+                        setEditBeerModalOpen(true);
+                        setBeerToEdit(beer);
+                      }}
                       className="btn btn-xs"
                     >
                       edit
@@ -78,6 +87,12 @@ export default function AdminEditBeers() {
         breweryId={breweryId}
         addBeerModalOpen={addBeerModalOpen}
         setAddBeerModalOpen={setAddBeerModalOpen}
+      />
+      <EditBeerModal
+        breweryId={breweryId}
+        beerToEdit={beerToEdit}
+        editBeerModalOpen={editBeerModalOpen}
+        setEditBeerModalOpen={setEditBeerModalOpen}
       />
     </PageWrapper>
   );

@@ -24,7 +24,6 @@ export function AddBeerModal({
     style: string;
     abv: number;
     ibu: number;
-    seasonal: boolean;
   };
 
   const {
@@ -44,7 +43,6 @@ export function AddBeerModal({
     try {
       await addBeer(newBeer);
       setAddBeerModalOpen(false);
-      reset();
     } catch (error) {
       console.log(error);
     }
@@ -168,7 +166,7 @@ export function AddBeerModal({
                 />
               </div>
 
-              <div className={`flex flex-col  just col-span-2`}>
+              {/* <div className={`flex flex-col  just col-span-2`}>
                 <div className="form-control">
                   <label className="label cursor-pointer">
                     <span className="label-text">Seasonal</span>
@@ -181,7 +179,7 @@ export function AddBeerModal({
                     })}
                   />
                 </div>
-              </div>
+              </div> */}
 
               {/* <div className="w-full h-32 mt-3 col-span-2 rounded-lg relative">
   <label htmlFor="photo" className="capitalize text-sm">
