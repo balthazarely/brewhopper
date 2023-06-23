@@ -1,17 +1,24 @@
 import { useParams } from "react-router-dom";
 import { useGetBreweryQuery } from "../slices/brewerySlice";
 import { PageHeader, PageWrapper } from "../components/elements";
-import { HiGlobe, HiLocationMarker } from "react-icons/hi";
+import { HiLocationMarker } from "react-icons/hi";
 import { HiPhone } from "react-icons/hi2";
 import { BsGlobe } from "react-icons/bs";
-import { SingleBreweryMap } from "../components/breweryScreen";
+import { CheckInModal, SingleBreweryMap } from "../components/breweryScreen";
+import { useState } from "react";
+import { useGetUserProfileQuery } from "../slices/passportSlice";
 
 export default function BreweryScreen() {
   const { id } = useParams();
+  const [checkInModalOpen, setCheckInModalOpen] = useState(false);
   const { data: brewery, isLoading, error } = useGetBreweryQuery(id);
-  console.log(brewery);
-
   const imageUrl = "http://localhost:5001";
+  const { data: userPassportData } = useGetUserProfileQuery({});
+
+  const isCheckInAllowed = userPassportData?.breweriesVisited?.some(
+    (visitedBrewery: any) =>
+      visitedBrewery.breweryId === brewery?.breweryInfo?._id
+  );
 
   return (
     <PageWrapper>
@@ -19,7 +26,13 @@ export default function BreweryScreen() {
         <div>
           <div className="flex justify-between items-center">
             <PageHeader title={brewery.breweryInfo.name} />
-            <button className="btn btn-primary">Check in</button>
+            <button
+              onClick={() => setCheckInModalOpen(true)}
+              className="btn btn-primary"
+              disabled={isCheckInAllowed}
+            >
+              Check in
+            </button>
           </div>
 
           <div className="capitalize mb-16 ">
@@ -53,6 +66,11 @@ export default function BreweryScreen() {
       ) : (
         "loading"
       )}
+      <CheckInModal
+        brewery={brewery}
+        checkInModalOpen={checkInModalOpen}
+        setCheckInModalOpen={setCheckInModalOpen}
+      />
     </PageWrapper>
   );
 }

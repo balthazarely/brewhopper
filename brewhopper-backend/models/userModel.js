@@ -4,7 +4,8 @@ import bcrypt from "bcryptjs";
 const breweriesVisitedSchema = mongoose.Schema(
   {
     breweryName: { type: String, required: true },
-    breweryId: { type: Number, required: true },
+    breweryId: { type: String, required: true },
+    breweryImage: { type: String, required: true },
   },
   {
     timestamps: true,

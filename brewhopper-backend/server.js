@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 // Route Imports
 import breweryRoutes from "./routes/breweryRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import passportRoutes from "./routes/passportRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 
 dotenv.config();
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/users", userRoutes);
 app.use("/api/breweries", breweryRoutes);
+app.use("/api/passport", passportRoutes);
 app.use("/api/upload", uploadRoutes);
 
 const __dirname = path.resolve();

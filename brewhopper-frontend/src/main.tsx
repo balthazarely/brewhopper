@@ -20,6 +20,7 @@ import PrivateRoute from "./components/PrivateRoute.tsx";
 import AdminRoute from "./components/AdminRoute.tsx";
 import AdminEditBrewery from "./screens/admin/AdminEditBrewery.tsx";
 import AdminCreateBrewery from "./screens/admin/AdminCreateBrewery.tsx";
+import PassportScreen from "./screens/PassportScreen.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,6 +30,7 @@ const router = createBrowserRouter(
       <Route path="" element={<PrivateRoute />}>
         <Route index={true} path="/" element={<HomeScreen />} />
         <Route path="/brewery/:id" element={<BreweryScreen />} />
+        <Route path="/passport" element={<PassportScreen />} />
       </Route>
       <Route path="" element={<AdminRoute />}>
         <Route path="/admin" element={<AdminScreen />} />

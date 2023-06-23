@@ -1,0 +1,1 @@
+export { PassportCard } from "./PassportCard";

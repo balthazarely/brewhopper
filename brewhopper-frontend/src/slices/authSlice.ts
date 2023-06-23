@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// const baseQuery = fetchBaseQuery({ baseUrl: BASE_URL });
-
 interface AuthInitialStateProps {
   userInfo: userInfo | null;
 }

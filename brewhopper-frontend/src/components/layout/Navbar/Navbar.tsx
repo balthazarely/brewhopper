@@ -38,7 +38,10 @@ export function Navbar() {
           <TbBeer className="text-4xl" />
           BrewHopper
         </Link>
-        <div>
+        <div className="flex items-center gap-4">
+          <Link to="/passport" className="btn btn-ghost btn-sm capitalize">
+            My Passport
+          </Link>
           {userInfo ? (
             <LoggedInView />
           ) : (
