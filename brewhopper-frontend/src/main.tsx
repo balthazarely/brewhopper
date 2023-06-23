@@ -37,7 +37,7 @@ const router = createBrowserRouter(
         <Route path="/admin" element={<AdminScreen />} />
         <Route path="/admin/create-brewery" element={<AdminCreateBrewery />} />
         <Route path="/admin/edit-brewery/:id" element={<AdminEditBrewery />} />
-        <Route path="/admin/edit-beers/:id" element={<AdminEditBeers />} />
+        {/* <Route path="/admin/edit-beers/:id" element={<AdminEditBeers />} /> */}
       </Route>
     </Route>
   )

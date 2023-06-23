@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
-import { PageHeader, PageWrapper } from "../../components/elements";
 import {
   useDeleteBeerMutation,
   useGetBeersAtBreweryQuery,
 } from "../../slices/beerSlice";
 import {
   AddBeerModal,
+  ConfirmActionModal,
   EditBeerModal,
 } from "../../components/adminScreen/modals";
 import { useState } from "react";
@@ -14,25 +14,22 @@ const imageUrl = "http://localhost:5001";
 
 export default function AdminEditBeers() {
   const { id: breweryId } = useParams();
-  const {
-    data: beers,
-    isLoading,
-    error,
-  } = useGetBeersAtBreweryQuery(breweryId);
+  const { data: beers, isLoading } = useGetBeersAtBreweryQuery(breweryId);
   const [deleteBeer, { isLoading: loadingDelete }] = useDeleteBeerMutation({});
   const [addBeerModalOpen, setAddBeerModalOpen] = useState(false);
   const [editBeerModalOpen, setEditBeerModalOpen] = useState(false);
   const [beerToEdit, setBeerToEdit] = useState(null);
+  const [beerToDelete, setBeerToDelete] = useState<any>(null);
+  const [confrimActionModalOpen, setConfrimActionModalOpen] = useState(false);
 
-  const deleteBeerHandler = async (id: string) => {
-    await deleteBeer(id);
+  const deleteBeerHandler = async () => {
+    await deleteBeer(beerToDelete._id);
+    setConfrimActionModalOpen(false);
   };
 
-  console.log("beer to edit", beerToEdit);
-
   return (
-    <PageWrapper>
-      <PageHeader title="Beer Dashboard" />
+    <div className="p-4 rounded-lg bg-base-200">
+      <h2 className="text-xl w-full font-bold">Edit Beers</h2>
       <div className="my-4">
         <button
           onClick={() => setAddBeerModalOpen(true)}
@@ -69,7 +66,10 @@ export default function AdminEditBeers() {
                       edit
                     </button>
                     <button
-                      onClick={() => deleteBeerHandler(beer._id)}
+                      onClick={() => {
+                        setConfrimActionModalOpen(true);
+                        setBeerToDelete(beer);
+                      }}
                       className="btn btn-xs"
                     >
                       delete
@@ -94,6 +94,14 @@ export default function AdminEditBeers() {
         editBeerModalOpen={editBeerModalOpen}
         setEditBeerModalOpen={setEditBeerModalOpen}
       />
-    </PageWrapper>
+      <ConfirmActionModal
+        message={`Are you sure you want to delete ${beerToDelete?.name}?`}
+        confirmText="Delete"
+        loading={loadingDelete}
+        confrimActionModalOpen={confrimActionModalOpen}
+        setConfrimActionModalOpen={setConfrimActionModalOpen}
+        onFireFunction={deleteBeerHandler}
+      />
+    </div>
   );
 }
