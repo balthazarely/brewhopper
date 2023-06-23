@@ -47,8 +47,6 @@ export default function AdminEditBreweryScreen() {
     navigate("/admin");
   };
 
-  console.log(brewery);
-
   const uploadFileHandler = async (e: any) => {
     const formData = new FormData();
     formData.append("image", e.target.files[0]);
@@ -193,28 +191,6 @@ export default function AdminEditBreweryScreen() {
               />
             </div>
 
-            <div className={`flex flex-col col-span-1`}>
-              <label htmlFor="photo" className="capitalize text-sm">
-                Photo
-              </label>
-              <input
-                id="photo"
-                type="file"
-                onChange={(e) => uploadFileHandler(e)}
-                className="file-input file-input-sm   file-input-bordered file-input-primary w-full max-w-xs"
-              />
-            </div>
-            <div className="w-full h-32 col-span-1 bg-gray-300 rounded-lg relative">
-              <img
-                className="h-full w-full object-cover rounded-lg"
-                src={
-                  uploadedImage
-                    ? `${imageUrl}${uploadedImage}`
-                    : `${imageUrl}${brewery.breweryInfo.image}`
-                }
-                alt="brewery-image"
-              />
-            </div>
             <select
               className={`input input-bordered w-full  col-span-2   input-sm mt-4 ${
                 errors.type ? "input-error" : ""
@@ -228,6 +204,29 @@ export default function AdminEditBreweryScreen() {
               <option value="distillery">Distillery</option>
               <option value="cidery">Cidery</option>
             </select>
+
+            <div className="w-full h-32 mt-3 col-span-2 rounded-lg relative">
+              <label htmlFor="photo" className="capitalize text-sm">
+                Photo
+              </label>
+              <img
+                className="h-full w-1/2 object-cover rounded-lg"
+                src={
+                  uploadedImage
+                    ? `${imageUrl}${uploadedImage}`
+                    : `${imageUrl}${brewery.breweryInfo.image}`
+                }
+                alt="brewery-image"
+              />
+            </div>
+            <div className={`flex flex-col col-span-2 mt-6`}>
+              <input
+                id="photo"
+                type="file"
+                onChange={(e) => uploadFileHandler(e)}
+                className="file-input file-input-sm   file-input-bordered file-input-primary w-full max-w-xs"
+              />
+            </div>
 
             <input className="btn btn-primary mt-4" type="submit" />
             {isLoading && "loading"}

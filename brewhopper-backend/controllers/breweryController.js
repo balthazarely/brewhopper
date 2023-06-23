@@ -82,7 +82,6 @@ const updateBrewery = asyncHandler(async (req, res) => {
 });
 
 const deleteBrewery = asyncHandler(async (req, res) => {
-  console.log(req.params.id);
   const brewery = await Brewery.findById(req.params.id);
   if (!brewery) {
     res.status(404).json({ message: "Brewery not found" });

@@ -1,20 +1,18 @@
 import { Router } from "express";
-import {
-  getBreweries,
-  getBreweryById,
-  addNewBrewery,
-  deleteBrewery,
-  updateBrewery,
-} from "../controllers/breweryController.js";
 import { admin, protect } from "../middleware/authMiddleware.js";
+import {
+  addNewBeer,
+  getAllBeersAtBrewery,
+  deleteBeer,
+} from "../controllers/beerController.js";
 
 const router = Router();
 
-router.route("/").get(getAllBeers).post(protect, admin, addNewBeer);
-// router
-//   .route("/:id")
-//   .get(getBreweryById)
-//   .put(protect, admin, updateBrewery)
-//   .delete(protect, admin, deleteBrewery);
+router.route("/").post(protect, admin, addNewBeer);
+router
+  .route("/:id")
+  .get(getAllBeersAtBrewery)
+  .delete(protect, admin, deleteBeer);
+// .put(protect, admin, updateBrewery)
 
 export default router;

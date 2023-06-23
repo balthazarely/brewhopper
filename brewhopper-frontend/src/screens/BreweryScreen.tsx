@@ -20,10 +20,19 @@ export default function BreweryScreen() {
       visitedBrewery.breweryId === brewery?.breweryInfo?._id
   );
 
+  console.log(brewery);
+
   return (
     <PageWrapper>
       {!isLoading ? (
         <div>
+          <div className="w-full flex mt-4 h-56 bg-gray-300 rounded-lg relative">
+            <img
+              className="h-full w-full object-cover rounded-md"
+              src={`${imageUrl}${brewery.breweryInfo.image}`}
+              alt="brewery-image"
+            />
+          </div>
           <div className="flex justify-between items-center">
             <PageHeader title={brewery.breweryInfo.name} />
             <button
@@ -49,18 +58,17 @@ export default function BreweryScreen() {
               <div>{brewery.breweryInfo.website}</div>
             </div>
           </div>
+          <div className="mb-16">
+            {brewery?.beers?.map((beer: any) => {
+              return <div className="font-bold text-lg">{beer.name}</div>;
+            })}
+          </div>
+
           <div className="w-full flex h-96 bg-gray-300 rounded-lg relative">
-            <img
-              className="h-full w-1/2 object-cover rounded-md"
-              src={`${imageUrl}${brewery.breweryInfo.image}`}
-              alt="brewery-image"
+            <SingleBreweryMap
+              lat={brewery.breweryInfo.lat}
+              long={brewery.breweryInfo.long}
             />
-            <div className="h-full w-1/2">
-              <SingleBreweryMap
-                lat={brewery.breweryInfo.lat}
-                long={brewery.breweryInfo.long}
-              />
-            </div>
           </div>
         </div>
       ) : (

@@ -14,8 +14,6 @@ export function DeleteBreweryModal({
     setDeleteBreweryModalOpen(false);
   };
 
-  console.log(breweryToDelete);
-
   return (
     <div>
       <input

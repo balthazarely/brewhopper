@@ -20,7 +20,13 @@ export function AdminBreweryCard({
           src={`${imageUrl}${brewery.image}`}
           alt="brewery-image"
         />
-        <div className="badge-sm capitalize absolute right-2 top-2 badge badge-primary">
+        <div
+          className={`badge-sm capitalize absolute right-2 top-2 badge  ${
+            brewery.type === "brewery" && "badge-primary"
+          }
+          ${brewery.type === "winery" && "badge-warning"}
+         `}
+        >
           {brewery.type}
         </div>
       </div>
@@ -34,6 +40,9 @@ export function AdminBreweryCard({
       <div className="flex justify-start mt-3 gap-1">
         <Link to={`/admin/edit-brewery/${brewery._id}`} className="btn btn-xs">
           Edit
+        </Link>
+        <Link to={`/admin/edit-beers/${brewery._id}`} className="btn btn-xs">
+          Edit Beers
         </Link>
         <button
           onClick={() => handleDeleteBrewery(true, brewery._id, brewery.name)}

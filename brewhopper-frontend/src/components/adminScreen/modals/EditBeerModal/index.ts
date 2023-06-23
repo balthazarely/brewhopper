@@ -1,0 +1,1 @@
+export { EditBeerModal } from "./EditBeerModal";

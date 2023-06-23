@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 // Route Imports
 import breweryRoutes from "./routes/breweryRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import beerRoutes from "./routes/beerRoutes.js";
 import passportRoutes from "./routes/passportRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 
@@ -25,7 +26,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/users", userRoutes);
 app.use("/api/breweries", breweryRoutes);
-app.use("/api/beer", breweryRoutes);
+app.use("/api/beer", beerRoutes);
 app.use("/api/passport", passportRoutes);
 app.use("/api/upload", uploadRoutes);
 

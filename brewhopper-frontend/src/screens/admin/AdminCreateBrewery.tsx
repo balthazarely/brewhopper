@@ -1,9 +1,6 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
-import {
-  useCreateBreweryMutation,
-  useUpdatedBreweryMutation,
-} from "../../slices/brewerySlice";
+import { useCreateBreweryMutation } from "../../slices/brewerySlice";
 import { PageWrapper } from "../../components/elements";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";

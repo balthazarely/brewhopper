@@ -17,25 +17,17 @@ export default function PassportScreen() {
     useDeletePassportBreweryMutation({});
 
   const deletePassportItem = (id: string) => {
-    console.log(id);
     deletePassportBrewery(id);
   };
 
   return (
     <PageWrapper>
       <PageHeader title="My Passport" />
-      {userPassportData?.breweriesVisited?.map((brewery: any) => {
-        return (
-          <button
-            onClick={() => deletePassportItem(brewery._id)}
-            className="btn btn-primary"
-          >
-            {brewery.breweryName}
-          </button>
-        );
-        // return <PassportCard brewery={brewery} key={brewery.id} />;
-      })}
-      {/* {JSON.stringify(userData)} */}
+      <div className="grid grid-cols-2 md:grid-cols-3">
+        {userPassportData?.breweriesVisited?.map((brewery: any) => {
+          return <PassportCard brewery={brewery} key={brewery.id} />;
+        })}
+      </div>
     </PageWrapper>
   );
 }
