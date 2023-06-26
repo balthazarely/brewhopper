@@ -1,16 +1,24 @@
 import User from "../models/userModel.js";
 import asyncHandler from "../middleware/asyncHandler.js";
+import Brewery from "../models/breweryModel.js";
 
 const getUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
+  const user = await User.findById(req.user._id)
+    .populate({
+      path: "breweriesVisited",
+      populate: {
+        path: "brewery",
+        model: "Brewery",
+      },
+    })
+    .populate({
+      path: "breweriesVisited.beers",
+      model: "Beer",
+    })
+    .exec();
+
   if (user) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      breweriesVisited: user.breweriesVisited,
-    });
+    res.json(user);
   } else {
     res.status(404);
     throw new Error("User not found");
@@ -18,35 +26,29 @@ const getUserProfile = asyncHandler(async (req, res) => {
 });
 
 const addBeerToPassport = asyncHandler(async (req, res) => {
-  const { breweryId, breweryName, breweryImage } = req.body;
+  const { breweryId, beers } = req.body;
   const user = await User.findById(req.user._id);
   if (user) {
     user.breweriesVisited.push({
-      breweryId: breweryId,
-      breweryName: breweryName,
-      breweryImage: breweryImage,
+      brewery: breweryId,
+      beers: beers,
+      timestamp: new Date(),
     });
-    const udpatedUser = await user.save();
-    res.json(udpatedUser);
+    const updatedUser = await user.save();
+    res.json(updatedUser);
   }
 });
 
 const removeBeerFromPassport = asyncHandler(async (req, res) => {
   const { _id } = req.body;
+  console.log(_id);
   const user = await User.findById(req.user._id);
   if (user) {
-    const index = user.breweriesVisited.findIndex(
-      (breweryVisited) => breweryVisited._id.toString() === _id.toString()
+    user.breweriesVisited = user.breweriesVisited.filter(
+      (visited) => visited._id.toString() !== _id
     );
-
-    if (index !== -1) {
-      user.breweriesVisited.splice(index, 1);
-      const updatedUser = await user.save();
-      res.json(updatedUser);
-    } else {
-      res.status(404);
-      throw new Error("Beer not found in breweriesVisited");
-    }
+    await user.save();
+    res.json({ message: "Beer removed from passport" });
   } else {
     res.status(404);
     throw new Error("User not found");

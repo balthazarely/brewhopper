@@ -1,0 +1,1 @@
+export { AdminBeerCard } from "./AdminBeerCard";

@@ -9,6 +9,7 @@ import {
   EditBeerModal,
 } from "../../components/adminScreen/modals";
 import { useState } from "react";
+import { AdminBeerCard } from "../../components/adminScreen";
 
 const imageUrl = "http://localhost:5001";
 
@@ -23,7 +24,7 @@ export default function AdminEditBeers() {
   const [confrimActionModalOpen, setConfrimActionModalOpen] = useState(false);
 
   const deleteBeerHandler = async () => {
-    await deleteBeer(beerToDelete._id);
+    await deleteBeer({ id: beerToDelete._id, breweryId: breweryId });
     setConfrimActionModalOpen(false);
   };
 
@@ -39,46 +40,24 @@ export default function AdminEditBeers() {
         </button>
       </div>
       {!isLoading ? (
-        <div className="">
-          <div className="flex flex-wrap gap-6">
-            {beers.map((beer: any) => {
-              return (
-                <div
-                  className="flex items-center gap-1 flex-col border-2"
-                  key={beer._id}
-                >
-                  <div className="w-32 h-32  bg-gray-300 rounded-lg relative">
-                    <img
-                      className="h-full w-full object-cover rounded-lg "
-                      src={`${imageUrl}${beer.image}`}
-                      alt="brewery-image"
-                    />
-                  </div>
-                  <div className="font-bold text-sm">{beer.name}</div>
-                  <div className="flex gap-2 mb-2">
-                    <button
-                      onClick={() => {
-                        setEditBeerModalOpen(true);
-                        setBeerToEdit(beer);
-                      }}
-                      className="btn btn-xs"
-                    >
-                      edit
-                    </button>
-                    <button
-                      onClick={() => {
-                        setConfrimActionModalOpen(true);
-                        setBeerToDelete(beer);
-                      }}
-                      className="btn btn-xs"
-                    >
-                      delete
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(144px, 1fr))",
+            gridGap: "1rem",
+          }}
+        >
+          {beers.map((beer: any) => {
+            return (
+              <AdminBeerCard
+                beer={beer}
+                setBeerToEdit={setBeerToEdit}
+                setBeerToDelete={setBeerToDelete}
+                setEditBeerModalOpen={setEditBeerModalOpen}
+                setConfrimActionModalOpen={setConfrimActionModalOpen}
+              />
+            );
+          })}
         </div>
       ) : (
         "loading"

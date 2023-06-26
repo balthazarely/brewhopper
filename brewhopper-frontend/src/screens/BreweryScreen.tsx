@@ -7,6 +7,7 @@ import { BsGlobe } from "react-icons/bs";
 import { CheckInModal, SingleBreweryMap } from "../components/breweryScreen";
 import { useState } from "react";
 import { useGetUserProfileQuery } from "../slices/passportSlice";
+import { BeerCard } from "../components/breweryScreen/BeerCard";
 
 export default function BreweryScreen() {
   const { id } = useParams();
@@ -16,11 +17,8 @@ export default function BreweryScreen() {
   const { data: userPassportData } = useGetUserProfileQuery({});
 
   const isCheckInAllowed = userPassportData?.breweriesVisited?.some(
-    (visitedBrewery: any) =>
-      visitedBrewery.breweryId === brewery?.breweryInfo?._id
+    (visitedBrewery: any) => visitedBrewery.breweryId === brewery?._id
   );
-
-  console.log(brewery);
 
   return (
     <PageWrapper>
@@ -29,12 +27,12 @@ export default function BreweryScreen() {
           <div className="w-full flex mt-4 h-56 bg-gray-300 rounded-lg relative">
             <img
               className="h-full w-full object-cover rounded-md"
-              src={`${imageUrl}${brewery.breweryInfo.image}`}
+              src={`${imageUrl}${brewery.image}`}
               alt="brewery-image"
             />
           </div>
           <div className="flex justify-between items-center">
-            <PageHeader title={brewery.breweryInfo.name} />
+            <PageHeader title={brewery.name} />
             <button
               onClick={() => setCheckInModalOpen(true)}
               className="btn btn-primary"
@@ -47,28 +45,32 @@ export default function BreweryScreen() {
           <div className="capitalize mb-16 ">
             <div className="flex items-center gap-1">
               <HiLocationMarker className=" text-primary" />
-              <div>{brewery.breweryInfo.address}</div>
+              <div>{brewery.address}</div>
             </div>
             <div className="flex items-center gap-1">
               <HiPhone className=" text-primary" />
-              <div>{brewery.breweryInfo.phone_number}</div>
+              <div>{brewery.phone_number}</div>
             </div>
             <div className="flex items-center gap-1">
               <BsGlobe className=" text-primary" />
-              <div>{brewery.breweryInfo.website}</div>
+              <div>{brewery.website}</div>
             </div>
           </div>
-          <div className="mb-16">
+          <div
+            className="mb-16"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(144px, 1fr))",
+              gridGap: "1rem",
+            }}
+          >
             {brewery?.beers?.map((beer: any) => {
-              return <div className="font-bold text-lg">{beer.name}</div>;
+              return <BeerCard beer={beer} />;
             })}
           </div>
 
           <div className="w-full flex h-96 bg-gray-300 rounded-lg relative">
-            <SingleBreweryMap
-              lat={brewery.breweryInfo.lat}
-              long={brewery.breweryInfo.long}
-            />
+            <SingleBreweryMap lat={brewery.lat} long={brewery.long} />
           </div>
         </div>
       ) : (

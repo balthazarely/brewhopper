@@ -1,5 +1,6 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import Beer from "../models/beerModel.js";
+import Brewery from "../models/breweryModel.js";
 
 const getAllBeersAtBrewery = asyncHandler(async (req, res) => {
   const beers = await Beer.find({ breweryId: req.params.id });
@@ -7,18 +8,8 @@ const getAllBeersAtBrewery = asyncHandler(async (req, res) => {
 });
 
 const addNewBeer = asyncHandler(async (req, res) => {
-  const {
-    user,
-    name,
-    description,
-    style,
-    abv,
-    ibu,
-    breweryId,
-
-    image,
-  } = req.body;
-
+  const { user, name, description, style, abv, ibu, breweryId, image } =
+    req.body;
   const newBeer = await Beer.create({
     user: user,
     name: name,
@@ -27,9 +18,13 @@ const addNewBeer = asyncHandler(async (req, res) => {
     abv: abv,
     ibu: ibu,
     breweryId: breweryId,
-
     image: image,
   });
+
+  const brewery = await Brewery.findById(breweryId);
+  brewery.beers.push(newBeer._id);
+  await brewery.save();
+
   res.status(200).json(newBeer);
 });
 
@@ -47,7 +42,6 @@ const updateBeer = asyncHandler(async (req, res) => {
   } = req.body;
 
   const beer = await Beer.findById(req.params.id);
-
   if (beer) {
     beer.user = user;
     beer.name = name;
@@ -66,11 +60,22 @@ const updateBeer = asyncHandler(async (req, res) => {
 });
 
 const deleteBeer = asyncHandler(async (req, res) => {
+  const { breweryId } = req.body;
   const beer = await Beer.findById(req.params.id);
   if (!beer) {
     res.status(404).json({ message: "beer not found" });
     return;
   }
+  const brewery = await Brewery.findById(breweryId);
+  brewery.beers = brewery.beers.filter(
+    (beerId) => beerId.toString() !== req.params.id
+  );
+
+  brewery.beers = brewery.beers.filter(
+    (beerId) => beerId.toString() !== "6497526e7363127fcf6fde68"
+  );
+
+  await brewery.save();
   await beer.deleteOne();
   res.json({ message: "beer removed successfully" });
 });

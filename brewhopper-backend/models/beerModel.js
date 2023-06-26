@@ -32,14 +32,40 @@ const beerSchema = mongoose.Schema(
       required: true,
       ref: "Brewery",
     },
-    seasonal: {
-      type: Boolean,
-      // required: true,
-    },
     image: {
       type: String,
       // required: true,
     },
+    reviews: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "BeerReviews",
+      },
+    ],
+    stars: {
+      type: Number,
+    },
+    // reviews: [
+    //   {
+    //     user: {
+    //       type: mongoose.Schema.Types.ObjectId,
+    //       ref: "User",
+    //       required: true,
+    //     },
+    //     review: {
+    //       type: String,
+    //       required: true,
+    //     },
+    //     stars: {
+    //       type: Number,
+    //       required: true,
+    //     },
+    //     timestamp: {
+    //       type: Date,
+    //       default: Date.now,
+    //     },
+    //   },
+    // ],
   },
   {
     timestamps: true,

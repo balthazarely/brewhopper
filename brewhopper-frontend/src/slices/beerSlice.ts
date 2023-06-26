@@ -26,10 +26,22 @@ export const beerApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Beers"],
     }),
+    reviewBeer: builder.mutation({
+      query: (data) => ({
+        url: `${BEER_URL}/${data.id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["Beers"],
+    }),
+
     deleteBeer: builder.mutation({
-      query: (beerId) => ({
-        url: `${BEER_URL}/${beerId}`,
+      query: (body) => ({
+        url: `${BEER_URL}/${body.id}`,
         method: "DELETE",
+        body: {
+          breweryId: body.breweryId,
+        },
       }),
       invalidatesTags: ["Beers"],
     }),

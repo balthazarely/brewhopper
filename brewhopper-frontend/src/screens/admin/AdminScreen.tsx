@@ -49,7 +49,6 @@ export default function AdminScreen() {
           })}
         </div>
       </PageWrapper>
-
       <ConfirmActionModal
         message={`Are you sure you want to delete ${breweryToDelete?.name}?`}
         confirmText="Delete"

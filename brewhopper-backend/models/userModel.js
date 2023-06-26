@@ -1,17 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
-const breweriesVisitedSchema = mongoose.Schema(
-  {
-    breweryName: { type: String, required: true },
-    breweryId: { type: String, required: true },
-    breweryImage: { type: String, required: true },
-  },
-  {
-    timestamps: true,
-  }
-);
-
 const userSchema = mongoose.Schema(
   {
     name: {
@@ -32,7 +21,57 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
-    breweriesVisited: [breweriesVisitedSchema],
+    beerReviews: [
+      {
+        reviewId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Beer",
+        },
+        timestamp: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
+    breweriesVisited: [
+      {
+        brewery: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Brewery",
+        },
+        beers: [
+          {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Beer",
+          },
+        ],
+        timestamp: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
+    // userBeerReviews: [
+    //   {
+    //     beer: {
+    //       type: mongoose.Schema.Types.ObjectId,
+    //       ref: "Beer",
+    //       required: true,
+    //     },
+    //     rating: {
+    //       type: Number,
+    //       required: true,
+    //     },
+    //     review: {
+    //       type: String,
+    //       required: true,
+    //     },
+    //     timestamp: {
+    //       type: Date,
+    //       default: Date.now,
+    //     },
+    //   },
+    // ],
   },
   {
     timestamps: true,

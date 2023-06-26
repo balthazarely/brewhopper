@@ -31,6 +31,7 @@ export default function AdminEditBreweryScreen() {
   const [updateBrewery] = useUpdatedBreweryMutation();
   const [uploadProductImage, { isLoading: loadingUpload }] =
     useUploadProductImageMutation();
+  console.log(brewery);
 
   const {
     register,
@@ -42,8 +43,8 @@ export default function AdminEditBreweryScreen() {
     const udpatedBrewery = {
       ...data,
       breweryId: breweryId,
-      user: brewery.breweryInfo?.user,
-      image: uploadedImage ? uploadedImage : brewery.breweryInfo.image,
+      user: brewery?.user,
+      image: uploadedImage ? uploadedImage : brewery.image,
     };
     await updateBrewery(udpatedBrewery);
     navigate("/admin");
@@ -65,8 +66,8 @@ export default function AdminEditBreweryScreen() {
 
   return (
     <PageWrapper>
-      <PageHeader title={`${brewery?.breweryInfo?.name} Dashboard`} />
-      <div className="grid grid-cols-2 gap-4  ">
+      <PageHeader title={`${brewery?.name} Dashboard`} />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4  ">
         <div className="bg-base-100 p-4 rounded-lg">
           {!isLoading ? (
             <form
@@ -83,7 +84,7 @@ export default function AdminEditBreweryScreen() {
                   <input
                     id="name"
                     type="text"
-                    defaultValue={brewery.breweryInfo.name}
+                    defaultValue={brewery.name}
                     className={`input input-bordered input-sm w-full ${
                       errors.name ? "input-error" : ""
                     }
@@ -98,7 +99,7 @@ export default function AdminEditBreweryScreen() {
                   <input
                     id="description"
                     type="text"
-                    defaultValue={brewery.breweryInfo.description}
+                    defaultValue={brewery.description}
                     className={`input input-bordered input-sm w-full ${
                       errors.description ? "input-error" : ""
                     }
@@ -113,7 +114,7 @@ export default function AdminEditBreweryScreen() {
                   <input
                     id="address"
                     type="text"
-                    defaultValue={brewery.breweryInfo.address}
+                    defaultValue={brewery.address}
                     className={`input input-bordered input-sm w-full ${
                       errors.address ? "input-error" : ""
                     }
@@ -128,7 +129,7 @@ export default function AdminEditBreweryScreen() {
                   <input
                     id="website"
                     type="text"
-                    defaultValue={brewery.breweryInfo.website}
+                    defaultValue={brewery.website}
                     className={`input input-bordered input-sm w-full ${
                       errors.website ? "input-error" : ""
                     }
@@ -143,7 +144,7 @@ export default function AdminEditBreweryScreen() {
                   <input
                     id="phoneNumber"
                     type="number"
-                    defaultValue={brewery.breweryInfo.phone_number}
+                    defaultValue={brewery.phone_number}
                     className={`input input-bordered input-sm w-full ${
                       errors.phoneNumber ? "input-error" : ""
                     }
@@ -158,7 +159,7 @@ export default function AdminEditBreweryScreen() {
                   <input
                     id="checkInCode"
                     type="text"
-                    defaultValue={brewery.breweryInfo.check_in_code}
+                    defaultValue={brewery.check_in_code}
                     className={`input input-bordered input-sm w-full ${
                       errors.checkInCode ? "input-error" : ""
                     }
@@ -173,7 +174,7 @@ export default function AdminEditBreweryScreen() {
                   <input
                     id="lat"
                     type="number"
-                    defaultValue={brewery.breweryInfo.lat}
+                    defaultValue={brewery.lat}
                     className={`input input-bordered input-sm w-full ${
                       errors.lat ? "input-error" : ""
                     }
@@ -188,7 +189,7 @@ export default function AdminEditBreweryScreen() {
                   <input
                     id="long"
                     type="number"
-                    defaultValue={brewery.breweryInfo.long}
+                    defaultValue={brewery.long}
                     className={`input input-bordered input-sm w-full ${
                       errors.long ? "input-error" : ""
                     }
@@ -201,7 +202,7 @@ export default function AdminEditBreweryScreen() {
                   className={`input input-bordered w-full  col-span-2   input-sm mt-4 ${
                     errors.type ? "input-error" : ""
                   }`}
-                  defaultValue={brewery.breweryInfo.type}
+                  defaultValue={brewery.type}
                   {...register("type", { required: true })}
                 >
                   <option value="">Select Type</option>
@@ -220,7 +221,7 @@ export default function AdminEditBreweryScreen() {
                     src={
                       uploadedImage
                         ? `${imageUrl}${uploadedImage}`
-                        : `${imageUrl}${brewery.breweryInfo.image}`
+                        : `${imageUrl}${brewery.image}`
                     }
                     alt="brewery-image"
                   />

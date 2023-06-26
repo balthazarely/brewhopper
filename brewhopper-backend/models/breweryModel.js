@@ -46,13 +46,11 @@ const brewerySchema = mongoose.Schema(
     },
     image: {
       type: String,
-      // required: true,
     },
     beers: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Beer",
-        // required: true,
       },
     ],
   },

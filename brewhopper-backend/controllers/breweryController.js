@@ -10,9 +10,10 @@ const getBreweries = asyncHandler(async (req, res) => {
 });
 
 const getBreweryById = asyncHandler(async (req, res) => {
-  const brewery = await Brewery.findById(req.params.id);
-  const beers = await Beer.find({ breweryId: req.params.id });
-  res.json({ breweryInfo: brewery, beers });
+  const brewery = await Brewery.findById(req.params.id)
+    .populate("beers")
+    .exec();
+  res.json(brewery);
 });
 
 // Admin Routes
