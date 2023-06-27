@@ -11,7 +11,9 @@ export function BeerReviewCard({
   const iterableArray = Array.from({ length: number }, (_, index) => index);
 
   return (
-    <div className={`cursor-pointer flex col-auto gap-2 p-2 rounded-lg shadow`}>
+    <div
+      className={`cursor-pointer flex col-auto gap-2 p-2 rounded-lg shadow `}
+    >
       <div className=" w-24 h-32  rounded-lg relative">
         <img
           className="h-full w-24 py-4 object-contain rounded-md"

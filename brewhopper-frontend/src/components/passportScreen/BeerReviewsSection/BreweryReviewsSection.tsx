@@ -40,7 +40,6 @@ export function BeerReviewsSection() {
         : [...prevState[name], item],
     }));
   };
-
   const beerStyles: string[] = [
     ...(new Set(
       userReviews?.map((review: any) => review.beerId.style)
@@ -50,6 +49,14 @@ export function BeerReviewsSection() {
   const breweries: string[] = [
     ...(new Set(
       userReviews?.map((review: any) => review.breweryId.name)
+    ) as Set<string>),
+  ];
+
+  const stars: string[] = [
+    ...(new Set(
+      userReviews
+        ?.map((review: any) => review.stars)
+        .sort((a: any, b: any) => parseInt(a) - parseInt(b))
     ) as Set<string>),
   ];
 
@@ -65,10 +72,9 @@ export function BeerReviewsSection() {
     return beerStyleFilter && breweryFilter;
   });
 
-  console.log(userReviews);
-
   return (
     <div className="mt-4">
+      {JSON.stringify(selectedFilter.stars)}
       {!loadingUserReviewData ? (
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4 relative ">
           <div className=" col-span-1 rounded-lg p-2 ">
