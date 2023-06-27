@@ -45,27 +45,6 @@ const beerSchema = mongoose.Schema(
     stars: {
       type: Number,
     },
-    // reviews: [
-    //   {
-    //     user: {
-    //       type: mongoose.Schema.Types.ObjectId,
-    //       ref: "User",
-    //       required: true,
-    //     },
-    //     review: {
-    //       type: String,
-    //       required: true,
-    //     },
-    //     stars: {
-    //       type: Number,
-    //       required: true,
-    //     },
-    //     timestamp: {
-    //       type: Date,
-    //       default: Date.now,
-    //     },
-    //   },
-    // ],
   },
   {
     timestamps: true,

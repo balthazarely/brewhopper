@@ -17,6 +17,13 @@ export const breweryApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 5,
       providesTags: ["Breweries"],
     }),
+    getBeersAtBrewery: builder.query({
+      query: (breweryId) => ({
+        url: `${BREWERY_URL}/${breweryId}`,
+      }),
+      keepUnusedDataFor: 5,
+      providesTags: ["Breweries", "Beers"],
+    }),
     createBrewery: builder.mutation({
       query: (data) => ({
         url: BREWERY_URL,
@@ -52,6 +59,7 @@ export const breweryApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetBreweriesQuery,
+  useGetBeersAtBreweryQuery,
   useGetBreweryQuery,
   useCreateBreweryMutation,
   useUpdatedBreweryMutation,

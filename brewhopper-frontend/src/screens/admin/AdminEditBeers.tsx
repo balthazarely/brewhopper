@@ -1,8 +1,5 @@
 import { useParams } from "react-router-dom";
-import {
-  useDeleteBeerMutation,
-  useGetBeersAtBreweryQuery,
-} from "../../slices/beerSlice";
+import { useDeleteBeerMutation } from "../../slices/beerSlice";
 import {
   AddBeerModal,
   ConfirmActionModal,
@@ -10,6 +7,7 @@ import {
 } from "../../components/adminScreen/modals";
 import { useState } from "react";
 import { AdminBeerCard } from "../../components/adminScreen";
+import { useGetBeersAtBreweryQuery } from "../../slices/brewerySlice";
 
 const imageUrl = "http://localhost:5001";
 
@@ -27,6 +25,8 @@ export default function AdminEditBeers() {
     await deleteBeer({ id: beerToDelete._id, breweryId: breweryId });
     setConfrimActionModalOpen(false);
   };
+
+  console.log(beers);
 
   return (
     <div className="p-4 rounded-lg bg-base-200">
@@ -47,7 +47,7 @@ export default function AdminEditBeers() {
             gridGap: "1rem",
           }}
         >
-          {beers.map((beer: any) => {
+          {beers?.beers?.map((beer: any) => {
             return (
               <AdminBeerCard
                 beer={beer}

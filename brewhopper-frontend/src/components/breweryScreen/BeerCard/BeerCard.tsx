@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const imageUrl = "http://localhost:5001";
 
 export function BeerCard({ beer }: any) {
@@ -13,7 +15,14 @@ export function BeerCard({ beer }: any) {
           alt="brewery-image"
         />
       </div>
-      <div className="font-bold mx-2 text-center text-sm">{beer.name}</div>
+      <Link to={`/beer/${beer._id}`}>
+        <div className="font-bold mx-2 text-center text-sm">{beer.name}</div>
+      </Link>
+      {beer.stars && (
+        <div className="font-bold mx-2 text-center text-sm">
+          {beer.stars} stars
+        </div>
+      )}
     </div>
   );
 }

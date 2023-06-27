@@ -10,6 +10,7 @@ export const passportApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 5,
       providesTags: ["Passport"],
     }),
+
     addPassportBrewery: builder.mutation({
       query: (body) => ({
         url: `${PASSPORT_URL}/add-beer`,

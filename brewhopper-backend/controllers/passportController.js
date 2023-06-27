@@ -1,6 +1,5 @@
 import User from "../models/userModel.js";
 import asyncHandler from "../middleware/asyncHandler.js";
-import Brewery from "../models/breweryModel.js";
 
 const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id)
@@ -15,6 +14,19 @@ const getUserProfile = asyncHandler(async (req, res) => {
       path: "breweriesVisited.beers",
       model: "Beer",
     })
+    .populate({
+      path: "beerReviews",
+      populate: {
+        path: "reviewId",
+        model: "BeerReviews",
+        populate: {
+          path: "beerId",
+          model: "Beer",
+          select: ["name", "image", "style"],
+        },
+      },
+    })
+
     .exec();
 
   if (user) {

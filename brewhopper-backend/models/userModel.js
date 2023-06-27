@@ -25,7 +25,7 @@ const userSchema = mongoose.Schema(
       {
         reviewId: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Beer",
+          ref: "BeerReviews",
         },
         timestamp: {
           type: Date,
@@ -51,27 +51,6 @@ const userSchema = mongoose.Schema(
         },
       },
     ],
-    // userBeerReviews: [
-    //   {
-    //     beer: {
-    //       type: mongoose.Schema.Types.ObjectId,
-    //       ref: "Beer",
-    //       required: true,
-    //     },
-    //     rating: {
-    //       type: Number,
-    //       required: true,
-    //     },
-    //     review: {
-    //       type: String,
-    //       required: true,
-    //     },
-    //     timestamp: {
-    //       type: Date,
-    //       default: Date.now,
-    //     },
-    //   },
-    // ],
   },
   {
     timestamps: true,

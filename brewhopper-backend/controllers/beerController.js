@@ -2,9 +2,16 @@ import asyncHandler from "../middleware/asyncHandler.js";
 import Beer from "../models/beerModel.js";
 import Brewery from "../models/breweryModel.js";
 
-const getAllBeersAtBrewery = asyncHandler(async (req, res) => {
-  const beers = await Beer.find({ breweryId: req.params.id });
-  res.status(200).json(beers);
+const getBeer = asyncHandler(async (req, res) => {
+  const beer = await Beer.findById(req.params.id).populate({
+    path: "reviews",
+    populate: {
+      path: "user",
+      model: "User",
+      select: "name",
+    },
+  });
+  res.status(200).json(beer);
 });
 
 const addNewBeer = asyncHandler(async (req, res) => {
@@ -29,17 +36,8 @@ const addNewBeer = asyncHandler(async (req, res) => {
 });
 
 const updateBeer = asyncHandler(async (req, res) => {
-  const {
-    user,
-    name,
-    description,
-    style,
-    abv,
-    ibu,
-    breweryId,
-
-    image,
-  } = req.body;
+  const { user, name, description, style, abv, ibu, breweryId, image } =
+    req.body;
 
   const beer = await Beer.findById(req.params.id);
   if (beer) {
@@ -80,4 +78,10 @@ const deleteBeer = asyncHandler(async (req, res) => {
   res.json({ message: "beer removed successfully" });
 });
 
-export { getAllBeersAtBrewery, addNewBeer, deleteBeer, updateBeer };
+export {
+  getBeer,
+  // getAllBeersAtBrewery,
+  addNewBeer,
+  deleteBeer,
+  updateBeer,
+};

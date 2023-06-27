@@ -1,6 +1,10 @@
 import { HiX } from "react-icons/hi";
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { useAddPassportBreweryMutation } from "../../../slices/passportSlice";
+import { useForm } from "react-hook-form";
+import { useReviewBeerMutation } from "../../../slices/beerSlice";
+import { HiArrowLeft } from "react-icons/hi2";
+
 const imageUrl = "http://localhost:5001";
 
 export function CheckInModal({
@@ -8,39 +12,29 @@ export function CheckInModal({
   checkInModalOpen,
   setCheckInModalOpen,
 }: any) {
-  const [addPassportBrewery, { isLoading: loadingAdd }] =
+  const [addPassportBrewery, { isLoading: loadingAddPassport }] =
     useAddPassportBreweryMutation({});
-  const [accessCode, setAccessCode] = useState("deschutes-brewing");
+  const [addBeerReviews, { isLoading: loadingAddBeerReviews }] =
+    useReviewBeerMutation({});
 
-  const [showBeerReviewPanel, setShowBeerReviewPanel] =
-    useState<boolean>(false);
-
-  const handleAccessCodeChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      setAccessCode(e.target.value);
-    },
-    []
-  );
-
+  const [checkInStage, setCheckInStage] = useState("code");
   const [selectedBeer, setSelectedBeer] = useState<any>([]);
-  const handleSubmitCode = async () => {
-    if (accessCode !== brewery?.check_in_code) {
-      return;
-    } else {
-      setShowBeerReviewPanel(true);
-      console.log(selectedBeer);
 
-      // TODO: add a whole beer to the local state, not just the id
-      // before sending request, reparse and add comment, review, rating
-      // this also needs to go to the beer object that will be on the beer item in the DB
-
-      // await addPassportBrewery({
-      //   breweryId: brewery?._id,
-      //   beers: selectedBeer,
-      // });
-      // setCheckInModalOpen(false);
-    }
+  const resetModalForm = () => {
+    setCheckInModalOpen(false);
+    setTimeout(() => {
+      setCheckInStage("code");
+      setSelectedBeer([]);
+    }, 200);
   };
+
+  async function checkInToBrewery(addBeers: boolean = true) {
+    await addPassportBrewery({
+      breweryId: brewery?._id,
+      beers: addBeers ? selectedBeer : [],
+    });
+    setCheckInStage("done");
+  }
 
   return (
     <>
@@ -57,43 +51,40 @@ export function CheckInModal({
             <div className="modal-box relative">
               <button
                 className="absolute top-2 right-2 btn btn-sm btn-ghost"
-                onClick={() => setCheckInModalOpen(false)}
+                onClick={resetModalForm}
               >
                 <HiX />
               </button>
-              <div className="flex justify-center ">
-                <h3 className="font-bold text-lg">
-                  Check in to {brewery?.name}
-                </h3>
-              </div>
-
-              <div className="modal-action flex w-full flex-col items-center ">
-                Enter access code below
-                <input
-                  type="text"
-                  onChange={handleAccessCodeChange}
-                  placeholder="Type Access Code"
-                  className={`input input-bordered mt-2 w-full input-primary`}
-                />
-                {!showBeerReviewPanel ? (
+              <div className="modal-action">
+                {checkInStage === "code" && (
+                  <CheckInWithCodePanel
+                    checkInCode={brewery?.check_in_code}
+                    setCheckInStage={setCheckInStage}
+                  />
+                )}
+                {checkInStage === "beer" && (
                   <MiniBeerSelector
                     selectedBeer={selectedBeer}
                     setSelectedBeer={setSelectedBeer}
                     beers={brewery.beers}
+                    setCheckInStage={setCheckInStage}
+                    checkInToBrewery={checkInToBrewery}
+                    loadingAddPassport={loadingAddPassport}
                   />
-                ) : (
-                  <BeerReviewPanel selectedBeer={selectedBeer} />
                 )}
-                <button
-                  disabled={accessCode !== brewery?.check_in_code}
-                  className={`btn-primary btn px-2 py-1  w-full mt-2 `}
-                  onClick={handleSubmitCode}
-                >
-                  {loadingAdd && (
-                    <span className="loading loading-spinner"></span>
-                  )}
-                  Continue
-                </button>
+                {checkInStage === "review" && (
+                  <BeerReviewPanel
+                    selectedBeer={selectedBeer}
+                    setCheckInStage={setCheckInStage}
+                    checkInToBrewery={checkInToBrewery}
+                    addBeerReviews={addBeerReviews}
+                    loadingAddPassport={loadingAddPassport}
+                    loadingAddBeerReviews={loadingAddBeerReviews}
+                  />
+                )}
+                {checkInStage === "done" && (
+                  <CongratsPanel resetModalForm={resetModalForm} />
+                )}
               </div>
             </div>
           </div>
@@ -105,60 +96,83 @@ export function CheckInModal({
   );
 }
 
-function BeerReviewPanel({ selectedBeer }: any) {
-  console.log(selectedBeer);
-
+function CheckInWithCodePanel({ setCheckInStage, checkInCode }: any) {
+  const [accessCode, setAccessCode] = useState("deschutes-brewing");
   return (
-    <div className=" w-full my-4 h-56">
-      {selectedBeer?.map((beer: any) => {
-        return <div>{beer.name}</div>;
-      })}
+    <div className=" w-full h-full  flex flex-col items-center justify-between">
+      <div className="text-xl font-bold">Enter Check-In Code</div>
+      <div className="w-full ">
+        <input
+          type="text"
+          onChange={(e) => setAccessCode(e.target.value)}
+          placeholder="Type Access Code"
+          className={`input input-bordered mt-2 w-full input-primary`}
+        />
+        <button
+          onClick={() => setCheckInStage("beer")}
+          disabled={accessCode !== checkInCode}
+          className={`btn-primary btn px-2 py-1  w-full mt-2 `}
+        >
+          NEXT
+        </button>
+      </div>
     </div>
   );
 }
 
-function MiniBeerSelector({ beers }: any) {
-  const [selectedBeer, setSelectedBeer] = useState<any>([]);
-
-  const handleSelectBeers = (beer: any) => {
-    setSelectedBeer(beer);
-    // if (selectedBeer.includes(id)) {
-    //   const newState = selectedBeer.filter((state: any) => state !== id);
-    //   setSelectedBeer(newState);
-    // } else {
-    //   setSelectedBeer([...selectedBeer, id]);
-    // }
+function MiniBeerSelector({
+  beers,
+  selectedBeer,
+  setSelectedBeer,
+  setCheckInStage,
+  checkInToBrewery,
+  loadingAddPassport,
+}: any) {
+  const handleSelectBeers = (newBeer: any) => {
+    const doesBeerExist = selectedBeer.some(
+      (beer: any) => beer._id === newBeer._id
+    );
+    if (doesBeerExist) {
+      const newState = selectedBeer.filter(
+        (beers: any) => beers._id !== newBeer._id
+      );
+      setSelectedBeer(newState);
+    } else {
+      setSelectedBeer([...selectedBeer, newBeer]);
+    }
   };
 
-  // ${
-  //   selectedBeer?.includes(beer._id)
-  //     ? "border-primary"
-  //     : "border-transparent"
-  // }
-
-  useEffect(() => {
-    console.log(selectedBeer);
-  }, [selectedBeer]);
-
   return (
-    <div className=" w-full my-4 h-56">
-      <div className="mb-2 font-bold text-center w-full">Beers Tasted</div>
+    <div className=" flex w-full flex-col items-center justify-between h-80">
+      <button
+        onClick={() => setCheckInStage("code")}
+        className="absolute top-4 left-4 btn btn-xs btn-ghost"
+      >
+        <HiArrowLeft />
+        Back
+      </button>
+      <div className="text-xl font-bold">Select Beers</div>
       <div
-        className=" w-full "
+        className=" w-full my-2  overflow-y-scroll"
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(64px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(80px, 1fr))",
           gridGap: "1rem",
         }}
       >
         {beers?.map((beer: any) => {
+          const isBeerInArr = selectedBeer.some(
+            (currentBeers: any) => currentBeers._id === beer._id
+          );
           return (
             <div
               onClick={() => handleSelectBeers(beer)}
-              className={`flex cursor-pointer border-2  hover:shadow-lg  bg-white items-center gap-1 flex-col rounded-lg shadow `}
+              className={` ${
+                isBeerInArr ? "border-primary" : "border-transparent"
+              } flex cursor-pointer border-2  hover:shadow-lg  bg-white items-center gap-1 flex-col rounded-lg  `}
               key={beer._id}
             >
-              <div className="w-16 h-16 overflow-hidden  mt-2 rounded-lg relative">
+              <div className="w-20 h-20 overflow-hidden  mt-2 rounded-lg relative">
                 <img
                   className="h-full w-full  object-contain rounded-lg"
                   src={`${imageUrl}${beer.image}`}
@@ -171,6 +185,156 @@ function MiniBeerSelector({ beers }: any) {
             </div>
           );
         })}
+      </div>
+      <div className="join join-horizontal w-full">
+        <button
+          disabled={!selectedBeer.length}
+          onClick={() => setCheckInStage("review")}
+          className={`btn-primary join-item btn px-2 py-1 w-1/2   `}
+        >
+          Next
+        </button>
+        <button
+          disabled={loadingAddPassport}
+          onClick={() => checkInToBrewery(false)}
+          className={`btn-ghost join-item btn px-2 py-1 w-1/2  `}
+        >
+          Checkin Without Beer
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function BeerReviewPanel({
+  selectedBeer,
+  checkInToBrewery,
+  addBeerReviews,
+  setCheckInStage,
+  loadingAddPassport,
+  loadingAddBeerReviews,
+}: any) {
+  const { register, handleSubmit, getValues } = useForm();
+  const onSubmit = async () => {
+    const { reviews } = getValues();
+    const reviewsParsed = reviews?.map((review: any) => {
+      return {
+        review: review.review,
+        stars: review.stars,
+        breweryId: review.breweryId,
+        _id: review._id,
+      };
+    });
+
+    await checkInToBrewery();
+    await addBeerReviews(reviewsParsed);
+    setCheckInStage("done");
+  };
+
+  return (
+    <>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex w-full flex-col items-center justify-between h-96 "
+      >
+        <button
+          onClick={() => setCheckInStage("beer")}
+          className="absolute top-4 left-4 btn btn-xs btn-ghost"
+        >
+          <HiArrowLeft />
+          Back
+        </button>
+        <div className="text-xl font-bold">Review Beers</div>
+        <div className="flex gap-8 flex-col w-full py-4 h-72 px-2 overflow-y-auto">
+          {selectedBeer?.map((beer: any, index: number) => {
+            return (
+              <div className="w-full flex gap-4 " key={index}>
+                <div className="flex w-16 h-32  gap-1  flex-col items-center">
+                  <img
+                    className="h-full w-full object-contain"
+                    src={`${imageUrl}${beer.image}`}
+                  />
+                </div>
+                <div className="flex flex-col w-full">
+                  <div className="text-sm font-bold ">{beer.name}</div>
+                  <div className="rating mb-2">
+                    <input
+                      type="radio"
+                      className="mask mask-star"
+                      value="1"
+                      {...register(`reviews[${index}].stars`)}
+                    />
+                    <input
+                      type="radio"
+                      className="mask mask-star"
+                      value="2"
+                      {...register(`reviews[${index}].rating`)}
+                    />
+                    <input
+                      type="radio"
+                      className="mask mask-star"
+                      value="3"
+                      {...register(`reviews[${index}].stars`)}
+                    />
+                    <input
+                      type="radio"
+                      className="mask mask-star"
+                      value="4"
+                      {...register(`reviews[${index}].stars`)}
+                    />
+                    <input
+                      type="radio"
+                      className="mask mask-star"
+                      value="5"
+                      {...register(`reviews[${index}].stars`)}
+                      defaultChecked
+                    />
+                  </div>
+                  <textarea
+                    placeholder="review"
+                    className="textarea  w-full textarea-bordered textarea-primary"
+                    {...register(`reviews[${index}].review`, {
+                      required: true,
+                    })}
+                  />
+                  <input
+                    type="hidden"
+                    {...register(`reviews[${index}]._id`)}
+                    value={beer._id}
+                  />
+                  <input
+                    type="hidden"
+                    {...register(`reviews[${index}].breweryId`)}
+                    value={beer.breweryId}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <button
+          className={`btn-primary btn px-2 py-1 mb-2  w-full mt-2  `}
+          type="submit"
+          disabled={loadingAddPassport || loadingAddBeerReviews}
+        >
+          Submit
+        </button>
+      </form>
+    </>
+  );
+}
+
+function CongratsPanel({ resetModalForm }: any) {
+  return (
+    <div className=" w-full h-full  flex flex-col items-center justify-between">
+      <div className="text-xl font-bold">Check in Successfull</div>
+      <div className="w-full ">
+        <button
+          onClick={() => resetModalForm("")}
+          className={`btn-primary btn px-2 py-1  w-full mt-2 `}
+        >
+          Close
+        </button>
       </div>
     </div>
   );
