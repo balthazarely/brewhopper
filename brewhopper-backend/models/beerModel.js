@@ -38,8 +38,13 @@ const beerSchema = mongoose.Schema(
     },
     reviews: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "BeerReviews",
+        _id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "BeerReviews",
+        },
+        stars: {
+          type: Number,
+        },
       },
     ],
     stars: {

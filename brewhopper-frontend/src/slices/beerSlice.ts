@@ -49,6 +49,13 @@ export const beerApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Beers", "Passport"],
     }),
+    getSingleBeerReviewsByUser: builder.query({
+      query: (beerId) => ({
+        url: `${BEER_REVIEW_URL}/${beerId}`,
+      }),
+      keepUnusedDataFor: 5,
+      providesTags: ["Beers"],
+    }),
   }),
 });
 
@@ -58,4 +65,5 @@ export const {
   useAddBeerMutation,
   useUpdateBeerMutation,
   useReviewBeerMutation,
+  useGetSingleBeerReviewsByUserQuery,
 } = beerApiSlice;

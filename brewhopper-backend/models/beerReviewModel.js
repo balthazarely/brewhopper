@@ -35,5 +35,11 @@ const beerReviewsSchema = mongoose.Schema(
   }
 );
 
+beerReviewsSchema.pre("remove", async function (next) {
+  console.log("Deleting beer with ID:", this._id);
+  // Perform any additional operations or logic before the review is removed
+  next();
+});
+
 const BeerReviews = mongoose.model("BeerReviews", beerReviewsSchema);
 export default BeerReviews;

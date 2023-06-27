@@ -1,27 +1,13 @@
 import { Link } from "react-router-dom";
-import { useDeletePassportBreweryMutation } from "../../../slices/passportSlice";
 import { FaTrash } from "react-icons/fa";
+import { convertToReadableDate } from "../../../utils/dateFuncitons";
 const imageUrl = "http://localhost:5001";
 
-export function PassportCard({ brewery: breweryVisitInfo }: any) {
-  const [deletePassportBrewery, { isLoading: loadingDelete }] =
-    useDeletePassportBreweryMutation({});
-  function convertToReadableDate(createdAt: any) {
-    const date = new Date(createdAt);
-    const options: any = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
-    return date.toLocaleString("en-US", options);
-  }
-
-  const deletePassportItem = async (id: string) => {
-    await deletePassportBrewery(id);
-  };
-
-  console.log(breweryVisitInfo);
-
+export function PassportCard({
+  brewery: breweryVisitInfo,
+  setPassportForDeletion,
+  setConfrimActionModalOpen,
+}: any) {
   return (
     <div
       className={`cursor-pointer flex flex-col gap-1 p-2  rounded-lg shadow`}
@@ -35,7 +21,13 @@ export function PassportCard({ brewery: breweryVisitInfo }: any) {
         <div className="absolute top-0 right-0 m-2">
           <button
             className="btn btn-sm bg-opacity-60 border-none"
-            onClick={() => deletePassportItem(breweryVisitInfo?._id)}
+            onClick={() => {
+              setPassportForDeletion({
+                id: breweryVisitInfo?._id,
+                name: breweryVisitInfo?.brewery?.name,
+              });
+              setConfrimActionModalOpen(true);
+            }}
           >
             <FaTrash />
           </button>
@@ -47,7 +39,7 @@ export function PassportCard({ brewery: breweryVisitInfo }: any) {
             {breweryVisitInfo?.brewery?.name}
           </div>
         </Link>
-        <div className="text-xs">
+        <div className="text-xs italic">
           Visited on {convertToReadableDate(breweryVisitInfo?.timestamp)}
         </div>
         <div className="flex justify-between items-end">

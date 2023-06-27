@@ -10,7 +10,8 @@ import userRoutes from "./routes/userRoutes.js";
 import beerRoutes from "./routes/beerRoutes.js";
 import passportRoutes from "./routes/passportRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
-import reviewRoutes from "./routes/reviewRoutes.js";
+
+import beerReviewRoutes from "./routes/beerReviewRoutes.js";
 
 dotenv.config();
 const port = process.env.PORT || 5001;
@@ -28,7 +29,7 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRoutes);
 app.use("/api/breweries", breweryRoutes);
 app.use("/api/beer", beerRoutes);
-app.use("/api/beer-review", reviewRoutes);
+app.use("/api/beer-review", beerReviewRoutes);
 app.use("/api/passport", passportRoutes);
 app.use("/api/upload", uploadRoutes);
 

@@ -25,7 +25,7 @@ const userSchema = mongoose.Schema(
       {
         reviewId: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "BeerReviews",
+          ref: "Beer",
         },
         timestamp: {
           type: Date,

@@ -1,4 +1,4 @@
-import { PASSPORT_URL } from "../constants";
+import { BEER_REVIEW_URL, PASSPORT_URL } from "../constants";
 import { apiSlice } from "./apiSlice";
 
 export const passportApiSlice = apiSlice.injectEndpoints({
@@ -10,7 +10,21 @@ export const passportApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 5,
       providesTags: ["Passport"],
     }),
-
+    getUserReviews: builder.query({
+      query: () => ({
+        url: `${BEER_REVIEW_URL}`,
+      }),
+      keepUnusedDataFor: 5,
+      providesTags: ["Passport"],
+    }),
+    deleteUserReviews: builder.mutation({
+      query: (body) => ({
+        url: `${BEER_REVIEW_URL}/${body._id}`,
+        method: "DELETE",
+        body: { beerId: body.beerId },
+      }),
+      invalidatesTags: ["Passport"],
+    }),
     addPassportBrewery: builder.mutation({
       query: (body) => ({
         url: `${PASSPORT_URL}/add-beer`,
@@ -32,6 +46,8 @@ export const passportApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetUserProfileQuery,
+  useGetUserReviewsQuery,
+  useDeleteUserReviewsMutation,
   useAddPassportBreweryMutation,
   useDeletePassportBreweryMutation,
 } = passportApiSlice;

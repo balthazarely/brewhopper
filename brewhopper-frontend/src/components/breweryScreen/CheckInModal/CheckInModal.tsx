@@ -1,8 +1,15 @@
 import { HiX } from "react-icons/hi";
-import { useState } from "react";
-import { useAddPassportBreweryMutation } from "../../../slices/passportSlice";
+import { useEffect, useState } from "react";
+import {
+  useAddPassportBreweryMutation,
+  useGetUserProfileQuery,
+  useGetUserReviewsQuery,
+} from "../../../slices/passportSlice";
 import { useForm } from "react-hook-form";
-import { useReviewBeerMutation } from "../../../slices/beerSlice";
+import {
+  useGetSingleBeerReviewsByUserQuery,
+  useReviewBeerMutation,
+} from "../../../slices/beerSlice";
 import { HiArrowLeft } from "react-icons/hi2";
 
 const imageUrl = "http://localhost:5001";
@@ -214,17 +221,25 @@ function BeerReviewPanel({
   loadingAddPassport,
   loadingAddBeerReviews,
 }: any) {
+  const { data: userReviews } = useGetUserReviewsQuery({});
+
   const { register, handleSubmit, getValues } = useForm();
   const onSubmit = async () => {
     const { reviews } = getValues();
-    const reviewsParsed = reviews?.map((review: any) => {
-      return {
-        review: review.review,
-        stars: review.stars,
-        breweryId: review.breweryId,
-        _id: review._id,
-      };
-    });
+    const reviewsParsed = reviews
+      ?.map((review: any) => {
+        return {
+          review: review.review,
+          stars: Number(review.stars),
+          breweryId: review.breweryId,
+          _id: review._id,
+        };
+      })
+      .filter((newReview: any) => {
+        return !userReviews.some(
+          (userReview: any) => userReview.beerId._id === newReview._id
+        );
+      });
 
     await checkInToBrewery();
     await addBeerReviews(reviewsParsed);
@@ -247,6 +262,12 @@ function BeerReviewPanel({
         <div className="text-xl font-bold">Review Beers</div>
         <div className="flex gap-8 flex-col w-full py-4 h-72 px-2 overflow-y-auto">
           {selectedBeer?.map((beer: any, index: number) => {
+            console.log(userReviews, "exiasting reviews");
+
+            let doesExist = userReviews?.some(
+              (review: any) => review.beerId._id == beer._id
+            );
+
             return (
               <div className="w-full flex gap-4 " key={index}>
                 <div className="flex w-16 h-32  gap-1  flex-col items-center">
@@ -257,56 +278,61 @@ function BeerReviewPanel({
                 </div>
                 <div className="flex flex-col w-full">
                   <div className="text-sm font-bold ">{beer.name}</div>
-                  <div className="rating mb-2">
-                    <input
-                      type="radio"
-                      className="mask mask-star"
-                      value="1"
-                      {...register(`reviews[${index}].stars`)}
+
+                  <div>
+                    <div className="rating mb-2">
+                      <input
+                        type="radio"
+                        className="mask mask-star"
+                        value="1"
+                        {...register(`reviews[${index}].stars`)}
+                      />
+                      <input
+                        type="radio"
+                        className="mask mask-star"
+                        value="2"
+                        {...register(`reviews[${index}].stars`)}
+                      />
+                      <input
+                        type="radio"
+                        className="mask mask-star"
+                        value="3"
+                        {...register(`reviews[${index}].stars`)}
+                      />
+                      <input
+                        type="radio"
+                        className="mask mask-star"
+                        value="4"
+                        {...register(`reviews[${index}].stars`)}
+                      />
+                      <input
+                        type="radio"
+                        className="mask mask-star"
+                        value="5"
+                        {...register(`reviews[${index}].stars`)}
+                        defaultChecked
+                      />
+                    </div>
+
+                    <textarea
+                      disabled={doesExist}
+                      placeholder="review"
+                      className="textarea  w-full textarea-bordered textarea-primary"
+                      {...register(`reviews[${index}].review`, {
+                        required: !doesExist,
+                      })}
                     />
                     <input
-                      type="radio"
-                      className="mask mask-star"
-                      value="2"
-                      {...register(`reviews[${index}].rating`)}
+                      type="hidden"
+                      {...register(`reviews[${index}]._id`)}
+                      value={beer._id}
                     />
                     <input
-                      type="radio"
-                      className="mask mask-star"
-                      value="3"
-                      {...register(`reviews[${index}].stars`)}
-                    />
-                    <input
-                      type="radio"
-                      className="mask mask-star"
-                      value="4"
-                      {...register(`reviews[${index}].stars`)}
-                    />
-                    <input
-                      type="radio"
-                      className="mask mask-star"
-                      value="5"
-                      {...register(`reviews[${index}].stars`)}
-                      defaultChecked
+                      type="hidden"
+                      {...register(`reviews[${index}].breweryId`)}
+                      value={beer.breweryId}
                     />
                   </div>
-                  <textarea
-                    placeholder="review"
-                    className="textarea  w-full textarea-bordered textarea-primary"
-                    {...register(`reviews[${index}].review`, {
-                      required: true,
-                    })}
-                  />
-                  <input
-                    type="hidden"
-                    {...register(`reviews[${index}]._id`)}
-                    value={beer._id}
-                  />
-                  <input
-                    type="hidden"
-                    {...register(`reviews[${index}].breweryId`)}
-                    value={beer.breweryId}
-                  />
                 </div>
               </div>
             );
