@@ -11,20 +11,20 @@ export function BeerReviewCard({
   const iterableArray = Array.from({ length: number }, (_, index) => index);
 
   return (
-    <div className={`cursor-pointer  flex gap-2 p-2 rounded-lg shadow`}>
-      <div className="w-24 h-32  rounded-lg relative">
+    <div className={`cursor-pointer flex col-auto gap-2 p-2 rounded-lg shadow`}>
+      <div className=" w-24 h-32  rounded-lg relative">
         <img
-          className="h-full w-full py-4 object-contain rounded-md"
+          className="h-full w-24 py-4 object-contain rounded-md"
           src={`${imageUrl}${review?.beerId?.image}`}
           alt="brewery-image"
         />
       </div>
-      <div className="flex flex-col justify-between py-1 flex-grow ">
+      <div className="flex flex-col justify-between py-1 flex-1 ">
         <div>
           <div className="flex justify-between">
             <div className="font-extrabold text-lg">{review?.beerId?.name}</div>
             <div className="rating">
-              {iterableArray?.map((item: any, index: number) => {
+              {iterableArray?.map((_: any, index: number) => {
                 return (
                   <input
                     key={index}

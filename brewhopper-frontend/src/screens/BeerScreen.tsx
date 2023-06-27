@@ -1,13 +1,6 @@
 import { useParams } from "react-router-dom";
-import { useGetBreweryQuery } from "../slices/brewerySlice";
 import { PageHeader, PageWrapper } from "../components/elements";
-import { HiLocationMarker } from "react-icons/hi";
-import { HiPhone } from "react-icons/hi2";
-import { BsGlobe } from "react-icons/bs";
-import { CheckInModal, SingleBreweryMap } from "../components/breweryScreen";
 import { useState } from "react";
-import { useGetUserProfileQuery } from "../slices/passportSlice";
-import { BeerCard } from "../components/breweryScreen/BeerCard";
 import { useGetBeerQuery } from "../slices/beerSlice";
 
 export default function BeerScreen() {

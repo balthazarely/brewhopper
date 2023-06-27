@@ -12,7 +12,8 @@ import { BeerCard } from "../components/breweryScreen/BeerCard";
 export default function BreweryScreen() {
   const { id } = useParams();
   const [checkInModalOpen, setCheckInModalOpen] = useState(false);
-  const { data: brewery, isLoading, error } = useGetBreweryQuery(id);
+  const { data: brewery, isLoading: breweryDataLoading } =
+    useGetBreweryQuery(id);
   const imageUrl = "http://localhost:5001";
   const { data: userPassportData } = useGetUserProfileQuery({});
 
@@ -22,7 +23,7 @@ export default function BreweryScreen() {
 
   return (
     <PageWrapper>
-      {!isLoading ? (
+      {!breweryDataLoading ? (
         <div>
           <div className="w-full flex mt-4 h-56 bg-gray-300 rounded-lg relative">
             <img
@@ -56,11 +57,12 @@ export default function BreweryScreen() {
               <div>{brewery.website}</div>
             </div>
           </div>
+          <div className="text-xl font-bold">Our Beers</div>
           <div
-            className="mb-16"
+            className="mb-16 mt-4"
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(144px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(144px, 160px)",
               gridGap: "1rem",
             }}
           >
@@ -74,7 +76,9 @@ export default function BreweryScreen() {
           </div>
         </div>
       ) : (
-        "loading"
+        <div className="w-full h-72  flex justify-center items-center">
+          <div className="loading loading-spinner  loading-lg"></div>
+        </div>
       )}
       <CheckInModal
         brewery={brewery}

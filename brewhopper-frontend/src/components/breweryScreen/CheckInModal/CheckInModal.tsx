@@ -97,14 +97,14 @@ export function CheckInModal({
           </div>
         </div>
       ) : (
-        "loading"
+        <></>
       )}
     </>
   );
 }
 
 function CheckInWithCodePanel({ setCheckInStage, checkInCode }: any) {
-  const [accessCode, setAccessCode] = useState("deschutes-brewing");
+  const [accessCode, setAccessCode] = useState("");
   return (
     <div className=" w-full h-full  flex flex-col items-center justify-between">
       <div className="text-xl font-bold">Enter Check-In Code</div>
@@ -181,7 +181,7 @@ function MiniBeerSelector({
             >
               <div className="w-20 h-20 overflow-hidden  mt-2 rounded-lg relative">
                 <img
-                  className="h-full w-full  object-contain rounded-lg"
+                  className="h-full w-full  object-contain rounded-lg pointer-events-none"
                   src={`${imageUrl}${beer.image}`}
                   alt="brewery-image"
                 />
@@ -221,7 +221,8 @@ function BeerReviewPanel({
   loadingAddPassport,
   loadingAddBeerReviews,
 }: any) {
-  const { data: userReviews } = useGetUserReviewsQuery({});
+  const { data: userReviews, isLoading: userReviewsLoaded } =
+    useGetUserReviewsQuery({});
 
   const { register, handleSubmit, getValues } = useForm();
   const onSubmit = async () => {
@@ -276,64 +277,80 @@ function BeerReviewPanel({
                     src={`${imageUrl}${beer.image}`}
                   />
                 </div>
-                <div className="flex flex-col w-full">
-                  <div className="text-sm font-bold ">{beer.name}</div>
+                {!userReviewsLoaded ? (
+                  <div className="flex flex-col w-full">
+                    <div className="text-sm font-bold ">{beer.name}</div>
+                    {!doesExist ? (
+                      <div>
+                        <div className="rating mb-2">
+                          <input
+                            disabled={doesExist}
+                            type="radio"
+                            className="mask mask-star"
+                            value="1"
+                            {...register(`reviews[${index}].stars`)}
+                          />
+                          <input
+                            disabled={doesExist}
+                            type="radio"
+                            className="mask mask-star"
+                            value="2"
+                            {...register(`reviews[${index}].stars`)}
+                          />
+                          <input
+                            disabled={doesExist}
+                            type="radio"
+                            className="mask mask-star"
+                            value="3"
+                            {...register(`reviews[${index}].stars`)}
+                          />
+                          <input
+                            disabled={doesExist}
+                            type="radio"
+                            className="mask mask-star"
+                            value="4"
+                            {...register(`reviews[${index}].stars`)}
+                          />
+                          <input
+                            disabled={doesExist}
+                            type="radio"
+                            className="mask mask-star"
+                            value="5"
+                            {...register(`reviews[${index}].stars`)}
+                            defaultChecked
+                          />
+                        </div>
 
-                  <div>
-                    <div className="rating mb-2">
-                      <input
-                        type="radio"
-                        className="mask mask-star"
-                        value="1"
-                        {...register(`reviews[${index}].stars`)}
-                      />
-                      <input
-                        type="radio"
-                        className="mask mask-star"
-                        value="2"
-                        {...register(`reviews[${index}].stars`)}
-                      />
-                      <input
-                        type="radio"
-                        className="mask mask-star"
-                        value="3"
-                        {...register(`reviews[${index}].stars`)}
-                      />
-                      <input
-                        type="radio"
-                        className="mask mask-star"
-                        value="4"
-                        {...register(`reviews[${index}].stars`)}
-                      />
-                      <input
-                        type="radio"
-                        className="mask mask-star"
-                        value="5"
-                        {...register(`reviews[${index}].stars`)}
-                        defaultChecked
-                      />
-                    </div>
-
-                    <textarea
-                      disabled={doesExist}
-                      placeholder="review"
-                      className="textarea  w-full textarea-bordered textarea-primary"
-                      {...register(`reviews[${index}].review`, {
-                        required: !doesExist,
-                      })}
-                    />
-                    <input
-                      type="hidden"
-                      {...register(`reviews[${index}]._id`)}
-                      value={beer._id}
-                    />
-                    <input
-                      type="hidden"
-                      {...register(`reviews[${index}].breweryId`)}
-                      value={beer.breweryId}
-                    />
+                        <textarea
+                          disabled={doesExist}
+                          placeholder="review"
+                          className="textarea  w-full textarea-bordered textarea-primary"
+                          {...register(`reviews[${index}].review`, {
+                            required: !doesExist,
+                          })}
+                        />
+                        <input
+                          type="hidden"
+                          {...register(`reviews[${index}]._id`)}
+                          value={beer._id}
+                        />
+                        <input
+                          type="hidden"
+                          {...register(`reviews[${index}].breweryId`)}
+                          value={beer.breweryId}
+                        />
+                      </div>
+                    ) : (
+                      <div className="bg-base-200 flex-col text-sm h-full rounded-lg flex justify-center items-center">
+                        <div>You've already reviewed this one</div>
+                      </div>
+                    )}
                   </div>
-                </div>
+                ) : (
+                  <div className="w-full h-full flex justify-center items-center">
+                    <div className="loading loading-lg"></div>
+                  </div>
+                )}
               </div>
             );
           })}

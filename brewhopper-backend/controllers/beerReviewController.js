@@ -68,6 +68,10 @@ const getAllReviewsByUser = asyncHandler(async (req, res) => {
       path: "beerId",
       select: ["name", "image", "style"],
     })
+    .populate({
+      path: "breweryId",
+      select: ["name"],
+    })
     .exec();
   res.status(200).json(reviews);
 });

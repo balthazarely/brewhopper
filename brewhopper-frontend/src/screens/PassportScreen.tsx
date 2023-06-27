@@ -1,23 +1,12 @@
 import { PageHeader, PageWrapper } from "../components/elements";
 import {
-  useDeletePassportBreweryMutation,
-  useGetUserProfileQuery,
-} from "../slices/passportSlice";
-import {
   BeerReviewsSection,
   PassportSection,
 } from "../components/passportScreen";
 import { useState } from "react";
 
 export default function PassportScreen() {
-  const [activeTab, setActiveTab] = useState("passport");
-  const {
-    data: userPassportData,
-    isLoading,
-    error,
-  } = useGetUserProfileQuery({});
-  const [deletePassportBrewery, { isLoading: loadingDelete }] =
-    useDeletePassportBreweryMutation({});
+  const [activeTab, setActiveTab] = useState("reviews");
 
   return (
     <PageWrapper>
@@ -40,9 +29,7 @@ export default function PassportScreen() {
           Beer Reviews
         </a>
       </div>
-      {activeTab === "passport" && (
-        <PassportSection userPassportData={userPassportData} />
-      )}
+      {activeTab === "passport" && <PassportSection />}
       {activeTab === "reviews" && <BeerReviewsSection />}
     </PageWrapper>
   );
