@@ -33,6 +33,9 @@ const addNewBrewery = asyncHandler(async (req, res) => {
     description,
     type,
     address,
+    city,
+    state,
+    zip,
     lat,
     long,
     website,
@@ -46,6 +49,9 @@ const addNewBrewery = asyncHandler(async (req, res) => {
     description: description,
     type: type,
     address: address,
+    city: city,
+    state: state,
+    zip: zip,
     lat: lat,
     long: long,
     website: website,
@@ -62,6 +68,9 @@ const updateBrewery = asyncHandler(async (req, res) => {
     description,
     type,
     address,
+    city,
+    state,
+    zip,
     lat,
     long,
     website,
@@ -77,7 +86,10 @@ const updateBrewery = asyncHandler(async (req, res) => {
     brewery.description = description;
     brewery.type = type;
     brewery.address = address;
-    brewery.lat = lat;
+    (brewery.city = city),
+      (brewery.state = state),
+      (brewery.zip = zip),
+      (brewery.lat = lat);
     brewery.long = long;
     brewery.website = website;
     brewery.phone_number = phoneNumber;

@@ -10,6 +10,9 @@ type Inputs = {
   description: string;
   type: string;
   address: string;
+  city: string;
+  state: string;
+  zip: number;
   lat: number;
   long: number;
   phoneNumber: number;
@@ -48,6 +51,9 @@ export default function AdminCreateBrewery() {
     { name: "name", type: "text", fullWidth: true },
     { name: "description", type: "text", fullWidth: true },
     { name: "address", type: "text", fullWidth: true },
+    { name: "city", type: "text", fullWidth: true },
+    { name: "state", type: "text", fullWidth: false },
+    { name: "zip", type: "number", fullWidth: false },
     { name: "website", type: "text", fullWidth: true },
     { name: "phoneNumber", type: "number", fullWidth: false },
     { name: "checkInCode", type: "text", fullWidth: false },

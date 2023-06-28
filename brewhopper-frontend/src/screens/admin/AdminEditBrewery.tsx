@@ -15,6 +15,9 @@ type Inputs = {
   description: string;
   type: string;
   address: string;
+  city: string;
+  state: string;
+  zip: number;
   lat: number;
   long: number;
   phoneNumber: number;
@@ -120,6 +123,51 @@ export default function AdminEditBreweryScreen() {
                     }
                 `}
                     {...register("address", { required: true })}
+                  />
+                </div>
+                <div className={`flex flex-col col-span-2`}>
+                  <label htmlFor="city" className="capitalize text-sm">
+                    city <span className="text-error">*</span>
+                  </label>
+                  <input
+                    id="city"
+                    type="text"
+                    defaultValue={brewery.city}
+                    className={`input input-bordered input-sm w-full ${
+                      errors.city ? "input-error" : ""
+                    }
+                `}
+                    {...register("city", { required: true })}
+                  />
+                </div>
+                <div className={`flex flex-col col-span-2`}>
+                  <label htmlFor="state" className="capitalize text-sm">
+                    state <span className="text-error">*</span>
+                  </label>
+                  <input
+                    id="state"
+                    type="text"
+                    defaultValue={brewery.state}
+                    className={`input input-bordered input-sm w-full ${
+                      errors.state ? "input-error" : ""
+                    }
+                `}
+                    {...register("state", { required: true })}
+                  />
+                </div>
+                <div className={`flex flex-col col-span-2`}>
+                  <label htmlFor="zip" className="capitalize text-sm">
+                    zip <span className="text-error">*</span>
+                  </label>
+                  <input
+                    id="zip"
+                    type="number"
+                    defaultValue={brewery.zip}
+                    className={`input input-bordered input-sm w-full ${
+                      errors.zip ? "input-error" : ""
+                    }
+                `}
+                    {...register("zip", { required: true })}
                   />
                 </div>
                 <div className={`flex flex-col col-span-2`}>

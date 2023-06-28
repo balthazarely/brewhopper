@@ -26,7 +26,7 @@ export function PassportSection() {
   return (
     <div>
       {!loadingUserPassportData ? (
-        <div className="grid grid-cols-2 md:grid-cols-3">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
           {userPassportData?.breweriesVisited?.map((brewery: any) => {
             return (
               <PassportCard
