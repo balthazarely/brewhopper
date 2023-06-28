@@ -18,7 +18,6 @@ export function BeerReviewsSection() {
     name: "",
   });
 
-  // TODO: if the beerID doesnt exist, meaning the beer was deleted, send null and deal with it on the backend
   const deleteReview = async () => {
     await deleteUserReviews({
       _id: reviewForDeletion.id,

@@ -38,9 +38,6 @@ const addBeerReview = asyncHandler(async (req, res) => {
 
 const deleteReview = asyncHandler(async (req, res) => {
   const { beerId } = req.body;
-
-  // TODO: need to change this so that if the beer ID doesnt exist (meaning the beer was deleted or something), to still look for the reivew  req.params.id and delete
-
   const reviewToDelete = await BeerReviews.findById(req.params.id);
   if (reviewToDelete) {
     await reviewToDelete.deleteOne();
@@ -48,7 +45,6 @@ const deleteReview = asyncHandler(async (req, res) => {
   } else {
     console.log("Review not found");
   }
-
   const beer = await Beer.findById(beerId);
   if (beer) {
     const reviewIndex = beer.reviews.findIndex(
@@ -58,41 +54,11 @@ const deleteReview = asyncHandler(async (req, res) => {
       beer.reviews.splice(reviewIndex, 1);
       await beer.save();
       console.log("Review deleted successfully");
-      // res.status(200).json({ message: "Review deleted successfully" });
     }
   } else {
     console.log("beer wasnt found, might have already been deleted");
   }
-
   res.status(200).json({ message: "Review deleted successfully" });
-
-  // const beer = await Beer.findById(beerId);
-  // if (beer) {
-  //   const reviewIndex = beer.reviews.findIndex(
-  //     (review) => review._id.toString() === req.params.id
-  //   );
-  //   if (reviewIndex !== -1) {
-  //     beer.reviews.splice(reviewIndex, 1);
-  //     await beer.save();
-  //     console.log("Review deleted successfully");
-  //     res.status(200).json({ message: "Review deleted successfully" });
-
-  //     // Find and delete Review
-  //     const reviewToDelete = await BeerReviews.findById(req.params.id);
-  //     if (reviewToDelete) {
-  //       await reviewToDelete.deleteOne();
-  //       console.log("Review removed successfully");
-  //     } else {
-  //       console.log("Review not found");
-  //     }
-  //   } else {
-  //     console.log("Review not found");
-  //     res.status(404).json({ message: "Review not found" });
-  //   }
-  // } else {
-  //   console.log("Beer not found");
-  //   res.status(404).json({ message: "Beer not found" });
-  // }
 });
 
 const getAllReviewsByUser = asyncHandler(async (req, res) => {
