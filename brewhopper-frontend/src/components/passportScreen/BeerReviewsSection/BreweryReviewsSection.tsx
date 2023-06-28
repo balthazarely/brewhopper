@@ -18,10 +18,11 @@ export function BeerReviewsSection() {
     name: "",
   });
 
+  // TODO: if the beerID doesnt exist, meaning the beer was deleted, send null and deal with it on the backend
   const deleteReview = async () => {
     await deleteUserReviews({
       _id: reviewForDeletion.id,
-      beerId: reviewForDeletion.beerId,
+      beerId: reviewForDeletion.beerId ? reviewForDeletion.beerId : null,
     });
     setConfrimActionModalOpen(false);
   };
@@ -40,9 +41,11 @@ export function BeerReviewsSection() {
         : [...prevState[name], item],
     }));
   };
+  console.log(userReviews);
+
   const beerStyles: string[] = [
     ...(new Set(
-      userReviews?.map((review: any) => review.beerId.style)
+      userReviews?.map((review: any) => review?.beerId?.style)
     ) as Set<string>),
   ];
 
@@ -52,29 +55,20 @@ export function BeerReviewsSection() {
     ) as Set<string>),
   ];
 
-  const stars: string[] = [
-    ...(new Set(
-      userReviews
-        ?.map((review: any) => review.stars)
-        .sort((a: any, b: any) => parseInt(a) - parseInt(b))
-    ) as Set<string>),
-  ];
-
   const filteredReviews = userReviews?.filter((review: any) => {
     const beerStyleFilter =
       selectedFilter.style.length === 0 ||
-      selectedFilter.style.includes(review.beerId.style);
+      selectedFilter.style.includes(review.style);
 
     const breweryFilter =
       selectedFilter.brewery.length === 0 ||
-      selectedFilter.brewery.includes(review.breweryId.name);
+      selectedFilter.brewery.includes(review.breweryName);
 
     return beerStyleFilter && breweryFilter;
   });
 
   return (
     <div className="mt-4">
-      {JSON.stringify(selectedFilter.stars)}
       {!loadingUserReviewData ? (
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4 relative ">
           <div className=" col-span-1 rounded-lg p-2 ">

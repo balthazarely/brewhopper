@@ -85,10 +85,12 @@ export function CheckInModal({
                     setCheckInStage={setCheckInStage}
                     checkInToBrewery={checkInToBrewery}
                     addBeerReviews={addBeerReviews}
+                    breweryName={brewery.name}
                     loadingAddPassport={loadingAddPassport}
                     loadingAddBeerReviews={loadingAddBeerReviews}
                   />
                 )}
+
                 {checkInStage === "done" && (
                   <CongratsPanel resetModalForm={resetModalForm} />
                 )}
@@ -199,14 +201,14 @@ function MiniBeerSelector({
           onClick={() => setCheckInStage("review")}
           className={`btn-primary join-item btn px-2 py-1 w-1/2   `}
         >
-          Next
+          Review Beers
         </button>
         <button
           disabled={loadingAddPassport}
-          onClick={() => checkInToBrewery(false)}
+          onClick={() => checkInToBrewery()}
           className={`btn-ghost join-item btn px-2 py-1 w-1/2  `}
         >
-          Checkin Without Beer
+          Checkin Without Reviewing
         </button>
       </div>
     </div>
@@ -220,11 +222,15 @@ function BeerReviewPanel({
   setCheckInStage,
   loadingAddPassport,
   loadingAddBeerReviews,
+  breweryName,
 }: any) {
+  console.log(selectedBeer, "this is it");
+
   const { data: userReviews, isLoading: userReviewsLoaded } =
     useGetUserReviewsQuery({});
 
   const { register, handleSubmit, getValues } = useForm();
+
   const onSubmit = async () => {
     const { reviews } = getValues();
     const reviewsParsed = reviews
@@ -233,12 +239,15 @@ function BeerReviewPanel({
           review: review.review,
           stars: Number(review.stars),
           breweryId: review.breweryId,
+          breweryName: breweryName,
+          beerName: review.name,
+          style: review.style,
           _id: review._id,
         };
       })
       .filter((newReview: any) => {
         return !userReviews.some(
-          (userReview: any) => userReview.beerId._id === newReview._id
+          (userReview: any) => userReview?.beerId?._id === newReview._id
         );
       });
 
@@ -266,7 +275,7 @@ function BeerReviewPanel({
             console.log(userReviews, "exiasting reviews");
 
             let doesExist = userReviews?.some(
-              (review: any) => review.beerId._id == beer._id
+              (review: any) => review?.beerId?._id == beer._id
             );
 
             return (
@@ -338,6 +347,16 @@ function BeerReviewPanel({
                           type="hidden"
                           {...register(`reviews[${index}].breweryId`)}
                           value={beer.breweryId}
+                        />
+                        <input
+                          type="hidden"
+                          {...register(`reviews[${index}].name`)}
+                          value={beer.name}
+                        />
+                        <input
+                          type="hidden"
+                          {...register(`reviews[${index}].style`)}
+                          value={beer.style}
                         />
                       </div>
                     ) : (

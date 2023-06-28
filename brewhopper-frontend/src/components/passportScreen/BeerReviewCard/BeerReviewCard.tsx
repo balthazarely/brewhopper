@@ -15,16 +15,27 @@ export function BeerReviewCard({
       className={`cursor-pointer flex col-auto gap-2 p-2 rounded-lg shadow `}
     >
       <div className=" w-24 h-32  rounded-lg relative">
-        <img
-          className="h-full w-24 py-4 object-contain rounded-md"
-          src={`${imageUrl}${review?.beerId?.image}`}
-          alt="brewery-image"
-        />
+        {review?.beerId?.image ? (
+          <img
+            className="h-full w-24 py-4 object-contain rounded-md"
+            src={`${imageUrl}${review?.beerId?.image}`}
+            alt="brewery-image"
+          />
+        ) : (
+          <div className="w-full h-full bg-error"></div>
+        )}
       </div>
       <div className="flex flex-col justify-between py-1 flex-1 ">
         <div>
           <div className="flex justify-between">
-            <div className="font-extrabold text-lg">{review?.beerId?.name}</div>
+            <div className={`font-extrabold text-lg`}>
+              {review?.beerName}{" "}
+              {review.beerId === null && (
+                <span className="text-error text-sm italic font-normal">
+                  discontinued
+                </span>
+              )}
+            </div>
             <div className="rating">
               {iterableArray?.map((_: any, index: number) => {
                 return (
@@ -52,8 +63,8 @@ export function BeerReviewCard({
               onClick={() => {
                 setReviewForDeletion({
                   id: review._id,
-                  beerId: review.beerId._id,
-                  name: review.beerId.name,
+                  beerId: review?.beerId?._id ? review.beerId._id : null,
+                  name: review.beerName,
                 });
                 setConfrimActionModalOpen(true);
               }}

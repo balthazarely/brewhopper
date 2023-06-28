@@ -12,9 +12,17 @@ const beerReviewsSchema = mongoose.Schema(
       ref: "Beer",
       required: true,
     },
+    beerName: {
+      type: String,
+      required: true,
+    },
     breweryId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Brewery",
+      required: true,
+    },
+    breweryName: {
+      type: String,
       required: true,
     },
     review: {
@@ -23,6 +31,10 @@ const beerReviewsSchema = mongoose.Schema(
     },
     stars: {
       type: Number,
+      required: true,
+    },
+    style: {
+      type: String,
       required: true,
     },
     timestamp: {
@@ -34,12 +46,6 @@ const beerReviewsSchema = mongoose.Schema(
     timestamps: true,
   }
 );
-
-beerReviewsSchema.pre("remove", async function (next) {
-  console.log("Deleting beer with ID:", this._id);
-  // Perform any additional operations or logic before the review is removed
-  next();
-});
 
 const BeerReviews = mongoose.model("BeerReviews", beerReviewsSchema);
 export default BeerReviews;
