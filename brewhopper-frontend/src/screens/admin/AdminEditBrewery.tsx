@@ -2,9 +2,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   useGetBreweryQuery,
   useUpdatedBreweryMutation,
-  useUploadProductImageMutation,
+  useUploadProductImageCloudinaryMutation,
 } from "../../slices/brewerySlice";
-import { PageHeader, PageWrapper } from "../../components/elements";
+import { CloudImage, PageHeader, PageWrapper } from "../../components/elements";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useState } from "react";
@@ -24,7 +24,6 @@ type Inputs = {
   website: string;
   checkInCode: string;
 };
-const imageUrl = "http://localhost:5001";
 
 export default function AdminEditBreweryScreen() {
   const { id: breweryId } = useParams();
@@ -32,9 +31,9 @@ export default function AdminEditBreweryScreen() {
   const [uploadedImage, setUploadedImage] = useState("");
   const navigate = useNavigate();
   const [updateBrewery] = useUpdatedBreweryMutation();
-  const [uploadProductImage, { isLoading: loadingUpload }] =
-    useUploadProductImageMutation();
-  console.log(brewery);
+
+  const [uploadProductImageCloudinary, { isLoading: loadingUploadCloud }] =
+    useUploadProductImageCloudinaryMutation();
 
   const {
     register,
@@ -52,20 +51,26 @@ export default function AdminEditBreweryScreen() {
     await updateBrewery(udpatedBrewery);
     navigate("/admin");
   };
+  const [previewUrl, setPreviewUrl] = useState<any>("");
 
   const uploadFileHandler = async (e: any) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      setPreviewUrl(reader.result);
+    };
+    reader.readAsDataURL(file);
+
     const formData = new FormData();
     formData.append("image", e.target.files[0]);
     try {
-      const res = await uploadProductImage(formData).unwrap();
+      const res2: any = await uploadProductImageCloudinary(formData).unwrap();
       toast.success("image uploaded");
-      setUploadedImage(res.image);
+      setUploadedImage(res2.image.public_id);
     } catch (error) {
       toast.error("error");
-      console.error(error, "err");
     }
   };
-  console.log(brewery);
 
   return (
     <PageWrapper>
@@ -75,7 +80,6 @@ export default function AdminEditBreweryScreen() {
           {!isLoading ? (
             <form
               onSubmit={handleSubmit(onSubmit)}
-              // onSubmit={(e) => handleSaveChanges(e)}
               className="flex flex-col max-w-lg w-full"
             >
               <h2 className="text-xl w-full font-bold">Edit listing</h2>
@@ -140,7 +144,7 @@ export default function AdminEditBreweryScreen() {
                     {...register("city", { required: true })}
                   />
                 </div>
-                <div className={`flex flex-col col-span-2`}>
+                <div className={`flex flex-col col-span-1`}>
                   <label htmlFor="state" className="capitalize text-sm">
                     state <span className="text-error">*</span>
                   </label>
@@ -155,7 +159,7 @@ export default function AdminEditBreweryScreen() {
                     {...register("state", { required: true })}
                   />
                 </div>
-                <div className={`flex flex-col col-span-2`}>
+                <div className={`flex flex-col col-span-1`}>
                   <label htmlFor="zip" className="capitalize text-sm">
                     zip <span className="text-error">*</span>
                   </label>
@@ -260,19 +264,21 @@ export default function AdminEditBreweryScreen() {
                   <option value="cidery">Cidery</option>
                 </select>
 
-                <div className="w-full h-32 mt-3 col-span-2 rounded-lg relative">
+                <div className="w-full h-44 mt-3 col-span-2 rounded-lg relative">
                   <label htmlFor="photo" className="capitalize text-sm">
                     Photo
                   </label>
-                  <img
-                    className="h-full w-1/2 object-cover rounded-lg"
-                    src={
-                      uploadedImage
-                        ? `${imageUrl}${uploadedImage}`
-                        : `${imageUrl}${brewery.image}`
-                    }
-                    alt="brewery-image"
-                  />
+                  <div className="mt-4 w-72 overflow-hidden  h-40">
+                    {previewUrl ? (
+                      <img src={previewUrl} alt="Preview" className=" h-44" />
+                    ) : (
+                      <CloudImage
+                        image={brewery.image}
+                        width={300}
+                        height={400}
+                      />
+                    )}
+                  </div>
                 </div>
                 <div className={`flex flex-col col-span-2 mt-6`}>
                   <input

@@ -13,7 +13,7 @@ export function AdminBeerCard({
       key={beer._id}
     >
       <div className="w-32 flex justify-center items-center h-32 overflow-hidden  mt-2 rounded-lg relative">
-        <CloudImage image={beer.image} />
+        <CloudImage image={beer.image} width={120} height={120} />
       </div>
       <div className="font-bold mx-2 text-center text-sm">{beer.name}</div>
       <div className="flex gap-2 mb-2">

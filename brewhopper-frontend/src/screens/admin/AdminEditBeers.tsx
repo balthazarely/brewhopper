@@ -26,8 +26,6 @@ export default function AdminEditBeers() {
     setConfrimActionModalOpen(false);
   };
 
-  console.log(beers);
-
   return (
     <div className="p-4 rounded-lg bg-base-200">
       <h2 className="text-xl w-full font-bold">Edit Beers</h2>
