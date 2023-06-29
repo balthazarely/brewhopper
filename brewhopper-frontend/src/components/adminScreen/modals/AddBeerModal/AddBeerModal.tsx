@@ -1,7 +1,10 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { useAddBeerMutation } from "../../../../slices/beerSlice";
-import { useUploadProductImageMutation } from "../../../../slices/brewerySlice";
+import {
+  useUploadProductImageCloudinaryMutation,
+  useUploadProductImageMutation,
+} from "../../../../slices/brewerySlice";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -14,9 +17,12 @@ export function AddBeerModal({
 }: any) {
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const [addBeer, { isLoading: loadingAddBeer }] = useAddBeerMutation({});
+  const [uploadedImage, setUploadedImage] = useState("");
+
   const [uploadProductImage, { isLoading: loadingUpload }] =
     useUploadProductImageMutation();
-  const [uploadedImage, setUploadedImage] = useState("");
+  const [uploadProductImageCloudinary, { isLoading: loadingUploadCloud }] =
+    useUploadProductImageCloudinaryMutation();
 
   type Inputs = {
     name: string;
@@ -52,9 +58,12 @@ export function AddBeerModal({
     const formData = new FormData();
     formData.append("image", e.target.files[0]);
     try {
-      const res = await uploadProductImage(formData).unwrap();
+      // const res = await uploadProductImage(formData).unwrap();
+      const res2: any = await uploadProductImageCloudinary(formData).unwrap();
       toast.success("image uploaded");
-      setUploadedImage(res.image);
+      console.log(res2.image.public_id);
+      // setUploadedImage(res.image);
+      setUploadedImage(res2.image.public_id);
     } catch (error) {
       toast.error("error");
     }
@@ -166,31 +175,6 @@ export function AddBeerModal({
                 />
               </div>
 
-              {/* <div className={`flex flex-col  just col-span-2`}>
-                <div className="form-control">
-                  <label className="label cursor-pointer">
-                    <span className="label-text">Seasonal</span>
-                  </label>
-                  <input
-                    type="checkbox"
-                    className="checkbox checkbox-primary"
-                    {...register("seasonal", {
-                      required: false,
-                    })}
-                  />
-                </div>
-              </div> */}
-
-              {/* <div className="w-full h-32 mt-3 col-span-2 rounded-lg relative">
-  <label htmlFor="photo" className="capitalize text-sm">
-    Photo
-  </label>
-  <img
-    className="h-full w-1/2 object-cover rounded-lg"
-    src={`${imageUrl}${uploadedImage}`}
-    alt="brewery-image"
-  />
-</div> */}
               <div className={`flex flex-col col-span-2 mt-6`}>
                 <input
                   id="photo"
@@ -200,8 +184,7 @@ export function AddBeerModal({
                 />
               </div>
 
-              <input className="btn btn-primary mt-4" type="submit" />
-              {loadingAddBeer && "loading"}
+              <input className="btn btn-primary mt-4 " type="submit" />
             </form>
           </div>
         </div>

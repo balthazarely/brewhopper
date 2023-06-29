@@ -4,8 +4,9 @@ import { HiX } from "react-icons/hi";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useUploadProductImageMutation } from "../../../../slices/brewerySlice";
+import { useUploadProductImageCloudinaryMutation } from "../../../../slices/brewerySlice";
 import { useUpdateBeerMutation } from "../../../../slices/beerSlice";
+import { CloudImage } from "../../../elements";
 
 const imageUrl = "http://localhost:5001";
 
@@ -18,9 +19,8 @@ export function EditBeerModal({
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const [uploadedImage, setUploadedImage] = useState("");
   const [updateBeer, { isLoading: loadingAddBeer }] = useUpdateBeerMutation({});
-
-  const [uploadProductImage, { isLoading: loadingUpload }] =
-    useUploadProductImageMutation();
+  const [uploadProductImageCloudinary, { isLoading: loadingUploadCloud }] =
+    useUploadProductImageCloudinaryMutation();
 
   type Inputs = {
     name: string;
@@ -73,9 +73,9 @@ export function EditBeerModal({
     const formData = new FormData();
     formData.append("image", e.target.files[0]);
     try {
-      const res = await uploadProductImage(formData).unwrap();
+      const res2: any = await uploadProductImageCloudinary(formData).unwrap();
       toast.success("image uploaded");
-      setUploadedImage(res.image);
+      setUploadedImage(res2.image.public_id);
     } catch (error) {
       toast.error("error");
     }
@@ -194,51 +194,32 @@ export function EditBeerModal({
                     defaultValue={beerToEdit.ibu}
                     className={`input input-bordered input-sm w-full ${
                       errors.ibu ? "input-error" : ""
-                    }
-  `}
+                    }`}
                     {...register("ibu", {
                       required: true,
                     })}
                   />
                 </div>
 
-                {/* <div className={`flex flex-col  just col-span-2`}>
-                  <div className="form-control">
-                    <label className="label cursor-pointer">
-                      <span className="label-text">Seasonal</span>
-                    </label>
-                    <input
-                      id="seasonal"
-                      defaultChecked={beerToEdit.seasonal}
-                      type="checkbox"
-                      className="checkbox checkbox-primary"
-                      {...register("seasonal", {
-                        required: false,
-                      })}
-                    />
-                  </div>
-                </div> */}
-                <div className="w-full h-32 mt-3 col-span-2 rounded-lg relative">
+                <div className="w-56 h-32  mt-3 col-span-2 rounded-lg relative">
                   <label htmlFor="photo" className="capitalize text-sm">
                     Photo
-                  </label>
-                  <img
-                    className="h-full w-1/2 object-cover rounded-lg"
-                    src={
-                      uploadedImage
-                        ? `${imageUrl}${uploadedImage}`
-                        : `${imageUrl}${beerToEdit.image}`
-                    }
-                    alt="brewery-image"
+                  </label>{" "}
+                  <CloudImage
+                    image={uploadedImage ? uploadedImage : beerToEdit.image}
+                    classes="h-full w-full object-contain rounded-lg"
                   />
                 </div>
-                <div className={`flex flex-col col-span-2 mt-6`}>
+                <div className={`flex  col-span-2 mt-6`}>
                   <input
                     id="photo"
                     type="file"
                     onChange={(e) => uploadFileHandler(e)}
                     className="file-input file-input-sm   file-input-bordered file-input-primary w-full max-w-xs"
                   />
+                  {loadingUploadCloud && (
+                    <span className="ml-2 loading loading-spinner loading-md"></span>
+                  )}
                 </div>
 
                 <input className="btn btn-primary mt-4" type="submit" />

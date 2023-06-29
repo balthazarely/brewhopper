@@ -86,10 +86,10 @@ const updateBrewery = asyncHandler(async (req, res) => {
     brewery.description = description;
     brewery.type = type;
     brewery.address = address;
-    (brewery.city = city),
-      (brewery.state = state),
-      (brewery.zip = zip),
-      (brewery.lat = lat);
+    brewery.city = city;
+    brewery.state = state;
+    brewery.zip = zip;
+    brewery.lat = lat;
     brewery.long = long;
     brewery.website = website;
     brewery.phone_number = phoneNumber;
