@@ -23,12 +23,15 @@ import AdminCreateBrewery from "./screens/admin/AdminCreateBrewery.tsx";
 import PassportScreen from "./screens/PassportScreen.tsx";
 import AdminEditBeers from "./screens/admin/AdminEditBeers.tsx";
 import BeerScreen from "./screens/BeerScreen.tsx";
+import TestImageUpload from "./screens/TestImageUpload.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="/login" element={<LoginScreen />} />
       <Route path="/register" element={<RegisterScreen />} />
+      <Route path="/test" element={<TestImageUpload />} />
+
       <Route path="" element={<PrivateRoute />}>
         <Route index={true} path="/" element={<HomeScreen />} />
         <Route path="/brewery/:id" element={<BreweryScreen />} />

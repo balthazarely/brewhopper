@@ -54,6 +54,13 @@ export const breweryApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    uploadProductImageCloudinary: builder.mutation({
+      query: (data) => ({
+        url: `/api/upload-cloud`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -65,4 +72,5 @@ export const {
   useUpdatedBreweryMutation,
   useDeleteBreweryMutation,
   useUploadProductImageMutation,
+  useUploadProductImageCloudinaryMutation,
 } = breweryApiSlice;
