@@ -1,0 +1,1 @@
+export { AdminBeerPanel } from "./AdminBeerPanel";
