@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Brewery } from "../../../types";
 import { HiStar } from "react-icons/hi2";
 import { HiLocationMarker } from "react-icons/hi";
+import { CloudImage } from "../../elements";
 
 interface BreweryMapCardProps {
   brewery: Brewery;
@@ -23,12 +24,8 @@ export function BreweryMapCard({
         selectedBrewery?._id === brewery._id ? "shadow-lg " : "shadow"
       }`}
     >
-      <div className="w-full h-32  bg-gray-300 rounded-lg relative">
-        <img
-          className="h-full w-full object-cover rounded-md"
-          src={`${imageUrl}${brewery.image}`}
-          alt="brewery-image"
-        />
+      <div className="w-full  max-h-32 flex justify-center items-center overflow-hidden  bg-gray-300 rounded-lg relative">
+        <CloudImage image={brewery?.image} width={400} height={400} />
         <div
           className={`badge-sm capitalize absolute right-2 top-2 badge  ${
             brewery.type === "brewery" && "badge-primary"

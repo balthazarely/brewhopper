@@ -7,7 +7,6 @@ interface AdminBreweryCardProps {
   brewery: Brewery;
   handleDeleteBrewery: (id: String, name: String) => void;
 }
-const imageUrl = "http://localhost:5001";
 
 export function AdminBreweryCard({
   brewery,
@@ -16,15 +15,7 @@ export function AdminBreweryCard({
   return (
     <div className={`flex flex-col  p-2 shadow-md  rounded-lg`}>
       <div className="w-72 overflow-hidden h-40  bg-gray-300 rounded-lg relative">
-        {/* <div className="border-2 h-full border-red-400 object-cover"> */}
         <CloudImage image={brewery.image} width={400} height={400} />
-        {/* </div> */}
-
-        {/* <img
-          className="h-full w-full object-cover rounded-lg "
-          src={`${imageUrl}${brewery.image}`}
-          alt="brewery-image"
-        /> */}
         <div
           className={`badge-sm capitalize absolute right-2 top-2 badge  ${
             brewery.type === "brewery" && "badge-primary"

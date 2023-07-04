@@ -1,4 +1,5 @@
 import { convertToReadableDate } from "../../../utils/dateFuncitons";
+import { CloudImage } from "../../elements";
 
 const imageUrl = "http://localhost:5001";
 
@@ -14,13 +15,9 @@ export function BeerReviewCard({
     <div
       className={`cursor-pointer flex col-auto gap-2 p-2 rounded-lg shadow `}
     >
-      <div className=" w-24 h-32  rounded-lg relative">
+      <div className=" w-24 h-32  flex justify-center items-center    rounded-lg relative">
         {review?.beerId?.image ? (
-          <img
-            className="h-full w-24 py-4 object-contain rounded-md"
-            src={`${imageUrl}${review?.beerId?.image}`}
-            alt="brewery-image"
-          />
+          <CloudImage image={review?.beerId?.image} width={115} height={115} />
         ) : (
           <div className="w-full h-full bg-error"></div>
         )}

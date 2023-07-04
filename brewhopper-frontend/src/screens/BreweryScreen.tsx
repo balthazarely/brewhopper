@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useGetBreweryQuery } from "../slices/brewerySlice";
-import { PageHeader, PageWrapper } from "../components/elements";
+import { CloudImage, PageHeader, PageWrapper } from "../components/elements";
 import { HiLocationMarker } from "react-icons/hi";
 import { HiPhone } from "react-icons/hi2";
 import { BsGlobe } from "react-icons/bs";
@@ -25,12 +25,13 @@ export default function BreweryScreen() {
     <>
       {!breweryDataLoading ? (
         <div>
-          <div className="w-full flex  h-56 bg-gray-300 rounded-lg relative">
-            <img
+          <div className="w-full  justify-center items-center flex  h-56 bg-gray-300 rounded-lg relative">
+            {/* <img
               className="h-full w-full object-cover rounded-md"
               src={`${imageUrl}${brewery.image}`}
               alt="brewery-image"
-            />
+            /> */}
+            {/* <CloudImage image={brewery?.image} width={500} height={500} /> */}
           </div>
 
           <PageWrapper classname="max-w-5xl">

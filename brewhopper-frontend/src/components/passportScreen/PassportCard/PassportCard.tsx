@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
 import { convertToReadableDate } from "../../../utils/dateFuncitons";
-const imageUrl = "http://localhost:5001";
+import { CloudImage } from "../../elements";
 
 export function PassportCard({
   brewery: breweryVisitInfo,
@@ -9,15 +9,15 @@ export function PassportCard({
   setConfrimActionModalOpen,
 }: any) {
   return (
-    <div className={`flex flex-col gap-1 p-2  rounded-lg shadow`}>
-      <div className="w-full h-44  bg-gray-300 rounded-lg relative">
-        <img
-          className="h-full w-full object-cover rounded-md"
-          src={`${imageUrl}${breweryVisitInfo?.brewery?.image}`}
-          alt="brewery-image"
+    <div className={`flex flex-col gap-1 p-2 rounded-lg shadow`}>
+      <div className="w-full flex justify-center items-center overflow-hidden  bg-gray-300 rounded-lg relative">
+        <CloudImage
+          image={breweryVisitInfo?.brewery?.image}
+          width={400}
+          height={300}
         />
       </div>
-      <div className="flex justify-between flex-col py-1  h-full ">
+      <div className="flex justify-between flex-col py-1   ">
         <div>
           <Link
             className="font-extrabold text-lg"
