@@ -11,5 +11,7 @@ export function CloudImage({ image, height, width }: any) {
 
   const myImage = cld.image(image);
   myImage.resize(fit().width(width).height(height));
-  return <AdvancedImage cldImg={myImage} />;
+  return (
+    <AdvancedImage cldImg={myImage} className="h-full w-full object-cover " />
+  );
 }

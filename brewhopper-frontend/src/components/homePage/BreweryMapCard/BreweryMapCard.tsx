@@ -24,8 +24,8 @@ export function BreweryMapCard({
         selectedBrewery?._id === brewery._id ? "shadow-lg " : "shadow"
       }`}
     >
-      <div className="w-full  max-h-32 flex justify-center items-center overflow-hidden  bg-gray-300 rounded-lg relative">
-        <CloudImage image={brewery?.image} width={400} height={400} />
+      <div className="w-full  max-h-32 h-full flex justify-center items-center overflow-hidden  bg-gray-300 rounded-lg relative">
+        <CloudImage image={brewery?.image} width={200} height={200} />
         <div
           className={`badge-sm capitalize absolute right-2 top-2 badge  ${
             brewery.type === "brewery" && "badge-primary"

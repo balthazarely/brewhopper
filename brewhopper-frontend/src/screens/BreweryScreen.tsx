@@ -8,6 +8,7 @@ import { CheckInModal, SingleBreweryMap } from "../components/breweryScreen";
 import { useState } from "react";
 import { useGetUserProfileQuery } from "../slices/passportSlice";
 import { BeerCard } from "../components/breweryScreen/BeerCard";
+import { HeroBanner } from "../components/elements/HeroBanner";
 
 export default function BreweryScreen() {
   const { id } = useParams();
@@ -25,15 +26,7 @@ export default function BreweryScreen() {
     <>
       {!breweryDataLoading ? (
         <div>
-          <div className="w-full  justify-center items-center flex  h-56 bg-gray-300 rounded-lg relative">
-            {/* <img
-              className="h-full w-full object-cover rounded-md"
-              src={`${imageUrl}${brewery.image}`}
-              alt="brewery-image"
-            /> */}
-            {/* <CloudImage image={brewery?.image} width={500} height={500} /> */}
-          </div>
-
+          <HeroBanner image={brewery?.image} />
           <PageWrapper classname="max-w-5xl">
             <div className="flex justify-between items-center">
               <PageHeader title={brewery.name} />

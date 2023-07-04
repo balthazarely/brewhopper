@@ -14,8 +14,10 @@ export function AdminBreweryCard({
 }: AdminBreweryCardProps) {
   return (
     <div className={`flex flex-col  p-2 shadow-md  rounded-lg`}>
-      <div className="w-72 overflow-hidden h-40  bg-gray-300 rounded-lg relative">
+      <div className="w-full border-2 border-red-300 overflow-hidden h-40  bg-gray-300 rounded-lg relative flex justify-center items-center ">
+        {/* <div className=" h-full bg-red-600"> */}
         <CloudImage image={brewery.image} width={400} height={400} />
+        {/* </div> */}
         <div
           className={`badge-sm capitalize absolute right-2 top-2 badge  ${
             brewery.type === "brewery" && "badge-primary"
