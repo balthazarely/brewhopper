@@ -28,6 +28,8 @@ export default function AdminScreen() {
     setBreweryToDelete({ id, name });
   };
 
+  console.log(breweries);
+
   return (
     <>
       <PageWrapper>

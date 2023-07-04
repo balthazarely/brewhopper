@@ -203,7 +203,7 @@ export function AdminBreweryInfo({
             </label>
             <div className="mt-4 w-72 overflow-hidden  h-40">
               {previewUrl ? (
-                <img src={previewUrl} alt="Preview" className=" h-44" />
+                <img src={previewUrl} alt="Preview" className="h-44" />
               ) : (
                 <CloudImage image={brewery.image} width={300} height={400} />
               )}
