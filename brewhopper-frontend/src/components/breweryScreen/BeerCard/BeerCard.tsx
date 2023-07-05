@@ -2,11 +2,7 @@ import { Link } from "react-router-dom";
 import { Beer } from "../../../types";
 import { CloudImage } from "../../elements";
 
-interface BeerProps {
-  beer: Beer;
-}
-
-export function BeerCard({ beer }: BeerProps) {
+export function BeerCard({ beer }: { beer: Beer }) {
   return (
     <div
       className="flex  bg-white items-center gap-1 flex-col  rounded-lg "

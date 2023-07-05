@@ -50,8 +50,6 @@ export default function HomeScreen() {
     fetchUserLocation();
   }, []);
 
-  console.log(breweries);
-
   return (
     <PageWrapper>
       <BreweriesFilter

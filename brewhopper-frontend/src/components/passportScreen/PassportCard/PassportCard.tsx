@@ -2,6 +2,16 @@ import { Link } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
 import { convertToReadableDate } from "../../../utils/dateFuncitons";
 import { CloudImage } from "../../elements";
+import { Brewery } from "../../../types";
+
+interface PassportCardProps {
+  brewery: any;
+  setPassportForDeletion: {
+    id: string;
+    name: string;
+  };
+  setConfrimActionModalOpen: (state: boolean) => void;
+}
 
 export function PassportCard({
   brewery: breweryVisitInfo,

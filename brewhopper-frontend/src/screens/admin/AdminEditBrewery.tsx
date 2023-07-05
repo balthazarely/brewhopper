@@ -119,7 +119,7 @@ export default function AdminEditBreweryScreen() {
           )}
         </div>
         <AdminBeerPanel
-          breweryId={breweryId}
+          breweryId={brewery?._id}
           isLoading={isLoading}
           beers={brewery?.beers}
         />

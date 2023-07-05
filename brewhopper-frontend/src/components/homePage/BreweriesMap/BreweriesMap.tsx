@@ -5,13 +5,21 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { convertToGeoJSON } from "../../../utils/convertToGeoJson";
 import customMarkerImg from "../../../../public/hop.png";
 import customMarkerImgWine from "../../../../public/wine.png";
+import { Brewery } from "../../../types";
+
+interface BreweriesMapProps {
+  breweries: Brewery[];
+  setSelectedBrewery: (state: Brewery) => void;
+  selectedBrewery: Brewery | null;
+  sortFilterBy: string;
+}
 
 export function BreweriesMap({
   breweries,
   setSelectedBrewery,
   selectedBrewery,
   sortFilterBy,
-}: any) {
+}: BreweriesMapProps) {
   const geoJSONBreweries = convertToGeoJSON(breweries, "brewery");
   const geoJSONWineries = convertToGeoJSON(breweries, "winery");
 

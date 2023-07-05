@@ -40,7 +40,6 @@ export function BeerReviewsSection() {
         : [...prevState[name], item],
     }));
   };
-  console.log(userReviews);
 
   const beerStyles: string[] = [
     ...(new Set(
@@ -65,6 +64,17 @@ export function BeerReviewsSection() {
 
     return beerStyleFilter && breweryFilter;
   });
+
+  if (userReviews?.length === 0) {
+    return (
+      <div className="w-full flex-col text-xl flex justify-center items-center h-44 ">
+        <div> No beer reviews yet!</div>
+        <div className="text-sm mt-2">
+          To get started, head to a brewery and click "Check In".
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mt-4">

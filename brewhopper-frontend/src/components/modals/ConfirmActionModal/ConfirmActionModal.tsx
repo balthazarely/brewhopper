@@ -1,5 +1,14 @@
 import { HiX } from "react-icons/hi";
 
+interface ConfirmActionModalProps {
+  confrimActionModalOpen: boolean;
+  setConfrimActionModalOpen: (state: boolean) => void;
+  onFireFunction: () => void;
+  message: string;
+  confirmText: string;
+  loading: boolean;
+}
+
 export function ConfirmActionModal({
   confrimActionModalOpen,
   setConfrimActionModalOpen,
@@ -7,7 +16,7 @@ export function ConfirmActionModal({
   message,
   confirmText,
   loading,
-}: any) {
+}: ConfirmActionModalProps) {
   return (
     <div>
       <input

@@ -7,13 +7,21 @@ import { toast } from "react-toastify";
 import { useUploadProductImageCloudinaryMutation } from "../../../../slices/brewerySlice";
 import { useUpdateBeerMutation } from "../../../../slices/beerSlice";
 import { CloudImage } from "../../../elements";
+import { Beer } from "../../../../types";
+
+interface AddBeerModalProps {
+  breweryId: string;
+  beerToEdit: Beer | null;
+  editBeerModalOpen: boolean;
+  setEditBeerModalOpen: (state: boolean) => void;
+}
 
 export function EditBeerModal({
   breweryId,
   beerToEdit,
   editBeerModalOpen,
   setEditBeerModalOpen,
-}: any) {
+}: AddBeerModalProps) {
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const [uploadedImage, setUploadedImage] = useState("");
   const [updateBeer, { isLoading: loadingAddBeer }] = useUpdateBeerMutation({});
@@ -56,8 +64,8 @@ export function EditBeerModal({
       ...data,
       user: userInfo?._id,
       breweryId,
-      id: beerToEdit._id,
-      image: uploadedImage ? uploadedImage : beerToEdit.image,
+      id: beerToEdit?._id,
+      image: uploadedImage ? uploadedImage : beerToEdit?.image,
     };
     console.log(newBeer);
 
@@ -131,8 +139,7 @@ export function EditBeerModal({
                     defaultValue={beerToEdit.name}
                     className={`input input-bordered input-sm w-full ${
                       errors.name ? "input-error" : ""
-                    }
-  `}
+                    }`}
                     {...register("name", {
                       required: true,
                     })}

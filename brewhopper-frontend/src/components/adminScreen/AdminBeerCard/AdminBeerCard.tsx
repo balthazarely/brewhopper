@@ -1,4 +1,13 @@
+import { Beer } from "../../../types";
 import { CloudImage } from "../../elements";
+
+interface AdminBeerCardProps {
+  beer: Beer;
+  setBeerToEdit: (beer: Beer) => void;
+  setBeerToDelete: (beer: Beer) => void;
+  setEditBeerModalOpen: (state: boolean) => void;
+  setConfrimActionModalOpen: (state: boolean) => void;
+}
 
 export function AdminBeerCard({
   beer,
@@ -6,7 +15,7 @@ export function AdminBeerCard({
   setBeerToDelete,
   setEditBeerModalOpen,
   setConfrimActionModalOpen,
-}: any) {
+}: AdminBeerCardProps) {
   return (
     <div
       className="flex  bg-white items-center gap-1 flex-col  rounded-lg shadow"

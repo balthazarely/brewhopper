@@ -18,10 +18,21 @@ export function PassportSection() {
     name: "",
   });
 
-  const deletePassportItem = async (id: string) => {
+  const deletePassportItem = async () => {
     await deletePassportBrewery(passportForDeletion.id);
     setConfrimActionModalOpen(false);
   };
+
+  if (userPassportData?.breweriesVisited?.length === 0) {
+    return (
+      <div className="w-full flex-col text-xl flex justify-center items-center h-44 ">
+        <div> No brewery visits yet!</div>
+        <div className="text-sm mt-2">
+          To get started, head to a brewery and click "Check In"
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -30,8 +41,8 @@ export function PassportSection() {
           {userPassportData?.breweriesVisited?.map((brewery: any) => {
             return (
               <PassportCard
-                brewery={brewery}
                 key={brewery.id}
+                brewery={brewery}
                 deletePassportItem={deletePassportItem}
                 setPassportForDeletion={setPassportForDeletion}
                 setConfrimActionModalOpen={setConfrimActionModalOpen}

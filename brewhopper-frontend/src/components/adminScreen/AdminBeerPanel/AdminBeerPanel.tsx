@@ -6,17 +6,29 @@ import {
 } from "../../../components/adminScreen/modals";
 import { useState } from "react";
 import { AdminBeerCard } from "../../../components/adminScreen";
+import { Beer } from "../../../types";
 
-export function AdminBeerPanel({ breweryId, beers, isLoading }: any) {
+interface AdminBeerPanelProps {
+  breweryId: string;
+  beers: Beer[];
+  isLoading: boolean;
+}
+
+export function AdminBeerPanel({
+  breweryId,
+  beers,
+  isLoading,
+}: AdminBeerPanelProps) {
   const [deleteBeer, { isLoading: loadingDelete }] = useDeleteBeerMutation({});
-  const [addBeerModalOpen, setAddBeerModalOpen] = useState(false);
-  const [editBeerModalOpen, setEditBeerModalOpen] = useState(false);
-  const [beerToEdit, setBeerToEdit] = useState(null);
-  const [beerToDelete, setBeerToDelete] = useState<any>(null);
-  const [confrimActionModalOpen, setConfrimActionModalOpen] = useState(false);
+  const [addBeerModalOpen, setAddBeerModalOpen] = useState<boolean>(false);
+  const [editBeerModalOpen, setEditBeerModalOpen] = useState<boolean>(false);
+  const [beerToEdit, setBeerToEdit] = useState<Beer | null>(null);
+  const [beerToDelete, setBeerToDelete] = useState<Beer | null>(null);
+  const [confrimActionModalOpen, setConfrimActionModalOpen] =
+    useState<boolean>(false);
 
   const deleteBeerHandler = async () => {
-    await deleteBeer({ id: beerToDelete._id, breweryId: breweryId });
+    await deleteBeer({ id: beerToDelete?._id, breweryId: breweryId });
     setConfrimActionModalOpen(false);
   };
 
@@ -39,7 +51,7 @@ export function AdminBeerPanel({ breweryId, beers, isLoading }: any) {
             gridGap: "1rem",
           }}
         >
-          {beers?.map((beer: any) => {
+          {beers?.map((beer: Beer) => {
             return (
               <AdminBeerCard
                 beer={beer}
