@@ -77,6 +77,7 @@ const updateBrewery = asyncHandler(async (req, res) => {
     phoneNumber,
     checkInCode,
     image,
+    logoImage,
   } = req.body;
 
   const brewery = await Brewery.findById(req.params.id);
@@ -95,6 +96,7 @@ const updateBrewery = asyncHandler(async (req, res) => {
     brewery.phone_number = phoneNumber;
     brewery.check_in_code = checkInCode;
     brewery.image = image;
+    brewery.logoImage = logoImage;
     const updatedBrewery = await brewery.save();
     res.json(updatedBrewery);
   } else {

@@ -12,9 +12,9 @@ import { calcBreweryDistance, getUserCoordinates } from "../utils/mapFunctions";
 export default function HomeScreen() {
   const { data: breweries, isLoading } = useGetBreweriesQuery({});
   const [selectedBrewery, setSelectedBrewery] = useState<Brewery | null>(null);
-  const [sortFilterBy, setSortFilterBy] = useState("all");
+  const [sortFilterBy, setSortFilterBy] = useState<string>("all");
   const [userLocation, setUserLocation] = useState<UserLocation | null>(null);
-  const [isSortingEnabled, setIsSortingEnabled] = useState(false);
+  const [isSortingEnabled, setIsSortingEnabled] = useState<boolean>(false);
 
   const filteredBreweriesForPanel = breweries?.filter((brew: Brewery) => {
     if (sortFilterBy !== "all") {
@@ -49,6 +49,8 @@ export default function HomeScreen() {
     };
     fetchUserLocation();
   }, []);
+
+  console.log(breweries);
 
   return (
     <PageWrapper>

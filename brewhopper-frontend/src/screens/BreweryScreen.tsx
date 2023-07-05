@@ -1,39 +1,34 @@
 import { useParams } from "react-router-dom";
 import { useGetBreweryQuery } from "../slices/brewerySlice";
-import { CloudImage, PageHeader, PageWrapper } from "../components/elements";
+import { PageHeader, PageWrapper } from "../components/elements";
 import { HiLocationMarker } from "react-icons/hi";
 import { HiPhone } from "react-icons/hi2";
 import { BsGlobe } from "react-icons/bs";
-import { CheckInModal, SingleBreweryMap } from "../components/breweryScreen";
+import { CheckInModal } from "../components/breweryScreen";
 import { useState } from "react";
-import { useGetUserProfileQuery } from "../slices/passportSlice";
 import { BeerCard } from "../components/breweryScreen/BeerCard";
 import { HeroBanner } from "../components/elements/HeroBanner";
+import { Beer } from "../types";
 
 export default function BreweryScreen() {
   const { id } = useParams();
   const [checkInModalOpen, setCheckInModalOpen] = useState(false);
   const { data: brewery, isLoading: breweryDataLoading } =
     useGetBreweryQuery(id);
-  const imageUrl = "http://localhost:5001";
-  const { data: userPassportData } = useGetUserProfileQuery({});
 
-  const isCheckInAllowed = userPassportData?.breweriesVisited?.some(
-    (visitedBrewery: any) => visitedBrewery.breweryId === brewery?._id
-  );
+  console.log(brewery);
 
   return (
     <>
       {!breweryDataLoading ? (
         <div>
-          <HeroBanner image={brewery?.image} />
+          <HeroBanner classes="object-cover" image={brewery?.image} />
           <PageWrapper classname="max-w-5xl">
             <div className="flex justify-between items-center">
               <PageHeader title={brewery.name} />
               <button
                 onClick={() => setCheckInModalOpen(true)}
                 className="btn btn-primary"
-                disabled={isCheckInAllowed}
               >
                 Check in
               </button>
@@ -62,14 +57,14 @@ export default function BreweryScreen() {
                 gridGap: "1rem",
               }}
             >
-              {brewery?.beers?.map((beer: any) => {
+              {brewery?.beers?.map((beer: Beer) => {
                 return <BeerCard beer={beer} />;
               })}
             </div>
           </PageWrapper>
 
           <div className="w-full flex h-96 bg-gray-300 rounded-lg relative">
-            <SingleBreweryMap lat={brewery.lat} long={brewery.long} />
+            {/* <SingleBreweryMap lat={brewery.lat} long={brewery.long} /> */}
           </div>
         </div>
       ) : (

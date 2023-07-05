@@ -6,7 +6,7 @@ import {
   FaRegTimesCircle,
 } from "react-icons/fa";
 import { RiPinDistanceFill } from "react-icons/ri";
-import { UserLocation } from "../../../screens/HomeScreen";
+import { UserLocation } from "../../../types";
 import { HiX } from "react-icons/hi";
 
 interface BreweriesFilterProps {
@@ -27,7 +27,6 @@ export function BreweriesFilter({
   const filterOptions = [
     { label: "Breweries", value: "brewery", icon: FaBeer },
     { label: "Wineries", value: "winery", icon: FaWineGlass },
-    // { label: "Distilleries", value: "distillery", icon: FaGlassWhiskey },
   ];
 
   return (

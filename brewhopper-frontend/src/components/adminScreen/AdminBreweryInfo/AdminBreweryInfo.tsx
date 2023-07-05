@@ -1,3 +1,20 @@
+import { Brewery } from "../../../types";
+import { CloudImage } from "../../elements";
+
+interface AdminBreweryInfoProps {
+  onSubmit: any;
+  handleSubmit: any;
+  brewery: Brewery;
+  errors: any;
+  register: any;
+  previewUrl: string;
+  previewUrlLogo: string;
+  isLoading: boolean;
+  uploadFileHandler: (e: any, imageType: string) => void;
+  uploadedImageLoading: boolean;
+  uploadedLogoLoading: boolean;
+}
+
 export function AdminBreweryInfo({
   onSubmit,
   handleSubmit,
@@ -5,10 +22,12 @@ export function AdminBreweryInfo({
   errors,
   register,
   previewUrl,
+  previewUrlLogo,
   isLoading,
-  CloudImage,
   uploadFileHandler,
-}: any) {
+  uploadedImageLoading,
+  uploadedLogoLoading,
+}: AdminBreweryInfoProps) {
   return (
     <>
       <form
@@ -205,17 +224,55 @@ export function AdminBreweryInfo({
               {previewUrl ? (
                 <img src={previewUrl} alt="Preview" className="h-44" />
               ) : (
-                <CloudImage image={brewery.image} width={300} height={400} />
+                <CloudImage
+                  classes="object-cover"
+                  image={brewery.image}
+                  width={300}
+                  height={400}
+                />
               )}
             </div>
           </div>
+
+          <div className={`flex  col-span-2 mt-6`}>
+            <input
+              id="logo"
+              type="file"
+              onChange={(e) => uploadFileHandler(e, "image")}
+              className="file-input file-input-sm file-input-bordered file-input-primary w-full max-w-xs"
+            />
+            {uploadedImageLoading && (
+              <span className="loading loading-spinner ml-1 loading-md"></span>
+            )}
+          </div>
+          <div className="w-full h-44 mt-3 col-span-2 rounded-lg relative">
+            <label htmlFor="logo" className="capitalize text-sm">
+              Logo
+            </label>
+            <div className="mt-4 w-72 object-contain flex justify-center items-center overflow-hidden border-2 h-40">
+              {previewUrlLogo ? (
+                <img src={previewUrlLogo} alt="Preview" className="h-44" />
+              ) : (
+                <CloudImage
+                  classes="object-contain"
+                  image={brewery.logoImage}
+                  width={300}
+                  height={400}
+                />
+              )}
+            </div>
+          </div>
+
           <div className={`flex flex-col col-span-2 mt-6`}>
             <input
-              id="photo"
+              id="logo"
               type="file"
-              onChange={(e) => uploadFileHandler(e)}
+              onChange={(e) => uploadFileHandler(e, "logo")}
               className="file-input file-input-sm   file-input-bordered file-input-primary w-full max-w-xs"
             />
+            {uploadedLogoLoading && (
+              <span className="loading loading-spinner ml-1 loading-md"></span>
+            )}
           </div>
 
           <input className="btn btn-primary mt-4" type="submit" />

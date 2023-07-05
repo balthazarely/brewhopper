@@ -14,18 +14,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       path: "breweriesVisited.beers",
       model: "Beer",
     })
-    // .populate({
-    //   path: "beerReviews",
-    //   populate: {
-    //     path: "reviewId",
-    //     model: "BeerReviews",
-    //     populate: {
-    //       path: "beerId",
-    //       model: "Beer",
-    //       select: ["name", "image", "style"],
-    //     },
-    //   },
-    // })
+    .select("-password -updatedAt")
     .exec();
 
   if (user) {

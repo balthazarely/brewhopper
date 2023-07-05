@@ -20,8 +20,6 @@ export function AdminBeerPanel({ breweryId, beers, isLoading }: any) {
     setConfrimActionModalOpen(false);
   };
 
-  // console.log(beers, "beers");
-
   return (
     <div className="p-4 rounded-lg bg-base-200">
       <h2 className="text-xl w-full font-bold">Edit Beers</h2>

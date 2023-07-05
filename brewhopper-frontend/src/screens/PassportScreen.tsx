@@ -6,7 +6,7 @@ import {
 import { useState } from "react";
 
 export default function PassportScreen() {
-  const [activeTab, setActiveTab] = useState("reviews");
+  const [activeTab, setActiveTab] = useState<string>("reviews");
 
   return (
     <PageWrapper>

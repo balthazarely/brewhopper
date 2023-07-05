@@ -21,18 +21,6 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
-    beerReviews: [
-      {
-        reviewId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Beer",
-        },
-        timestamp: {
-          type: Date,
-          default: Date.now,
-        },
-      },
-    ],
     breweriesVisited: [
       {
         brewery: {

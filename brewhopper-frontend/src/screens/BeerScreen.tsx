@@ -1,11 +1,9 @@
 import { useParams } from "react-router-dom";
 import { PageHeader, PageWrapper } from "../components/elements";
-import { useState } from "react";
 import { useGetBeerQuery } from "../slices/beerSlice";
 
 export default function BeerScreen() {
   const { id } = useParams();
-  const [checkInModalOpen, setCheckInModalOpen] = useState(false);
   const { data: beer, isLoading, error } = useGetBeerQuery(id);
   const imageUrl = "http://localhost:5001";
 

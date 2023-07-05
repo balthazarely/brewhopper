@@ -17,7 +17,12 @@ export function BeerReviewCard({
     >
       <div className=" w-24 h-32  flex justify-center items-center    rounded-lg relative">
         {review?.beerId?.image ? (
-          <CloudImage image={review?.beerId?.image} width={115} height={115} />
+          <CloudImage
+            classes="object-contain"
+            image={review?.beerId?.image}
+            width={115}
+            height={115}
+          />
         ) : (
           <div className="w-full h-full bg-error"></div>
         )}

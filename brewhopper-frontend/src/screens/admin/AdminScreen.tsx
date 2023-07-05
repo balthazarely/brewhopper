@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 
 export default function AdminScreen() {
   const { data: breweries, isLoading, refetch } = useGetBreweriesQuery({});
-  const [deleteBreweryModalOpen, setDeleteBreweryModalOpen] = useState(false);
   const [breweryToDelete, setBreweryToDelete] = useState<any>({});
   const [confrimActionModalOpen, setConfrimActionModalOpen] = useState(false);
 
@@ -23,12 +22,10 @@ export default function AdminScreen() {
     setConfrimActionModalOpen(false);
   };
 
-  const handleDeleteBrewery = (id: String, name: String) => {
+  const handleDeleteBrewery = (id: string, name: string) => {
     setConfrimActionModalOpen(true);
     setBreweryToDelete({ id, name });
   };
-
-  console.log(breweries);
 
   return (
     <>

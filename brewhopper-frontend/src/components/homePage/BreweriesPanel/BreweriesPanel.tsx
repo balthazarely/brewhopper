@@ -12,12 +12,14 @@ export function BreweriesPanel({
   selectedBrewery,
   setSelectedBrewery,
 }: BreweriesPanelProps) {
+  console.log(breweries);
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 ">
-      {breweries.map((brewery: any) => {
+      {breweries.map((brewery: Brewery) => {
         return (
           <BreweryMapCard
-            key={brewery._id}
+            key={brewery._id.toString()}
             brewery={brewery}
             selectedBrewery={selectedBrewery}
             setSelectedBrewery={setSelectedBrewery}

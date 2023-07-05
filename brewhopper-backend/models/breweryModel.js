@@ -59,6 +59,9 @@ const brewerySchema = mongoose.Schema(
     image: {
       type: String,
     },
+    logoImage: {
+      type: String,
+    },
     beers: [
       {
         type: mongoose.Schema.Types.ObjectId,

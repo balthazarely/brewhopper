@@ -21,16 +21,13 @@ import AdminRoute from "./components/AdminRoute.tsx";
 import AdminEditBrewery from "./screens/admin/AdminEditBrewery.tsx";
 import AdminCreateBrewery from "./screens/admin/AdminCreateBrewery.tsx";
 import PassportScreen from "./screens/PassportScreen.tsx";
-import AdminEditBeers from "./screens/admin/AdminEditBeers.tsx";
 import BeerScreen from "./screens/BeerScreen.tsx";
-import TestImageUpload from "./screens/TestImageUpload.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="/login" element={<LoginScreen />} />
       <Route path="/register" element={<RegisterScreen />} />
-      <Route path="/test" element={<TestImageUpload />} />
 
       <Route path="" element={<PrivateRoute />}>
         <Route index={true} path="/" element={<HomeScreen />} />
@@ -42,7 +39,6 @@ const router = createBrowserRouter(
         <Route path="/admin" element={<AdminScreen />} />
         <Route path="/admin/create-brewery" element={<AdminCreateBrewery />} />
         <Route path="/admin/edit-brewery/:id" element={<AdminEditBrewery />} />
-        {/* <Route path="/admin/edit-beers/:id" element={<AdminEditBeers />} /> */}
       </Route>
     </Route>
   )

@@ -1,28 +1,31 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { useAddBeerMutation } from "../../../../slices/beerSlice";
-import {
-  useUploadProductImageCloudinaryMutation,
-  useUploadProductImageMutation,
-} from "../../../../slices/brewerySlice";
+import { useUploadProductImageCloudinaryMutation } from "../../../../slices/brewerySlice";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { HiX } from "react-icons/hi";
+import { CloudImage } from "../../../elements";
+
+interface AddBeerModalProps {
+  breweryId: string;
+  addBeerModalOpen: boolean;
+  setAddBeerModalOpen: (state: boolean) => void;
+}
 
 export function AddBeerModal({
   breweryId,
   addBeerModalOpen,
   setAddBeerModalOpen,
-}: any) {
+}: AddBeerModalProps) {
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const [addBeer, { isLoading: loadingAddBeer }] = useAddBeerMutation({});
   const [uploadedImage, setUploadedImage] = useState("");
-
-  const [uploadProductImage, { isLoading: loadingUpload }] =
-    useUploadProductImageMutation();
   const [uploadProductImageCloudinary, { isLoading: loadingUploadCloud }] =
     useUploadProductImageCloudinaryMutation();
+  const [previewUrl, setPreviewUrl] = useState<any>("");
+  const [uploadedImageLoading, setUploadedImageLoading] = useState(false);
 
   type Inputs = {
     name: string;
@@ -35,7 +38,7 @@ export function AddBeerModal({
   const {
     register,
     handleSubmit,
-    reset,
+
     formState: { errors },
   } = useForm<Inputs>();
 
@@ -55,15 +58,20 @@ export function AddBeerModal({
   };
 
   const uploadFileHandler = async (e: any) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    setUploadedImageLoading(true);
+    reader.onload = () => {
+      setPreviewUrl(reader.result);
+    };
+    reader.readAsDataURL(file);
     const formData = new FormData();
     formData.append("image", e.target.files[0]);
     try {
-      // const res = await uploadProductImage(formData).unwrap();
       const res2: any = await uploadProductImageCloudinary(formData).unwrap();
       toast.success("image uploaded");
-      console.log(res2.image.public_id);
-      // setUploadedImage(res.image);
       setUploadedImage(res2.image.public_id);
+      setUploadedImageLoading(false);
     } catch (error) {
       toast.error("error");
     }
@@ -175,15 +183,45 @@ export function AddBeerModal({
                 />
               </div>
 
-              <div className={`flex flex-col col-span-2 mt-6`}>
-                <input
-                  id="photo"
-                  type="file"
-                  onChange={(e) => uploadFileHandler(e)}
-                  className="file-input file-input-sm   file-input-bordered file-input-primary w-full max-w-xs"
-                />
+              <div className="w-full h-44 mt-3 col-span-2 rounded-lg relative">
+                <label htmlFor="photo" className="capitalize text-sm">
+                  Photo
+                </label>
+                {!previewUrl || !uploadedImage ? (
+                  <div className="mt-4 flex justify-center items-center bg-base-200 w-72 overflow-hidden  h-40">
+                    upload image
+                  </div>
+                ) : (
+                  <div className="mt-4 w-72 overflow-hidden  h-40">
+                    {previewUrl ? (
+                      <img
+                        src={previewUrl}
+                        alt="Preview"
+                        className="h-40 object-cover"
+                      />
+                    ) : (
+                      <CloudImage
+                        classes="object-cover "
+                        image={uploadedImage}
+                        width={300}
+                        height={400}
+                      />
+                    )}
+                  </div>
+                )}
               </div>
 
+              <div className={`flex  col-span-2 mt-6`}>
+                <input
+                  id="logo"
+                  type="file"
+                  onChange={(e) => uploadFileHandler(e)}
+                  className="file-input file-input-sm file-input-bordered file-input-primary w-full max-w-xs"
+                />
+                {uploadedImageLoading && (
+                  <span className="loading loading-spinner ml-1 loading-md"></span>
+                )}
+              </div>
               <input className="btn btn-primary mt-4 " type="submit" />
             </form>
           </div>

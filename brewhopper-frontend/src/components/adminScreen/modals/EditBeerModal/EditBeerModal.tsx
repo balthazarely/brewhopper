@@ -8,8 +8,6 @@ import { useUploadProductImageCloudinaryMutation } from "../../../../slices/brew
 import { useUpdateBeerMutation } from "../../../../slices/beerSlice";
 import { CloudImage } from "../../../elements";
 
-const imageUrl = "http://localhost:5001";
-
 export function EditBeerModal({
   breweryId,
   beerToEdit,
@@ -21,6 +19,8 @@ export function EditBeerModal({
   const [updateBeer, { isLoading: loadingAddBeer }] = useUpdateBeerMutation({});
   const [uploadProductImageCloudinary, { isLoading: loadingUploadCloud }] =
     useUploadProductImageCloudinaryMutation();
+  const [previewUrl, setPreviewUrl] = useState<any>("");
+  const [uploadedImageLoading, setUploadedImageLoading] = useState(false);
 
   type Inputs = {
     name: string;
@@ -29,6 +29,8 @@ export function EditBeerModal({
     abv: number;
     ibu: number;
   };
+
+  console.log(beerToEdit);
 
   const {
     register,
@@ -70,17 +72,24 @@ export function EditBeerModal({
   };
 
   const uploadFileHandler = async (e: any) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    setUploadedImageLoading(true);
+    reader.onload = () => {
+      setPreviewUrl(reader.result);
+    };
+    reader.readAsDataURL(file);
     const formData = new FormData();
     formData.append("image", e.target.files[0]);
     try {
       const res2: any = await uploadProductImageCloudinary(formData).unwrap();
       toast.success("image uploaded");
       setUploadedImage(res2.image.public_id);
+      setUploadedImageLoading(false);
     } catch (error) {
       toast.error("error");
     }
   };
-
   const handleCloseModal = () => {
     reset();
     setEditBeerModalOpen(false);
@@ -204,25 +213,41 @@ export function EditBeerModal({
                 <div className="w-56 h-32  mt-3 col-span-2 rounded-lg relative">
                   <label htmlFor="photo" className="capitalize text-sm">
                     Photo
-                  </label>{" "}
-                  <CloudImage
-                    image={uploadedImage ? uploadedImage : beerToEdit.image}
-                    classes="h-full w-full object-contain rounded-lg"
-                  />
+                  </label>
+                  <div className="mt-4 w-40  overflow-hidden  h-40">
+                    {previewUrl ? (
+                      <img
+                        src={previewUrl}
+                        alt="Preview"
+                        className="h-40 object-contain"
+                      />
+                    ) : (
+                      <CloudImage
+                        classes="object-contain"
+                        image={beerToEdit.image}
+                        width={200}
+                        height={200}
+                      />
+                    )}
+                  </div>
                 </div>
-                <div className={`flex  col-span-2 mt-6`}>
+                <div className={`flex  col-span-2 mt-20 `}>
                   <input
                     id="photo"
                     type="file"
                     onChange={(e) => uploadFileHandler(e)}
                     className="file-input file-input-sm   file-input-bordered file-input-primary w-full max-w-xs"
                   />
-                  {loadingUploadCloud && (
+                  {uploadedImageLoading && (
                     <span className="ml-2 loading loading-spinner loading-md"></span>
                   )}
                 </div>
 
-                <input className="btn btn-primary mt-4" type="submit" />
+                <input
+                  disabled={loadingUploadCloud}
+                  className="btn btn-primary mt-4"
+                  type="submit"
+                />
                 {/* {loadingAddBeer && "loading"} */}
               </form>
             ) : (

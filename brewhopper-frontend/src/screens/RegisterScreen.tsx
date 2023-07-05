@@ -13,10 +13,10 @@ const RegisterScreen: React.FC = () => {
   const [register, { isLoading }] = useRegisterMutation();
   const { userInfo } = useSelector((state: RootState) => state.auth);
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confrimPassword, setConfrimPassword] = useState("");
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confrimPassword, setConfrimPassword] = useState<string>("");
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);

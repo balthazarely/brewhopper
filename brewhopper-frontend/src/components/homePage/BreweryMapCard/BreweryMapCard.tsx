@@ -10,8 +10,6 @@ interface BreweryMapCardProps {
   setSelectedBrewery: (brewery: Brewery) => void;
 }
 
-const imageUrl = "http://localhost:5001";
-
 export function BreweryMapCard({
   brewery,
   selectedBrewery,
@@ -25,7 +23,12 @@ export function BreweryMapCard({
       }`}
     >
       <div className="w-full  max-h-32 h-full flex justify-center items-center overflow-hidden  bg-gray-300 rounded-lg relative">
-        <CloudImage image={brewery?.image} width={200} height={200} />
+        <CloudImage
+          classes="object-cover"
+          image={brewery?.image}
+          width={200}
+          height={200}
+        />
         <div
           className={`badge-sm capitalize absolute right-2 top-2 badge  ${
             brewery.type === "brewery" && "badge-primary"

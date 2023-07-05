@@ -1,31 +1,33 @@
 import { HiX } from "react-icons/hi";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   useAddPassportBreweryMutation,
-  useGetUserProfileQuery,
   useGetUserReviewsQuery,
 } from "../../../slices/passportSlice";
 import { useForm } from "react-hook-form";
-import {
-  useGetSingleBeerReviewsByUserQuery,
-  useReviewBeerMutation,
-} from "../../../slices/beerSlice";
+import { useReviewBeerMutation } from "../../../slices/beerSlice";
 import { HiArrowLeft } from "react-icons/hi2";
+import { Beer, Brewery, Review } from "../../../types";
+import { CloudImage } from "../../elements";
 
-const imageUrl = "http://localhost:5001";
+interface CheckInModalProps {
+  brewery: Brewery;
+  checkInModalOpen: boolean;
+  setCheckInModalOpen: (state: boolean) => void;
+}
 
 export function CheckInModal({
   brewery,
   checkInModalOpen,
   setCheckInModalOpen,
-}: any) {
+}: CheckInModalProps) {
   const [addPassportBrewery, { isLoading: loadingAddPassport }] =
     useAddPassportBreweryMutation({});
   const [addBeerReviews, { isLoading: loadingAddBeerReviews }] =
     useReviewBeerMutation({});
 
-  const [checkInStage, setCheckInStage] = useState("code");
-  const [selectedBeer, setSelectedBeer] = useState<any>([]);
+  const [checkInStage, setCheckInStage] = useState<string>("code");
+  const [selectedBeer, setSelectedBeer] = useState<Beer[] | []>([]);
 
   const resetModalForm = () => {
     setCheckInModalOpen(false);
@@ -105,8 +107,14 @@ export function CheckInModal({
   );
 }
 
-function CheckInWithCodePanel({ setCheckInStage, checkInCode }: any) {
-  const [accessCode, setAccessCode] = useState("");
+function CheckInWithCodePanel({
+  setCheckInStage,
+  checkInCode,
+}: {
+  setCheckInStage: (stage: string) => void;
+  checkInCode: string;
+}) {
+  const [accessCode, setAccessCode] = useState<string>("deschutes-brewing");
   return (
     <div className=" w-full h-full  flex flex-col items-center justify-between">
       <div className="text-xl font-bold">Enter Check-In Code</div>
@@ -136,14 +144,21 @@ function MiniBeerSelector({
   setCheckInStage,
   checkInToBrewery,
   loadingAddPassport,
-}: any) {
-  const handleSelectBeers = (newBeer: any) => {
+}: {
+  beers: Beer[] | undefined;
+  selectedBeer: Beer[];
+  setSelectedBeer: (beer: Beer[]) => void;
+  setCheckInStage: (stage: string) => void;
+  checkInToBrewery: (addBeers?: boolean) => void;
+  loadingAddPassport: boolean;
+}) {
+  const handleSelectBeers = (newBeer: Beer) => {
     const doesBeerExist = selectedBeer.some(
-      (beer: any) => beer._id === newBeer._id
+      (beer: Beer) => beer._id === newBeer._id
     );
     if (doesBeerExist) {
       const newState = selectedBeer.filter(
-        (beers: any) => beers._id !== newBeer._id
+        (beers: Beer) => beers._id !== newBeer._id
       );
       setSelectedBeer(newState);
     } else {
@@ -169,9 +184,9 @@ function MiniBeerSelector({
           gridGap: "1rem",
         }}
       >
-        {beers?.map((beer: any) => {
+        {beers?.map((beer: Beer) => {
           const isBeerInArr = selectedBeer.some(
-            (currentBeers: any) => currentBeers._id === beer._id
+            (currentBeers: Beer) => currentBeers._id === beer._id
           );
           return (
             <div
@@ -181,11 +196,12 @@ function MiniBeerSelector({
               } flex cursor-pointer border-2  hover:shadow-lg  bg-white items-center gap-1 flex-col rounded-lg  `}
               key={beer._id}
             >
-              <div className="w-20 h-20 overflow-hidden  mt-2 rounded-lg relative">
-                <img
-                  className="h-full w-full  object-contain rounded-lg pointer-events-none"
-                  src={`${imageUrl}${beer.image}`}
-                  alt="brewery-image"
+              <div className="w-20 flex justify-center items-center h-20 overflow-hidden  mt-2 rounded-lg relative">
+                <CloudImage
+                  classes="object-contain"
+                  image={beer.image}
+                  width={120}
+                  height={120}
                 />
               </div>
               <div className="font-bold mx-2 text-center text-xs">
@@ -223,9 +239,15 @@ function BeerReviewPanel({
   loadingAddPassport,
   loadingAddBeerReviews,
   breweryName,
-}: any) {
-  console.log(selectedBeer, "this is it");
-
+}: {
+  selectedBeer: Beer[];
+  checkInToBrewery: (addBeers?: boolean) => void;
+  addBeerReviews: (review: Review) => void;
+  setCheckInStage: (stage: string) => void;
+  loadingAddPassport: boolean;
+  loadingAddBeerReviews: boolean;
+  breweryName: string;
+}) {
   const { data: userReviews, isLoading: userReviewsLoaded } =
     useGetUserReviewsQuery({});
 
@@ -245,9 +267,9 @@ function BeerReviewPanel({
           _id: review._id,
         };
       })
-      .filter((newReview: any) => {
+      .filter((newReview: Review) => {
         return !userReviews.some(
-          (userReview: any) => userReview?.beerId?._id === newReview._id
+          (userReview: Review) => userReview?.beerId?._id === newReview._id
         );
       });
 
@@ -271,19 +293,19 @@ function BeerReviewPanel({
         </button>
         <div className="text-xl font-bold">Review Beers</div>
         <div className="flex gap-8 flex-col w-full py-4 h-72 px-2 overflow-y-auto">
-          {selectedBeer?.map((beer: any, index: number) => {
-            console.log(userReviews, "exiasting reviews");
-
+          {selectedBeer?.map((beer: Beer, index: number) => {
             let doesExist = userReviews?.some(
               (review: any) => review?.beerId?._id == beer._id
             );
 
             return (
               <div className="w-full flex gap-4 " key={index}>
-                <div className="flex w-16 h-32  gap-1  flex-col items-center">
-                  <img
-                    className="h-full w-full object-contain"
-                    src={`${imageUrl}${beer.image}`}
+                <div className="w-24 flex justify-center items-center h-24 overflow-hidden  mt-2 rounded-lg relative">
+                  <CloudImage
+                    classes="object-contain"
+                    image={beer.image}
+                    width={120}
+                    height={120}
                   />
                 </div>
                 {!userReviewsLoaded ? (
@@ -386,13 +408,13 @@ function BeerReviewPanel({
   );
 }
 
-function CongratsPanel({ resetModalForm }: any) {
+function CongratsPanel({ resetModalForm }: { resetModalForm: () => void }) {
   return (
     <div className=" w-full h-full  flex flex-col items-center justify-between">
       <div className="text-xl font-bold">Check in Successfull</div>
       <div className="w-full ">
         <button
-          onClick={() => resetModalForm("")}
+          onClick={() => resetModalForm()}
           className={`btn-primary btn px-2 py-1  w-full mt-2 `}
         >
           Close

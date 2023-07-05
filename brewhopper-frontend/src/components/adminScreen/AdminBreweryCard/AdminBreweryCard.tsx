@@ -5,7 +5,7 @@ import { CloudImage } from "../../elements";
 
 interface AdminBreweryCardProps {
   brewery: Brewery;
-  handleDeleteBrewery: (id: String, name: String) => void;
+  handleDeleteBrewery: (id: string, name: string) => void;
 }
 
 export function AdminBreweryCard({
@@ -14,10 +14,13 @@ export function AdminBreweryCard({
 }: AdminBreweryCardProps) {
   return (
     <div className={`flex flex-col  p-2 shadow-md  rounded-lg`}>
-      <div className="w-full border-2 border-red-300 overflow-hidden h-40  bg-gray-300 rounded-lg relative flex justify-center items-center ">
-        {/* <div className=" h-full bg-red-600"> */}
-        <CloudImage image={brewery.image} width={400} height={400} />
-        {/* </div> */}
+      <div className="w-full overflow-hidden h-40  bg-gray-300 rounded-lg relative flex justify-center items-center ">
+        <CloudImage
+          classes="object-cover"
+          image={brewery.image}
+          width={400}
+          height={400}
+        />
         <div
           className={`badge-sm capitalize absolute right-2 top-2 badge  ${
             brewery.type === "brewery" && "badge-primary"
