@@ -11,7 +11,7 @@ export default function BeerScreen() {
     <PageWrapper>
       {!isLoading ? (
         <div>
-          <PageHeader title={beer.name} />
+          <PageHeader title={beer?.name} />
           <div className="w-56 h-56 overflow-hidden  mt-2 rounded-lg relative">
             <img
               className="h-full w-full  object-contain rounded-lg"

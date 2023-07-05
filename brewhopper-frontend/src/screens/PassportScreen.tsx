@@ -1,4 +1,8 @@
-import { PageHeader, PageWrapper } from "../components/elements";
+import {
+  FullPageLoader,
+  PageHeader,
+  PageWrapper,
+} from "../components/elements";
 import {
   BeerReviewsSection,
   PassportSection,
@@ -6,7 +10,7 @@ import {
 import { useState } from "react";
 
 export default function PassportScreen() {
-  const [activeTab, setActiveTab] = useState<string>("reviews");
+  const [activeTab, setActiveTab] = useState<string>("passport");
 
   return (
     <PageWrapper>

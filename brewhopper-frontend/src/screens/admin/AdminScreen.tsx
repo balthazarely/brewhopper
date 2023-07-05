@@ -1,6 +1,10 @@
 import { AdminBreweryCard } from "../../components/adminScreen";
 import { ConfirmActionModal } from "../../components/adminScreen/modals";
-import { PageHeader, PageWrapper } from "../../components/elements";
+import {
+  FullPageLoader,
+  PageHeader,
+  PageWrapper,
+} from "../../components/elements";
 import {
   useDeleteBreweryMutation,
   useGetBreweriesQuery,
@@ -10,7 +14,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function AdminScreen() {
-  const { data: breweries, isLoading, refetch } = useGetBreweriesQuery({});
+  const { data: breweries, isLoading } = useGetBreweriesQuery({});
   const [breweryToDelete, setBreweryToDelete] = useState<any>({});
   const [confrimActionModalOpen, setConfrimActionModalOpen] = useState(false);
 
@@ -26,6 +30,10 @@ export default function AdminScreen() {
     setConfrimActionModalOpen(true);
     setBreweryToDelete({ id, name });
   };
+
+  if (isLoading) {
+    return <FullPageLoader />;
+  }
 
   return (
     <>

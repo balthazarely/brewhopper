@@ -5,6 +5,7 @@ import {
   useGetUserProfileQuery,
 } from "../../../slices/passportSlice";
 import { ConfirmActionModal } from "../../modals";
+import { FullPageLoader } from "../../elements";
 
 export function PassportSection() {
   const [deletePassportBrewery, { isLoading: loadingDelete }] =
@@ -23,6 +24,10 @@ export function PassportSection() {
     setConfrimActionModalOpen(false);
   };
 
+  if (loadingUserPassportData) {
+    return <FullPageLoader classes="h-56" />;
+  }
+
   if (userPassportData?.breweriesVisited?.length === 0) {
     return (
       <div className="w-full flex-col text-xl flex justify-center items-center h-44 ">
@@ -35,27 +40,20 @@ export function PassportSection() {
   }
 
   return (
-    <div>
-      {!loadingUserPassportData ? (
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-          {userPassportData?.breweriesVisited?.map((brewery: any) => {
-            return (
-              <PassportCard
-                key={brewery.id}
-                brewery={brewery}
-                deletePassportItem={deletePassportItem}
-                setPassportForDeletion={setPassportForDeletion}
-                setConfrimActionModalOpen={setConfrimActionModalOpen}
-              />
-            );
-          })}
-        </div>
-      ) : (
-        <div className="w-full h-72  flex justify-center items-center">
-          <div className="loading loading-spinner  loading-lg"></div>
-        </div>
-      )}
-
+    <>
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+        {userPassportData?.breweriesVisited?.map((brewery: any) => {
+          return (
+            <PassportCard
+              key={brewery.id}
+              brewery={brewery}
+              deletePassportItem={deletePassportItem}
+              setPassportForDeletion={setPassportForDeletion}
+              setConfrimActionModalOpen={setConfrimActionModalOpen}
+            />
+          );
+        })}
+      </div>
       <ConfirmActionModal
         message={`Are you sure you want to delete review for ${passportForDeletion.name}?`}
         confirmText="Delete"
@@ -64,6 +62,6 @@ export function PassportSection() {
         setConfrimActionModalOpen={setConfrimActionModalOpen}
         onFireFunction={deletePassportItem}
       />
-    </div>
+    </>
   );
 }

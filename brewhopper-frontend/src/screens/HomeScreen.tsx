@@ -6,7 +6,7 @@ import {
   BreweriesPanel,
   BreweriesFilter,
 } from "../components/homePage";
-import { PageWrapper } from "../components/elements";
+import { FullPageLoader, PageWrapper } from "../components/elements";
 import { calcBreweryDistance, getUserCoordinates } from "../utils/mapFunctions";
 
 export default function HomeScreen() {
@@ -50,6 +50,10 @@ export default function HomeScreen() {
     fetchUserLocation();
   }, []);
 
+  if (isLoading) {
+    return <FullPageLoader />;
+  }
+
   return (
     <PageWrapper>
       <BreweriesFilter
@@ -59,35 +63,32 @@ export default function HomeScreen() {
         setSortFilterBy={setSortFilterBy}
         sortFilterBy={sortFilterBy}
       />
-      {!isLoading ? (
-        <div className="flex gap-6 justify-between relative ">
-          <div className="w-1/2 bg-base-100 brewery-panel-map-wrapper  relative">
-            <div className="overflow-y-scroll h-full pb-10">
-              <BreweriesPanel
-                breweries={sortedBreweriesForPanel}
-                selectedBrewery={selectedBrewery}
-                setSelectedBrewery={setSelectedBrewery}
-              />
-            </div>
-            <div className="bg-gradient-to-b from-transparent to-white w-full h-10 absolute bottom-0 left-0 z-50 "></div>
-          </div>
-          <div
-            className={`${
-              selectedBrewery ? "absolute" : "hidden"
-            } z-50 bottom-0 left-96 w-96 overflow-hidden `}
-          ></div>
-          <div className="relative w-1/2 brewery-map-wrapper overflow-hidden">
-            <BreweriesMap
-              breweries={breweries}
-              setSelectedBrewery={setSelectedBrewery}
+
+      <div className="flex gap-6 justify-between relative ">
+        <div className="w-1/2 bg-base-100 brewery-panel-map-wrapper  relative">
+          <div className="overflow-y-scroll h-full pb-10">
+            <BreweriesPanel
+              breweries={sortedBreweriesForPanel}
               selectedBrewery={selectedBrewery}
-              sortFilterBy={sortFilterBy}
+              setSelectedBrewery={setSelectedBrewery}
             />
           </div>
+          <div className="bg-gradient-to-b from-transparent to-white w-full h-10 absolute bottom-0 left-0 z-50 "></div>
         </div>
-      ) : (
-        <div>loading</div>
-      )}
+        <div
+          className={`${
+            selectedBrewery ? "absolute" : "hidden"
+          } z-50 bottom-0 left-96 w-96 overflow-hidden `}
+        ></div>
+        <div className="relative w-1/2 brewery-map-wrapper overflow-hidden">
+          <BreweriesMap
+            breweries={breweries}
+            setSelectedBrewery={setSelectedBrewery}
+            selectedBrewery={selectedBrewery}
+            sortFilterBy={sortFilterBy}
+          />
+        </div>
+      </div>
     </PageWrapper>
   );
 }

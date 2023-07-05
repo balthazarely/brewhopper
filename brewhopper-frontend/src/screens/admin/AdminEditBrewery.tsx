@@ -4,7 +4,12 @@ import {
   useUpdatedBreweryMutation,
   useUploadProductImageCloudinaryMutation,
 } from "../../slices/brewerySlice";
-import { CloudImage, PageHeader, PageWrapper } from "../../components/elements";
+import {
+  CloudImage,
+  FullPageLoader,
+  PageHeader,
+  PageWrapper,
+} from "../../components/elements";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useState } from "react";
@@ -95,28 +100,28 @@ export default function AdminEditBreweryScreen() {
     }
   };
 
+  if (isLoading) {
+    return <FullPageLoader />;
+  }
+
   return (
     <PageWrapper>
       <PageHeader title={`${brewery?.name} Dashboard`} />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4  ">
         <div className="bg-base-100 p-4 rounded-lg">
-          {!isLoading ? (
-            <AdminBreweryInfo
-              onSubmit={onSubmit}
-              handleSubmit={handleSubmit}
-              brewery={brewery}
-              errors={errors}
-              register={register}
-              previewUrl={previewUrl}
-              previewUrlLogo={previewUrlLogo}
-              isLoading={isLoading}
-              uploadFileHandler={uploadFileHandler}
-              uploadedImageLoading={uploadedImageLoading}
-              uploadedLogoLoading={uploadedLogoLoading}
-            />
-          ) : (
-            "loading"
-          )}
+          <AdminBreweryInfo
+            onSubmit={onSubmit}
+            handleSubmit={handleSubmit}
+            brewery={brewery}
+            errors={errors}
+            register={register}
+            previewUrl={previewUrl}
+            previewUrlLogo={previewUrlLogo}
+            isLoading={isLoading}
+            uploadFileHandler={uploadFileHandler}
+            uploadedImageLoading={uploadedImageLoading}
+            uploadedLogoLoading={uploadedLogoLoading}
+          />
         </div>
         <AdminBeerPanel
           breweryId={brewery?._id}
