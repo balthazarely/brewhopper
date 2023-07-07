@@ -38,8 +38,6 @@ export function EditBeerModal({
     ibu: number;
   };
 
-  console.log(beerToEdit);
-
   const {
     register,
     handleSubmit,

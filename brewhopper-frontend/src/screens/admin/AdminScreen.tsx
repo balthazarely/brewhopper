@@ -6,13 +6,17 @@ import {
   AddAchievementsModal,
   AddBreweryModal,
   ConfirmActionModal,
+  EditAchievementsModal,
 } from "../../components/adminScreen/modals";
 import {
   FullPageLoader,
   PageHeader,
   PageWrapper,
 } from "../../components/elements";
-import { useGetAchievementsQuery } from "../../slices/achievementSlice";
+import {
+  useDeleteAchievementMutation,
+  useGetAchievementsQuery,
+} from "../../slices/achievementSlice";
 import {
   useDeleteBreweryMutation,
   useGetBreweriesQuery,
@@ -23,8 +27,6 @@ import { Brewery } from "../../types";
 export default function AdminScreen() {
   const [activeTab, setActiveTab] = useState<string>("breweries");
   const [addBreweryModalOpen, setAddBreweryModalOpen] =
-    useState<boolean>(false);
-  const [addAchievementsModalOpen, setAddAchievementsModalOpen] =
     useState<boolean>(false);
 
   return (
@@ -56,42 +58,8 @@ export default function AdminScreen() {
         addBreweryModalOpen={addBreweryModalOpen}
         setAddBreweryModalOpen={setAddBreweryModalOpen}
       />
-      <AddAchievementsModal
-        addAchievementsModalOpen={addAchievementsModalOpen}
-        setAddAchievementsModalOpen={setAddAchievementsModalOpen}
-      />
     </>
   );
-
-  function AchievementSection() {
-    const { data: achievements, isLoading: isLoadingAchievements } =
-      useGetAchievementsQuery({});
-
-    if (isLoadingAchievements) {
-      return <FullPageLoader classes="h-56" />;
-    }
-
-    return (
-      <>
-        <button
-          onClick={() => setAddAchievementsModalOpen(true)}
-          className="btn btn-sm my-4"
-        >
-          Create New Achievement
-        </button>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {achievements?.map((achievement: any) => {
-            return (
-              <AdminAchievementCard
-                key={achievement._id}
-                achievement={achievement}
-              />
-            );
-          })}
-        </div>
-      </>
-    );
-  }
 
   function BrewerySection() {
     const { data: breweries, isLoading: isLoadingBreweries } =
@@ -145,6 +113,87 @@ export default function AdminScreen() {
           confrimActionModalOpen={confrimActionModalOpen}
           setConfrimActionModalOpen={setConfrimActionModalOpen}
           onFireFunction={deleteBreweryHandler}
+        />
+      </>
+    );
+  }
+
+  function AchievementSection() {
+    const { data: achievements, isLoading: isLoadingAchievements } =
+      useGetAchievementsQuery({});
+    const [addAchievementsModalOpen, setAddAchievementsModalOpen] =
+      useState<boolean>(false);
+    const [editAchievementModalOpen, setEditAchievementModalOpen] =
+      useState<boolean>(false);
+    const [achievementToEdit, setAchievementToEdit] = useState<any | null>(
+      null
+    );
+    const [achievementToDelete, setAchievementToDelete] = useState<any>({});
+    const [confrimActionModalOpen, setConfrimActionModalOpen] =
+      useState<boolean>(false);
+
+    const handleEditAchievement = (achievement: any) => {
+      setAchievementToEdit(achievement);
+      setEditAchievementModalOpen(true);
+    };
+
+    // Open modal + pass ID/Name to delete
+    const handleDeleteAchievement = (id: string, name: string) => {
+      setConfrimActionModalOpen(true);
+      setAchievementToDelete({ id, name });
+    };
+
+    // Actually delete When asked for confirmation
+    const [deleteAchievement, { isLoading: loadingDelete }] =
+      useDeleteAchievementMutation({});
+
+    const deleteAchievementyHandler = async () => {
+      console.log(achievementToDelete.id);
+
+      await deleteAchievement(achievementToDelete.id);
+      setConfrimActionModalOpen(false);
+    };
+
+    if (isLoadingAchievements) {
+      return <FullPageLoader classes="h-56" />;
+    }
+
+    return (
+      <>
+        <button
+          onClick={() => setAddAchievementsModalOpen(true)}
+          className="btn btn-sm my-4"
+        >
+          Create Achievement
+        </button>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {achievements?.map((achievement: any) => {
+            return (
+              <AdminAchievementCard
+                key={achievement._id}
+                achievement={achievement}
+                handleEditAchievement={handleEditAchievement}
+                handleDeleteAchievement={handleDeleteAchievement}
+              />
+            );
+          })}
+        </div>
+        <AddAchievementsModal
+          addAchievementsModalOpen={addAchievementsModalOpen}
+          setAddAchievementsModalOpen={setAddAchievementsModalOpen}
+        />
+        <EditAchievementsModal
+          achievementToEdit={achievementToEdit}
+          editAchievementModalOpen={editAchievementModalOpen}
+          setEditAchievementModalOpen={setEditAchievementModalOpen}
+        />
+        <ConfirmActionModal
+          message={`Are you sure you want to delete ${achievementToDelete?.name}?`}
+          confirmText="Delete"
+          loading={loadingDelete}
+          confrimActionModalOpen={confrimActionModalOpen}
+          setConfrimActionModalOpen={setConfrimActionModalOpen}
+          onFireFunction={deleteAchievementyHandler}
         />
       </>
     );

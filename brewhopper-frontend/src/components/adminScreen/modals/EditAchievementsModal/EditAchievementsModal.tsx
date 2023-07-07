@@ -7,9 +7,12 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { HiX } from "react-icons/hi";
-import { useAddAchievementMutation } from "../../../../slices/achievementSlice";
+import {
+  useAddAchievementMutation,
+  useUpdateAchievementMutation,
+} from "../../../../slices/achievementSlice";
 import { Brewery } from "../../../../types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Inputs = {
   name: string;
@@ -26,12 +29,14 @@ type Inputs = {
   checkInCode: string;
 };
 
-export function AddAchievementsModal({
-  addAchievementsModalOpen,
-  setAddAchievementsModalOpen,
+export function EditAchievementsModal({
+  achievementToEdit,
+  editAchievementModalOpen,
+  setEditAchievementModalOpen,
 }: any) {
   const { userInfo } = useSelector((state: RootState) => state.auth);
-  const [addAchievement] = useAddAchievementMutation();
+  const [updateAchievement, { isLoading: loadingAddBeer }] =
+    useUpdateAchievementMutation({});
   const [selectedBreweries, setSelectedBreweries] = useState<Brewery[] | []>(
     []
   );
@@ -41,8 +46,19 @@ export function AddAchievementsModal({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<Inputs>();
+
+  useEffect(() => {
+    if (achievementToEdit) {
+      reset({
+        name: achievementToEdit.name,
+        description: achievementToEdit.description,
+      });
+      setSelectedBreweries(achievementToEdit.achivementBreweries);
+    }
+  }, [achievementToEdit, reset]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const breweryIds = selectedBreweries.map((brewery: Brewery) => brewery._id);
@@ -50,12 +66,13 @@ export function AddAchievementsModal({
       ...data,
       achivementBreweries: breweryIds,
       user: userInfo?._id,
+      id: achievementToEdit?._id,
     };
     console.log(newAchievement);
 
     try {
-      await addAchievement(newAchievement);
-      setAddAchievementsModalOpen(false);
+      await updateAchievement(newAchievement);
+      setEditAchievementModalOpen(false);
     } catch (error) {
       console.log(error);
     }
@@ -90,7 +107,7 @@ export function AddAchievementsModal({
     <div>
       <input
         type="checkbox"
-        checked={addAchievementsModalOpen}
+        checked={editAchievementModalOpen}
         id="my-modal-6"
         className="modal-toggle relative"
         readOnly
@@ -99,7 +116,7 @@ export function AddAchievementsModal({
         <div className="modal-box relative">
           <button
             className="absolute top-2 right-2 btn btn-sm btn-ghost"
-            onClick={() => setAddAchievementsModalOpen(false)}
+            onClick={() => setEditAchievementModalOpen(false)}
           >
             <HiX />
           </button>
@@ -108,35 +125,46 @@ export function AddAchievementsModal({
             className="flex flex-col mt-8  max-w-lg w-full"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <h2 className="text-2xl w-full font-bold">
-              Create New Achievement
-            </h2>
+            <h2 className="text-2xl w-full font-bold">Edit Achievement</h2>
             <div className="grid grid-cols-2 gap-2 mt-6">
-              {formFeilds.map((field: FormFieldType) => {
-                return (
-                  <div
-                    key={field.name}
-                    className={` flex flex-col ${
-                      field.fullWidth ? "col-span-2" : "col-span-1"
-                    }`}
-                  >
-                    <label htmlFor={field.name} className="capitalize text-sm">
-                      {field.name} <span className="text-error">*</span>
+              {achievementToEdit ? (
+                <>
+                  <div className={` flex flex-col col-span-2`}>
+                    <label htmlFor="name" className="capitalize text-sm">
+                      name <span className="text-error">*</span>
                     </label>
                     <input
-                      {...(field.type === "number" ? { step: "any" } : {})}
-                      type={field.type}
+                      type="text"
+                      defaultValue={achievementToEdit.name}
                       className={`input input-bordered input-sm w-full ${
-                        errors[field.name as keyof Inputs] ? "input-error" : ""
+                        errors.name ? "input-error" : ""
                       }
                 `}
-                      {...register(field.name as keyof Inputs, {
+                      {...register("name", {
                         required: true,
                       })}
                     />
                   </div>
-                );
-              })}
+                  <div className={` flex flex-col col-span-2`}>
+                    <label htmlFor="description" className="capitalize text-sm">
+                      description <span className="text-error">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      defaultValue={achievementToEdit.description}
+                      className={`input input-bordered input-sm w-full ${
+                        errors.description ? "input-error" : ""
+                      }
+                `}
+                      {...register("description", {
+                        required: true,
+                      })}
+                    />
+                  </div>
+                </>
+              ) : (
+                <>login</>
+              )}
             </div>
 
             <div className="flex flex-wrap mt-2">

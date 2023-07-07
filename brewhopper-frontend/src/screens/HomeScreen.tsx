@@ -1,16 +1,8 @@
 import { useEffect, useState } from "react";
-import {
-  CloudImage,
-  FullPageLoader,
-  PageWrapper,
-} from "../components/elements";
+import { FullPageLoader, PageWrapper } from "../components/elements";
 import { calcBreweryDistance, getUserCoordinates } from "../utils/mapFunctions";
 import { Brewery, UserLocation } from "../types";
-import { Link, useLocation } from "react-router-dom";
 import { useGetBreweriesQuery } from "../slices/brewerySlice";
-import { BreweryMapCard } from "../components/mapPage";
-import { HiStar } from "react-icons/hi2";
-import { HiLocationMarker } from "react-icons/hi";
 import { NearBeweryCard } from "../components/homeScreen/NearBeweryCard";
 import { CheckInModal } from "../components/breweryScreen";
 

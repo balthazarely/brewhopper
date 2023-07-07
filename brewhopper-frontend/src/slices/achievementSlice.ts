@@ -13,14 +13,33 @@ export const breweryApiSlice = apiSlice.injectEndpoints({
     // ADMIN - Adding beer to brewery
     addAchievement: builder.mutation({
       query: (data) => ({
-        url: `${ACHIEVEMENTS_URL}/`,
+        url: `${ACHIEVEMENTS_URL}`,
         method: "POST",
         body: data,
+      }),
+      invalidatesTags: ["Achievements"],
+    }),
+    updateAchievement: builder.mutation({
+      query: (data) => ({
+        url: `${ACHIEVEMENTS_URL}/${data.id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["Achievements"],
+    }),
+    deleteAchievement: builder.mutation({
+      query: (achievementId) => ({
+        url: `${ACHIEVEMENTS_URL}/${achievementId}`,
+        method: "DELETE",
       }),
       invalidatesTags: ["Achievements"],
     }),
   }),
 });
 
-export const { useGetAchievementsQuery, useAddAchievementMutation } =
-  breweryApiSlice;
+export const {
+  useGetAchievementsQuery,
+  useAddAchievementMutation,
+  useUpdateAchievementMutation,
+  useDeleteAchievementMutation,
+} = breweryApiSlice;

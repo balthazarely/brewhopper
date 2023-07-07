@@ -1,11 +1,10 @@
-import { HiLocationMarker, HiStar } from "react-icons/hi";
 import { CloudImage } from "../../elements";
 import { Link } from "react-router-dom";
 
 export function NearBeweryCard({ brewery, handleCheckIn }: any) {
   return (
     <div className={` cursor-pointer flex flex-col  p-2  rounded-lg shadow  `}>
-      <div className="w-full  max-h-32 h-full flex justify-center items-center overflow-hidden  bg-gray-300 rounded-lg relative">
+      <div className="w-32  max-h-32 h-full flex justify-center items-center overflow-hidden  bg-gray-300 rounded-lg relative">
         <CloudImage
           classes="object-cover"
           image={brewery?.image}
@@ -22,6 +21,7 @@ export function NearBeweryCard({ brewery, handleCheckIn }: any) {
       </div>
       <div className="flex justify-between">
         <div className="font-extrabold">{brewery.name}</div>
+        <div className="text-sm">{brewery.distanceTo.toFixed()} ft. away</div>
       </div>
 
       <div className="flex justify-between mt-2">
