@@ -1,94 +1,94 @@
-import { useGetBreweriesQuery } from "../slices/brewerySlice";
 import { useEffect, useState } from "react";
-import { Brewery, UserLocation } from "../types";
 import {
-  BreweriesMap,
-  BreweriesPanel,
-  BreweriesFilter,
-} from "../components/homePage";
-import { FullPageLoader, PageWrapper } from "../components/elements";
+  CloudImage,
+  FullPageLoader,
+  PageWrapper,
+} from "../components/elements";
 import { calcBreweryDistance, getUserCoordinates } from "../utils/mapFunctions";
+import { Brewery, UserLocation } from "../types";
+import { Link, useLocation } from "react-router-dom";
+import { useGetBreweriesQuery } from "../slices/brewerySlice";
+import { BreweryMapCard } from "../components/mapPage";
+import { HiStar } from "react-icons/hi2";
+import { HiLocationMarker } from "react-icons/hi";
+import { NearBeweryCard } from "../components/homeScreen/NearBeweryCard";
+import { CheckInModal } from "../components/breweryScreen";
 
 export default function HomeScreen() {
-  const { data: breweries, isLoading } = useGetBreweriesQuery({});
-  const [selectedBrewery, setSelectedBrewery] = useState<Brewery | null>(null);
-  const [sortFilterBy, setSortFilterBy] = useState<string>("all");
-  const [userLocation, setUserLocation] = useState<UserLocation | null>(null);
-  const [isSortingEnabled, setIsSortingEnabled] = useState<boolean>(false);
-
-  const filteredBreweriesForPanel = breweries?.filter((brew: Brewery) => {
-    if (sortFilterBy !== "all") {
-      return brew.type === sortFilterBy;
-    } else {
-      return brew;
-    }
-  });
-
-  let sortedBreweriesForPanel = filteredBreweriesForPanel;
-  if (userLocation !== null) {
-    sortedBreweriesForPanel = calcBreweryDistance(
-      filteredBreweriesForPanel,
-      userLocation.latitude,
-      userLocation.longitude
-    );
-  }
-  if (isSortingEnabled && userLocation !== null) {
-    sortedBreweriesForPanel.sort((a: any, b: any) => {
-      return a.distanceTo - b.distanceTo;
-    });
-  }
-
-  useEffect(() => {
-    const fetchUserLocation = async () => {
-      try {
-        const userLocation = await getUserCoordinates();
-        setUserLocation(userLocation);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchUserLocation();
-  }, []);
-
-  if (isLoading) {
-    return <FullPageLoader />;
-  }
-
   return (
     <PageWrapper>
-      <BreweriesFilter
-        userLocation={userLocation}
-        isSortingEnabled={isSortingEnabled}
-        setIsSortingEnabled={setIsSortingEnabled}
-        setSortFilterBy={setSortFilterBy}
-        sortFilterBy={sortFilterBy}
-      />
-
-      <div className="flex gap-6 justify-between relative ">
-        <div className="w-1/2 bg-base-100 brewery-panel-map-wrapper  relative">
-          <div className="overflow-y-scroll h-full pb-10">
-            <BreweriesPanel
-              breweries={sortedBreweriesForPanel}
-              selectedBrewery={selectedBrewery}
-              setSelectedBrewery={setSelectedBrewery}
-            />
-          </div>
-          <div className="bg-gradient-to-b from-transparent to-white w-full h-10 absolute bottom-0 left-0 z-50 "></div>
-        </div>
-        <div
-          className={`${
-            selectedBrewery ? "absolute" : "hidden"
-          } z-50 bottom-0 left-96 w-96 overflow-hidden `}
-        ></div>
-        <div className="relative w-1/2 brewery-map-wrapper overflow-hidden">
-          <BreweriesMap
-            breweries={breweries}
-            setSelectedBrewery={setSelectedBrewery}
-            selectedBrewery={selectedBrewery}
-            sortFilterBy={sortFilterBy}
-          />
-        </div>
+      <div className="text-3xl font-bold">Welcome to Brew Hopper</div>
+      <div className="mt-32">
+        <div className="text-center">What's close?</div>
+        <CloseBreweriesCards />
       </div>
     </PageWrapper>
   );
+
+  function CloseBreweriesCards() {
+    const { data: breweries, isLoading } = useGetBreweriesQuery({});
+    const [userLocation, setUserLocation] = useState<UserLocation | null>(null);
+    const [sortedBreweries, setSortedBreweries] = useState<any>(null);
+    const [checkInBrewries, setCheckInBrewries] = useState<any>(null);
+    const [checkInModalOpen, setCheckInModalOpen] = useState(false);
+
+    useEffect(() => {
+      const fetchUserLocation = async () => {
+        try {
+          const userLocation = await getUserCoordinates();
+          const testCoords = {
+            latitude: 44.05960988591935,
+            longitude: -121.3115202399456,
+          };
+
+          setUserLocation(testCoords);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchUserLocation();
+    }, []);
+
+    useEffect(() => {
+      if (userLocation && breweries) {
+        const sortedBreweriesForPanel = calcBreweryDistance(
+          breweries,
+          userLocation.latitude,
+          userLocation.longitude
+        )
+          .sort((a: any, b: any) => a.distanceTo - b.distanceTo)
+          .filter((brewery: any) => brewery.distanceTo < 150);
+
+        setSortedBreweries(sortedBreweriesForPanel);
+      }
+    }, [userLocation, breweries]);
+
+    const handleCheckIn = (brewery: any) => {
+      setCheckInBrewries(brewery);
+      setCheckInModalOpen(true);
+    };
+
+    if (!userLocation && !sortedBreweries) {
+      return (
+        <div>
+          <FullPageLoader />
+        </div>
+      );
+    }
+    return (
+      <div className="grid grid-cols-3 gap-4 px-4 ">
+        {sortedBreweries?.map((brewery: Brewery) => {
+          return (
+            <NearBeweryCard handleCheckIn={handleCheckIn} brewery={brewery} />
+          );
+        })}
+
+        <CheckInModal
+          brewery={checkInBrewries}
+          checkInModalOpen={checkInModalOpen}
+          setCheckInModalOpen={setCheckInModalOpen}
+        />
+      </div>
+    );
+  }
 }

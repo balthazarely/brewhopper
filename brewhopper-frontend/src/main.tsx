@@ -10,7 +10,7 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import HomeScreen from "./screens/HomeScreen.tsx";
+import MapScreen from "./screens/MapScreen.tsx";
 import BreweryScreen from "./screens/BreweryScreen.tsx";
 import AdminScreen from "./screens/admin/AdminScreen.tsx";
 import { Provider } from "react-redux";
@@ -21,6 +21,7 @@ import AdminRoute from "./components/AdminRoute.tsx";
 import AdminEditBrewery from "./screens/admin/AdminEditBrewery.tsx";
 import PassportScreen from "./screens/PassportScreen.tsx";
 import BeerScreen from "./screens/BeerScreen.tsx";
+import HomeScreen from "./screens/HomeScreen.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,6 +31,7 @@ const router = createBrowserRouter(
 
       <Route path="" element={<PrivateRoute />}>
         <Route index={true} path="/" element={<HomeScreen />} />
+        <Route path="/map" element={<MapScreen />} />
         <Route path="/brewery/:id" element={<BreweryScreen />} />
         <Route path="/beer/:id" element={<BeerScreen />} />
         <Route path="/passport" element={<PassportScreen />} />

@@ -39,7 +39,7 @@ export function Navbar() {
           <span className="text-primary">Brew</span>Hopper
         </Link>
         <div className="flex items-center gap-2">
-          <Link to="/" className="btn btn-ghost btn-sm capitalize">
+          <Link to="/map" className="btn btn-ghost btn-sm capitalize">
             Map
           </Link>
           <Link to="/passport" className="btn btn-ghost btn-sm capitalize">

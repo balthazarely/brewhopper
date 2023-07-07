@@ -3,7 +3,16 @@ import Brewery from "../models/breweryModel.js";
 import Beer from "../models/beerModel.js";
 
 const getBreweries = asyncHandler(async (req, res) => {
-  const breweries = await Brewery.find({});
+  const breweries = await Brewery.find({})
+    .populate({
+      path: "beers",
+      populate: {
+        path: "reviews",
+        model: "BeerReviews",
+      },
+    })
+    .exec();
+
   res.json(breweries);
 });
 

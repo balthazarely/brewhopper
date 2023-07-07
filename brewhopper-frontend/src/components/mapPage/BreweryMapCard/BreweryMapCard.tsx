@@ -3,6 +3,7 @@ import { Brewery } from "../../../types";
 import { HiStar } from "react-icons/hi2";
 import { HiLocationMarker } from "react-icons/hi";
 import { CloudImage } from "../../elements";
+import { convertFeetToMiles } from "../../../utils/mapFunctions";
 
 interface BreweryMapCardProps {
   brewery: Brewery;
@@ -59,7 +60,7 @@ export function BreweryMapCard({
         </Link>
         {brewery.distanceTo && (
           <div className="text-xs font bold">
-            {brewery.distanceTo.toFixed(1)} miles away
+            {convertFeetToMiles(brewery.distanceTo.toFixed(1))} miles away
           </div>
         )}
       </div>
