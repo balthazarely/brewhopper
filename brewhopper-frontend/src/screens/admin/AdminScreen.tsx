@@ -33,22 +33,26 @@ export default function AdminScreen() {
     <>
       <PageWrapper>
         <PageHeader title="Admin Dashboard" />
-        <div>
-          <div className="tabs tabs-boxed ">
-            <a
-              className={`tab ${activeTab === "breweries" ? "tab-active" : ""}`}
-              onClick={() => setActiveTab("breweries")}
-            >
-              Breweries
-            </a>
-            <a
-              className={`tab ${
-                activeTab === "achievements" ? "tab-active" : ""
-              }`}
-              onClick={() => setActiveTab("achievements")}
-            >
-              Achievements
-            </a>
+        <div className="flex">
+          <div>
+            <div className="tabs tabs-boxed ">
+              <a
+                className={`tab ${
+                  activeTab === "breweries" ? "tab-active" : ""
+                }`}
+                onClick={() => setActiveTab("breweries")}
+              >
+                Breweries
+              </a>
+              <a
+                className={`tab ${
+                  activeTab === "achievements" ? "tab-active" : ""
+                }`}
+                onClick={() => setActiveTab("achievements")}
+              >
+                Achievements
+              </a>
+            </div>
           </div>
         </div>
         {activeTab === "breweries" && <BrewerySection />}

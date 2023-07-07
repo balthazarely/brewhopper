@@ -1,3 +1,4 @@
+import { FaAward } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 export function AdminAchievementCard({
@@ -7,7 +8,8 @@ export function AdminAchievementCard({
 }: any) {
   return (
     <div className={`flex flex-col  p-2 shadow-md  rounded-lg`}>
-      <div className="flex ">
+      <div className="flex items-center gap-1">
+        <FaAward />
         <div className="font-bold">{achievement.name}</div>
       </div>
       <div className="flex items-center gap-1"></div>

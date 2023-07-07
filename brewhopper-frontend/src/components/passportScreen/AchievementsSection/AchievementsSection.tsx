@@ -1,3 +1,4 @@
+import { FaAward } from "react-icons/fa";
 import { useGetAchievementsQuery } from "../../../slices/achievementSlice";
 import { FullPageLoader } from "../../elements";
 
@@ -29,16 +30,41 @@ export function AchievementsSection({ userPassportData }: any) {
   }
 
   return (
-    <div className="flex gap-2 mt-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
       {achievements?.map((achievement: any) => {
         return (
           <div
             key={achievement._id}
-            className="p-2 border-2 border-base-200 shadow"
+            className="p-2 border-2 border-base-200 rounded-lg shadow"
           >
-            <div>{achievement.name}</div>
+            <div className="flex items-start gap-2">
+              {/* <div className="bg-primary  h-24 w-24"></div> */}
+              <div className=" flex flex-col h-24 w-full ">
+                <div className="text-xl font-bold">{achievement.name}</div>
+                <div className="flex-grow text-sm ">
+                  {achievement.description}
+                </div>
+                <div className="flex justify-between">
+                  <div className="font-bold ">
+                    {countMatchingItems(
+                      achievement.achivementBreweries,
+                      uniqueUserBreweriesVisited
+                    )}{" "}
+                    / {achievement.achivementBreweries.length} completed
+                  </div>
+                  <button>See Breweries</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
-            <div>
+{
+  /* <div>
               {achievement?.achivementBreweries?.map((brewery: any) => {
                 return (
                   <div className="text-xs" key={brewery._id}>
@@ -46,17 +72,5 @@ export function AchievementsSection({ userPassportData }: any) {
                   </div>
                 );
               })}
-            </div>
-            <div className="font-bold ">
-              {countMatchingItems(
-                achievement.achivementBreweries,
-                uniqueUserBreweriesVisited
-              )}{" "}
-              out of {achievement.achivementBreweries.length} completed
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
+            </div> */
 }
