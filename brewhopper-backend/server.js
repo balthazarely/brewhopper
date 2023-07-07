@@ -14,6 +14,7 @@ import passportRoutes from "./routes/passportRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import uploadRoutesCloudinary from "./routes/uploadRoutesCloudinary.js";
 import beerReviewRoutes from "./routes/beerReviewRoutes.js";
+import achievementsRoutes from "./routes/achievementsRoutes.js";
 
 dotenv.config();
 const port = process.env.PORT || 5001;
@@ -40,10 +41,9 @@ app.use("/api/breweries", breweryRoutes);
 app.use("/api/beer", beerRoutes);
 app.use("/api/beer-review", beerReviewRoutes);
 app.use("/api/passport", passportRoutes);
+app.use("/api/achievements", achievementsRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/upload-cloud", uploadRoutesCloudinary);
-
-//// END NEW
 
 const __dirname = path.resolve();
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));

@@ -1,11 +1,7 @@
 import { useDeleteBeerMutation } from "../../../slices/beerSlice";
-import {
-  AddBeerModal,
-  ConfirmActionModal,
-  EditBeerModal,
-} from "../../../components/adminScreen/modals";
+import { AddBeerModal, ConfirmActionModal, EditBeerModal } from "../modals";
 import { useState } from "react";
-import { AdminBeerCard } from "../../../components/adminScreen";
+import { AdminBeerCard } from "..";
 import { Beer } from "../../../types";
 
 interface AdminBeerPanelProps {

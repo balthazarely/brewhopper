@@ -3,7 +3,7 @@ import { Cloudinary } from "@cloudinary/url-gen";
 import { fit } from "@cloudinary/url-gen/actions/resize";
 
 interface CloudImageProps {
-  image: string;
+  image?: string;
   height: number;
   width: number;
   classes?: string;
@@ -19,7 +19,6 @@ export function CloudImage({ image, height, width, classes }: CloudImageProps) {
   const myImage = cld.image(image);
   myImage.resize(fit().width(width).height(height));
 
-  // .quality(50);
   return (
     <AdvancedImage cldImg={myImage} className={`h-full w-full ${classes}`} />
   );

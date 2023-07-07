@@ -1,9 +1,4 @@
-import {
-  BEER_REVIEW_URL,
-  BEER_URL,
-  BREWERY_URL,
-  UPLOAD_URL,
-} from "../constants";
+import { BEER_REVIEW_URL, BEER_URL } from "../constants";
 import { apiSlice } from "./apiSlice";
 
 export const beerApiSlice = apiSlice.injectEndpoints({

@@ -5,7 +5,6 @@ import {
   useUploadProductImageCloudinaryMutation,
 } from "../../slices/brewerySlice";
 import {
-  CloudImage,
   FullPageLoader,
   PageHeader,
   PageWrapper,
