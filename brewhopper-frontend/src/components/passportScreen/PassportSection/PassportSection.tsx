@@ -7,11 +7,12 @@ import {
 import { ConfirmActionModal } from "../../modals";
 import { FullPageLoader } from "../../elements";
 
-export function PassportSection() {
+export function PassportSection({
+  userPassportData,
+  loadingUserPassportData,
+}: any) {
   const [deletePassportBrewery, { isLoading: loadingDelete }] =
     useDeletePassportBreweryMutation({});
-  const { data: userPassportData, isLoading: loadingUserPassportData } =
-    useGetUserProfileQuery({});
 
   const [confrimActionModalOpen, setConfrimActionModalOpen] = useState(false);
   const [passportForDeletion, setPassportForDeletion] = useState({
