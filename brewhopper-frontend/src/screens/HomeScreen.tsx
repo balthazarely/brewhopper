@@ -9,9 +9,13 @@ import { CheckInModal } from "../components/breweryScreen";
 export default function HomeScreen() {
   return (
     <PageWrapper>
-      <div className="text-3xl font-bold">Welcome to Brew Hopper</div>
+      <div className="text-3xl mt-8 font-bold text-center">
+        Welcome to Brew Hopper
+      </div>
       <div className="mt-32">
-        <div className="text-center text-xl mb-2">Breweries Close By</div>
+        <div className="text-center text-lg font-bold mb-2">
+          Breweries Close By
+        </div>
         <div>
           <CloseBreweriesCards />
         </div>

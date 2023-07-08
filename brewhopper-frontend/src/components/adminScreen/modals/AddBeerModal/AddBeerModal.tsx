@@ -38,7 +38,6 @@ export function AddBeerModal({
   const {
     register,
     handleSubmit,
-
     formState: { errors },
   } = useForm<Inputs>();
 

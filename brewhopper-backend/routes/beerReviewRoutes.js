@@ -5,6 +5,7 @@ import {
   deleteReview,
   getAllReviewsByUser,
   getReviewsForBeerByUser,
+  updateBeerReview,
 } from "../controllers/beerReviewController.js";
 
 const router = Router();
@@ -16,6 +17,7 @@ router
 router
   .route("/:id")
   .get(protect, getReviewsForBeerByUser)
+  .put(protect, updateBeerReview)
   .delete(protect, deleteReview);
 
 export default router;

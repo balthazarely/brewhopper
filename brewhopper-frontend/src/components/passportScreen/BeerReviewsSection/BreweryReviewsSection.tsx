@@ -7,6 +7,7 @@ import { ConfirmActionModal } from "../../modals";
 import { FullPageLoader } from "../../elements";
 import { BeerReviewsFilterPanel } from "../BeerReviewsFilterPanel";
 import { BeerReviewCard } from "../BeerReviewCard";
+import { BeerReviewEditModal } from "..";
 
 interface ReviewForDeletionType {
   id: string;
@@ -31,6 +32,9 @@ export function BeerReviewsSection() {
       beerId: "",
       name: "",
     });
+  const [reviewForEdit, setReviewForEdit] = useState<any>(null);
+  const [reviewEditModalOpen, setReviewEditModalOpen] =
+    useState<boolean>(false);
 
   const deleteReview = async () => {
     await deleteUserReviews({
@@ -49,6 +53,11 @@ export function BeerReviewsSection() {
       selectedFilter.brewery.includes(review.breweryName);
     return beerStyleFilter && breweryFilter;
   });
+
+  const handleEditReview = (review: any) => {
+    setReviewForEdit(review);
+    setReviewEditModalOpen(true);
+  };
 
   if (loadingUserReviewData) {
     return <FullPageLoader classes="h-56" />;
@@ -81,11 +90,18 @@ export function BeerReviewsSection() {
                 key={reviewItem._id}
                 setReviewForDeletion={setReviewForDeletion}
                 setConfrimActionModalOpen={setConfrimActionModalOpen}
+                handleEditReview={handleEditReview}
               />
             );
           })}
         </div>
       </div>
+      <BeerReviewEditModal
+        reviewEditModalOpen={reviewEditModalOpen}
+        setReviewEditModalOpen={setReviewEditModalOpen}
+        reviewForEdit={reviewForEdit}
+        setReviewForEdit={setReviewForEdit}
+      />
 
       <ConfirmActionModal
         message={`Are you sure you want to delete review for ${reviewForDeletion.name}?`}

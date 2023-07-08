@@ -7,6 +7,7 @@ export function BeerReviewCard({
   review,
   setReviewForDeletion,
   setConfrimActionModalOpen,
+  handleEditReview,
 }: any) {
   const number = 5;
   const iterableArray = Array.from({ length: number }, (_, index) => index);
@@ -73,7 +74,10 @@ export function BeerReviewCard({
             >
               Delete
             </button>
-            <button disabled className="btn btn-xs join-item">
+            <button
+              onClick={() => handleEditReview(review)}
+              className="btn btn-xs join-item"
+            >
               Edit
             </button>
           </div>

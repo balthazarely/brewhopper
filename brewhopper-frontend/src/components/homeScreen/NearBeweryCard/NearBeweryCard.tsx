@@ -12,7 +12,7 @@ export function NearBeweryCard({ brewery, handleCheckIn }: any) {
           height={200}
         />
         <div
-          className={`badge capitalize absolute right-2 top-2 badge  ${
+          className={`capitalize absolute right-2 top-2 badge  ${
             brewery.type === "brewery" && "badge-primary"
           } ${brewery.type === "winery" && "badge-warning"}`}
         >
@@ -21,7 +21,7 @@ export function NearBeweryCard({ brewery, handleCheckIn }: any) {
       </div>
       <div className="my-4 flex justify-center items-center flex-col ">
         <Link
-          className="font-extrabold text-xl text-center cursor-pointer"
+          className="font-extrabold text-md text-center cursor-pointer"
           to={`/brewery/${brewery._id}`}
         >
           {brewery.name}
@@ -29,7 +29,7 @@ export function NearBeweryCard({ brewery, handleCheckIn }: any) {
 
         <button
           onClick={() => handleCheckIn(brewery)}
-          className="btn btn-primary  mt-2 w-full "
+          className="btn btn-primary  mt-3 w-full "
         >
           Check In
         </button>

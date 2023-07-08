@@ -4,3 +4,4 @@ export { BeerReviewsSection } from "./BeerReviewsSection";
 export { BeerReviewCard } from "./BeerReviewCard";
 export { BeerReviewFilter } from "./BeerReviewFilter";
 export { AchievementBreweryModal } from "./AchievementBreweryModal";
+export { BeerReviewEditModal } from "./BeerReviewEditModal";

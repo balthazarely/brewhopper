@@ -17,6 +17,14 @@ export const passportApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 5,
       providesTags: ["Passport"],
     }),
+    updateUserReview: builder.mutation({
+      query: (body) => ({
+        url: `${BEER_REVIEW_URL}/${body._id}`,
+        method: "PUT",
+        body: body,
+      }),
+      invalidatesTags: ["Passport"],
+    }),
     deleteUserReviews: builder.mutation({
       query: (body) => ({
         url: `${BEER_REVIEW_URL}/${body._id}`,
@@ -47,6 +55,7 @@ export const passportApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetUserProfileQuery,
   useGetUserReviewsQuery,
+  useUpdateUserReviewMutation,
   useDeleteUserReviewsMutation,
   useAddPassportBreweryMutation,
   useDeletePassportBreweryMutation,

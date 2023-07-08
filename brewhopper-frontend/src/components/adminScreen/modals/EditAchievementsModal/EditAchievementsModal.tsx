@@ -68,7 +68,6 @@ export function EditAchievementsModal({
       user: userInfo?._id,
       id: achievementToEdit?._id,
     };
-    console.log(newAchievement);
 
     try {
       await updateAchievement(newAchievement);

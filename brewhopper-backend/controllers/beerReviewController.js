@@ -36,6 +36,20 @@ const addBeerReview = asyncHandler(async (req, res) => {
   res.json(updatedData);
 });
 
+const updateBeerReview = asyncHandler(async (req, res) => {
+  const { stars, review } = req.body;
+  const reviewToEdit = await BeerReviews.findById(req.params.id);
+  if (reviewToEdit) {
+    reviewToEdit.review = review;
+    reviewToEdit.stars = stars;
+    const newReview = await reviewToEdit.save();
+    res.json(newReview);
+  } else {
+    res.status(404);
+    throw new Error("resrouce not found");
+  }
+});
+
 const deleteReview = asyncHandler(async (req, res) => {
   const { beerId } = req.body;
   const reviewToDelete = await BeerReviews.findById(req.params.id);
@@ -43,6 +57,7 @@ const deleteReview = asyncHandler(async (req, res) => {
     await reviewToDelete.deleteOne();
     console.log("Review removed successfully");
   } else {
+    ß;
     console.log("Review not found");
   }
   const beer = await Beer.findById(beerId);
@@ -88,4 +103,5 @@ export {
   deleteReview,
   getAllReviewsByUser,
   getReviewsForBeerByUser,
+  updateBeerReview,
 };
