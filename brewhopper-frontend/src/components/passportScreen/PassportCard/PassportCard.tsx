@@ -20,8 +20,9 @@ export function PassportCard({
 }: any) {
   return (
     <div className={`flex flex-col gap-1 p-2 rounded-lg shadow`}>
-      <div className="w-full flex justify-center items-center overflow-hidden  bg-gray-300 rounded-lg relative">
+      <div className="w-full h-44  flex justify-center items-center overflow-hidden  bg-gray-300 rounded-lg relative">
         <CloudImage
+          classes=" object-cover "
           image={breweryVisitInfo?.brewery?.image}
           width={400}
           height={300}

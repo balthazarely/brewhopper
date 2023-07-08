@@ -11,8 +11,10 @@ export default function HomeScreen() {
     <PageWrapper>
       <div className="text-3xl font-bold">Welcome to Brew Hopper</div>
       <div className="mt-32">
-        <div className="text-center">What's close?</div>
-        <CloseBreweriesCards />
+        <div className="text-center text-xl mb-2">Breweries Close By</div>
+        <div>
+          <CloseBreweriesCards />
+        </div>
       </div>
     </PageWrapper>
   );
@@ -68,7 +70,7 @@ export default function HomeScreen() {
       );
     }
     return (
-      <div className="grid grid-cols-3 gap-4 px-4 ">
+      <div className="flex justify-center">
         {sortedBreweries?.map((brewery: Brewery) => {
           return (
             <NearBeweryCard handleCheckIn={handleCheckIn} brewery={brewery} />
@@ -76,6 +78,7 @@ export default function HomeScreen() {
         })}
 
         <CheckInModal
+          isBreweryInProximity={true}
           brewery={checkInBrewries}
           checkInModalOpen={checkInModalOpen}
           setCheckInModalOpen={setCheckInModalOpen}

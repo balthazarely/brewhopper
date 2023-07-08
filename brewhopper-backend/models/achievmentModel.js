@@ -21,10 +21,6 @@ const achievementModelSchema = mongoose.Schema(
         ref: "Brewery",
       },
     ],
-    // achivementBeers: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "Beer",
-    // },
   },
   {
     timestamps: true,

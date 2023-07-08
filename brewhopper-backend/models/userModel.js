@@ -21,6 +21,18 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
+    coupons: [
+      {
+        achievement: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Achievement",
+        },
+        isCompleted: {
+          type: Boolean,
+          default: true,
+        },
+      },
+    ],
     breweriesVisited: [
       {
         brewery: {

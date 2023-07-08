@@ -1,5 +1,6 @@
 import User from "../models/userModel.js";
 import asyncHandler from "../middleware/asyncHandler.js";
+import Achievement from "../models/achievmentModel.js";
 
 const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id)
@@ -34,6 +35,7 @@ const addBeerToPassport = asyncHandler(async (req, res) => {
       beers: beers,
       timestamp: new Date(),
     });
+
     const updatedUser = await user.save();
     res.json(updatedUser);
   }

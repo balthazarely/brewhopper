@@ -1,5 +1,5 @@
 import { HiX } from "react-icons/hi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useAddPassportBreweryMutation,
   useGetUserReviewsQuery,
@@ -12,6 +12,7 @@ import { CloudImage } from "../../elements";
 
 interface CheckInModalProps {
   brewery: Brewery;
+  isBreweryInProximity: boolean;
   checkInModalOpen: boolean;
   setCheckInModalOpen: (state: boolean) => void;
 }
@@ -19,6 +20,7 @@ interface CheckInModalProps {
 export function CheckInModal({
   brewery,
   checkInModalOpen,
+  isBreweryInProximity = false,
   setCheckInModalOpen,
 }: CheckInModalProps) {
   const [addPassportBrewery, { isLoading: loadingAddPassport }] =
@@ -29,6 +31,12 @@ export function CheckInModal({
   const [checkInStage, setCheckInStage] = useState<string>("code");
   const [selectedBeer, setSelectedBeer] = useState<Beer[] | []>([]);
 
+  useEffect(() => {
+    if (isBreweryInProximity) {
+      setCheckInStage("beer");
+    }
+  }, []);
+
   const resetModalForm = () => {
     setCheckInModalOpen(false);
     setTimeout(() => {
@@ -38,10 +46,10 @@ export function CheckInModal({
   };
 
   async function checkInToBrewery(addBeers: boolean = true) {
-    await addPassportBrewery({
+    const addToPassport = await addPassportBrewery({
       breweryId: brewery?._id,
       beers: addBeers ? selectedBeer : [],
-    });
+    }).unwrap();
     setCheckInStage("done");
   }
 
@@ -73,6 +81,7 @@ export function CheckInModal({
                 )}
                 {checkInStage === "beer" && (
                   <MiniBeerSelector
+                    isBreweryInProximity={isBreweryInProximity}
                     selectedBeer={selectedBeer}
                     setSelectedBeer={setSelectedBeer}
                     beers={brewery.beers}
@@ -144,6 +153,7 @@ function MiniBeerSelector({
   setCheckInStage,
   checkInToBrewery,
   loadingAddPassport,
+  isBreweryInProximity,
 }: {
   beers: Beer[] | undefined;
   selectedBeer: Beer[];
@@ -151,6 +161,7 @@ function MiniBeerSelector({
   setCheckInStage: (stage: string) => void;
   checkInToBrewery: (addBeers?: boolean) => void;
   loadingAddPassport: boolean;
+  isBreweryInProximity: boolean;
 }) {
   const handleSelectBeers = (newBeer: Beer) => {
     const doesBeerExist = selectedBeer.some(
@@ -168,13 +179,15 @@ function MiniBeerSelector({
 
   return (
     <div className=" flex w-full flex-col items-center justify-between h-80">
-      <button
-        onClick={() => setCheckInStage("code")}
-        className="absolute top-4 left-4 btn btn-xs btn-ghost"
-      >
-        <HiArrowLeft />
-        Back
-      </button>
+      {!isBreweryInProximity && (
+        <button
+          onClick={() => setCheckInStage("code")}
+          className="absolute top-4 left-4 btn btn-xs btn-ghost"
+        >
+          <HiArrowLeft />
+          Back
+        </button>
+      )}
       <div className="text-xl font-bold">Select Beers</div>
       <div
         className=" w-full my-2  overflow-y-scroll"

@@ -1,10 +1,16 @@
 import { FaAward } from "react-icons/fa";
 import { useGetAchievementsQuery } from "../../../slices/achievementSlice";
 import { FullPageLoader } from "../../elements";
+import { AchievementBreweryModal } from "..";
+import { useState } from "react";
 
 export function AchievementsSection({ userPassportData }: any) {
   const { data: achievements, isLoading: achievementsLoading } =
     useGetAchievementsQuery({});
+
+  const [achievementToPreview, setAchievementToPreview] = useState<any>(null);
+  const [achievementPreviewModalOpen, setAchievementPreviewModalOpen] =
+    useState<boolean>(false);
 
   const userBreweriesVisited = userPassportData?.breweriesVisited?.map(
     (breweryVisit: any) => {
@@ -52,25 +58,26 @@ export function AchievementsSection({ userPassportData }: any) {
                     )}{" "}
                     / {achievement.achivementBreweries.length} completed
                   </div>
-                  <button>See Breweries</button>
+                  <button
+                    onClick={() => {
+                      setAchievementToPreview(achievement);
+                      setAchievementPreviewModalOpen(true);
+                    }}
+                    className="btn btn-xs"
+                  >
+                    See Breweries
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         );
       })}
+      <AchievementBreweryModal
+        achievementToPreview={achievementToPreview}
+        achievementPreviewModalOpen={achievementPreviewModalOpen}
+        setAchievementPreviewModalOpen={setAchievementPreviewModalOpen}
+      />
     </div>
   );
-}
-
-{
-  /* <div>
-              {achievement?.achivementBreweries?.map((brewery: any) => {
-                return (
-                  <div className="text-xs" key={brewery._id}>
-                    {brewery.name}
-                  </div>
-                );
-              })}
-            </div> */
 }

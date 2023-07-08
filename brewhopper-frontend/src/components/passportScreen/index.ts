@@ -3,3 +3,4 @@ export { PassportSection } from "./PassportSection";
 export { BeerReviewsSection } from "./BeerReviewsSection";
 export { BeerReviewCard } from "./BeerReviewCard";
 export { BeerReviewFilter } from "./BeerReviewFilter";
+export { AchievementBreweryModal } from "./AchievementBreweryModal";
