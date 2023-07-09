@@ -34,6 +34,35 @@ export const breweryApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Achievements"],
     }),
+    getUserCoupons: builder.query({
+      query: () => ({
+        url: `${ACHIEVEMENTS_URL}/coupon`,
+      }),
+      keepUnusedDataFor: 5,
+      providesTags: ["Achievements"],
+    }),
+    getCouponById: builder.query({
+      query: (couponId) => ({
+        url: `${ACHIEVEMENTS_URL}/coupon/${couponId}`,
+      }),
+      keepUnusedDataFor: 5,
+      providesTags: ["Achievements"],
+    }),
+    createCoupon: builder.mutation({
+      query: (data) => ({
+        url: `${ACHIEVEMENTS_URL}/coupon`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Achievements"],
+    }),
+    redeemCoupon: builder.mutation({
+      query: (couponId) => ({
+        url: `${ACHIEVEMENTS_URL}/coupon/${couponId}`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["Achievements"],
+    }),
   }),
 });
 
@@ -42,4 +71,8 @@ export const {
   useAddAchievementMutation,
   useUpdateAchievementMutation,
   useDeleteAchievementMutation,
+  useGetUserCouponsQuery,
+  useCreateCouponMutation,
+  useGetCouponByIdQuery,
+  useRedeemCouponMutation,
 } = breweryApiSlice;

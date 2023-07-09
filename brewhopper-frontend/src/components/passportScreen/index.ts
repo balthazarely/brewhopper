@@ -5,3 +5,4 @@ export { BeerReviewCard } from "./BeerReviewCard";
 export { BeerReviewFilter } from "./BeerReviewFilter";
 export { AchievementBreweryModal } from "./AchievementBreweryModal";
 export { BeerReviewEditModal } from "./BeerReviewEditModal";
+export { CouponModal } from "./CouponModal";

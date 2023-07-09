@@ -70,6 +70,7 @@ export function AddAchievementsModal({
   const formFeilds: FormFieldType[] = [
     { name: "name", type: "text", fullWidth: true },
     { name: "description", type: "text", fullWidth: true },
+    { name: "prize", type: "text", fullWidth: true },
   ];
 
   const handleSelectBrewery = (brewery: Brewery) => {

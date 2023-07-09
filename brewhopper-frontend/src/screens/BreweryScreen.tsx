@@ -30,8 +30,8 @@ export default function BreweryScreen() {
     <>
       <div className="w-full">
         <HeroBanner classes="object-cover" image={brewery?.image} />
-        <PageWrapper classname="max-w-4xl w-full transform -translate-y-12">
-          <div className="border-2 border-base-200 shadow-lg overflow-hidden p-2 w-36 bg-white h-36">
+        <PageWrapper classname="max-w-4xl w-full transform -translate-y-24">
+          <div className="border-2 ml-8 border-base-200 shadow-lg overflow-hidden p-2 w-36 bg-white h-36">
             <CloudImage
               classes="object-contain"
               image={brewery?.logoImage}
@@ -41,7 +41,7 @@ export default function BreweryScreen() {
           </div>
         </PageWrapper>
 
-        <PageWrapper classname="max-w-4xl w-full">
+        <PageWrapper classname="max-w-4xl w-full -mt-16 px-4">
           <div className="flex items-center justify-between  mb-4 gap-8 ">
             <div className="text-2xl font-bold">{brewery.name}</div>
             <div>

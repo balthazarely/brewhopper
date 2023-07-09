@@ -34,7 +34,10 @@ export function AchievementBreweryModal({
             <div className="mb-2 font-bold text-xl">Breweries</div>
             {achievementToPreview?.achivementBreweries?.map((brewery: any) => {
               return (
-                <div className="flex border-b-2  items-center gap-4 mb-2">
+                <div
+                  key={brewery._id}
+                  className="flex border-b-2  items-center gap-4 mb-2"
+                >
                   <div className=" w-12 h-12">
                     <CloudImage
                       classes="object-contain"

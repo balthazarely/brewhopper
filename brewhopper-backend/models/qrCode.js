@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const achievementModelSchema = mongoose.Schema(
+const qrCodeSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -31,5 +31,5 @@ const achievementModelSchema = mongoose.Schema(
   }
 );
 
-const Achievement = mongoose.model("Achievement", achievementModelSchema);
-export default Achievement;
+const QRCode = mongoose.model("QRCode", qrCodeSchema);
+export default QRCode;

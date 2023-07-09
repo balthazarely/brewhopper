@@ -46,7 +46,7 @@ export function PassportSection({
         {userPassportData?.breweriesVisited?.map((brewery: any) => {
           return (
             <PassportCard
-              key={brewery.id}
+              key={brewery._id}
               brewery={brewery}
               deletePassportItem={deletePassportItem}
               setPassportForDeletion={setPassportForDeletion}
