@@ -36,11 +36,12 @@ export function Navbar() {
           className="text-2xl font-bold text-accent-content flex items-center"
         >
           <TbBeer className="text-4xl" />
+          Bend
           <span className="text-primary">Brew</span>Hopper
         </Link>
         <div className="flex items-center gap-2">
           <Link to="/map" className="btn btn-ghost btn-sm capitalize">
-            Map
+            Brewery Map
           </Link>
           <Link to="/passport" className="btn btn-ghost btn-sm capitalize">
             My Passport

@@ -249,9 +249,9 @@ export function AdminBreweryInfo({
             <label htmlFor="logo" className="capitalize text-sm">
               Logo
             </label>
-            <div className="mt-4 w-72 object-contain flex justify-center items-center overflow-hidden border-2 h-40">
+            <div className="mt-4  w-24 flex justify-center items-center overflow-hidden ">
               {previewUrlLogo ? (
-                <img src={previewUrlLogo} alt="Preview" className="h-44" />
+                <img src={previewUrlLogo} alt="Preview" className="" />
               ) : (
                 <CloudImage
                   classes="object-contain"
@@ -263,7 +263,7 @@ export function AdminBreweryInfo({
             </div>
           </div>
 
-          <div className={`flex flex-col col-span-2 mt-6`}>
+          <div className={`flex flex-col col-span-2 `}>
             <input
               id="logo"
               type="file"

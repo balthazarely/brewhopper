@@ -35,6 +35,8 @@ export function AchievementsSection({ userPassportData }: any) {
     return <FullPageLoader classes="h-56" />;
   }
 
+  console.log(achievements);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
       {achievements?.map((achievement: any) => {
@@ -44,7 +46,6 @@ export function AchievementsSection({ userPassportData }: any) {
             className="p-2 border-2 border-base-200 rounded-lg shadow"
           >
             <div className="flex items-start gap-2">
-              {/* <div className="bg-primary  h-24 w-24"></div> */}
               <div className=" flex flex-col h-24 w-full ">
                 <div className="text-xl font-bold">{achievement.name}</div>
                 <div className="flex-grow text-sm ">

@@ -24,7 +24,7 @@ export function AdminBeerCard({
       <div className="w-32 flex justify-center items-center h-32 overflow-hidden  mt-2 rounded-lg relative">
         <CloudImage
           classes="object-contain"
-          image={beer.image}
+          image={beer.image ? beer.image : "beer-image-1688862256255"}
           width={120}
           height={120}
         />

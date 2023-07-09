@@ -13,7 +13,7 @@ const beerSchema = mongoose.Schema(
     },
     description: {
       type: String,
-      required: true,
+      // required: true,
     },
     style: {
       type: String,
@@ -25,7 +25,7 @@ const beerSchema = mongoose.Schema(
     },
     ibu: {
       type: Number,
-      required: true,
+      // required: true,
     },
     breweryId: {
       type: mongoose.Schema.Types.ObjectId,

@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { useAddBeerMutation } from "../../../../slices/beerSlice";
 import { useUploadProductImageCloudinaryMutation } from "../../../../slices/brewerySlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { HiX } from "react-icons/hi";
@@ -35,9 +35,15 @@ export function AddBeerModal({
     ibu: number;
   };
 
+  useEffect(() => {
+    reset();
+    setPreviewUrl("");
+  }, [addBeerModalOpen]);
+
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<Inputs>();
 
@@ -118,7 +124,7 @@ export function AddBeerModal({
 
               <div className={`flex flex-col col-span-2`}>
                 <label htmlFor="description" className="capitalize text-sm">
-                  description <span className="text-error">*</span>
+                  description
                 </label>
                 <input
                   type="text"
@@ -126,9 +132,7 @@ export function AddBeerModal({
                     errors.description ? "input-error" : ""
                   }
   `}
-                  {...register("description", {
-                    required: true,
-                  })}
+                  {...register("description")}
                 />
               </div>
 
@@ -167,7 +171,7 @@ export function AddBeerModal({
 
               <div className={`flex flex-col col-span-1`}>
                 <label htmlFor="ibu" className="capitalize text-sm">
-                  ibu <span className="text-error">*</span>
+                  ibu
                 </label>
                 <input
                   type="number"
@@ -176,9 +180,7 @@ export function AddBeerModal({
                     errors.ibu ? "input-error" : ""
                   }
   `}
-                  {...register("ibu", {
-                    required: true,
-                  })}
+                  {...register("ibu")}
                 />
               </div>
 

@@ -146,7 +146,7 @@ export function EditBeerModal({
 
                 <div className={`flex flex-col col-span-2`}>
                   <label htmlFor="description" className="capitalize text-sm">
-                    description <span className="text-error">*</span>
+                    description
                   </label>
                   <input
                     id="description"
@@ -156,9 +156,7 @@ export function EditBeerModal({
                       errors.description ? "input-error" : ""
                     }
   `}
-                    {...register("description", {
-                      required: true,
-                    })}
+                    {...register("description")}
                   />
                 </div>
 
@@ -200,7 +198,7 @@ export function EditBeerModal({
 
                 <div className={`flex flex-col col-span-1`}>
                   <label htmlFor="ibu" className="capitalize text-sm">
-                    ibu <span className="text-error">*</span>
+                    ibu
                   </label>
                   <input
                     type="number"
@@ -209,9 +207,7 @@ export function EditBeerModal({
                     className={`input input-bordered input-sm w-full ${
                       errors.ibu ? "input-error" : ""
                     }`}
-                    {...register("ibu", {
-                      required: true,
-                    })}
+                    {...register("ibu")}
                   />
                 </div>
 

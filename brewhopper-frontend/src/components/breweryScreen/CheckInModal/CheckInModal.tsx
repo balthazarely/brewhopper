@@ -12,7 +12,7 @@ import { CloudImage } from "../../elements";
 
 interface CheckInModalProps {
   brewery: Brewery;
-  isBreweryInProximity: boolean;
+  isBreweryInProximity?: boolean;
   checkInModalOpen: boolean;
   setCheckInModalOpen: (state: boolean) => void;
 }
@@ -40,13 +40,17 @@ export function CheckInModal({
   const resetModalForm = () => {
     setCheckInModalOpen(false);
     setTimeout(() => {
-      setCheckInStage("code");
+      if (isBreweryInProximity) {
+        setCheckInStage("beer");
+      } else {
+        setCheckInStage("code");
+      }
       setSelectedBeer([]);
     }, 200);
   };
 
   async function checkInToBrewery(addBeers: boolean = true) {
-    const addToPassport = await addPassportBrewery({
+    await addPassportBrewery({
       breweryId: brewery?._id,
       beers: addBeers ? selectedBeer : [],
     }).unwrap();
@@ -178,7 +182,7 @@ function MiniBeerSelector({
   };
 
   return (
-    <div className=" flex w-full flex-col items-center justify-between h-80">
+    <div className=" flex w-full flex-col items-center justify-between h-96">
       {!isBreweryInProximity && (
         <button
           onClick={() => setCheckInStage("code")}
@@ -190,12 +194,12 @@ function MiniBeerSelector({
       )}
       <div className="text-xl font-bold">Select Beers</div>
       <div
-        className=" w-full my-2  overflow-y-scroll"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(80px, 1fr))",
-          gridGap: "1rem",
-        }}
+        className=" w-full  overflow-y-scroll grid grid-cols-2 my-8"
+        // style={{
+        //   display: "grid",
+        //   gridTemplateColumns: "repeat(auto-fit, minmax(80px, 1fr))",
+        //   gridGap: "1rem",
+        // }}
       >
         {beers?.map((beer: Beer) => {
           const isBeerInArr = selectedBeer.some(

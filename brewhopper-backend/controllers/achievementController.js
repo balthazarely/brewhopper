@@ -6,7 +6,7 @@ const getAllAchievements = asyncHandler(async (req, res) => {
   const achievements = await Achievement.find({})
     .populate({
       path: "achivementBreweries",
-      select: ["name", "_id"],
+      select: ["name", "_id", "logoImage"],
     })
     .exec();
   res.status(200).json(achievements);

@@ -3,7 +3,7 @@ import { CloudImage } from "../../elements";
 
 export function NearBeweryCard({ brewery, handleCheckIn }: any) {
   return (
-    <div className={` flex flex-col  p-2  rounded-lg shadow  `}>
+    <div className={` flex flex-col  p-2    rounded-lg shadow-xl  `}>
       <div className=" w-80  max-h-44 h-full flex justify-center items-center overflow-hidden  bg-gray-300 rounded-lg relative">
         <CloudImage
           classes="object-cover"
@@ -19,9 +19,9 @@ export function NearBeweryCard({ brewery, handleCheckIn }: any) {
           {brewery.type}
         </div>
       </div>
-      <div className="my-4 flex justify-center items-center flex-col ">
+      <div className=" flex justify-center items-center flex-col ">
         <Link
-          className="font-extrabold text-md text-center cursor-pointer"
+          className="font-extrabold text-lg my-3 text-center cursor-pointer"
           to={`/brewery/${brewery._id}`}
         >
           {brewery.name}
@@ -29,7 +29,7 @@ export function NearBeweryCard({ brewery, handleCheckIn }: any) {
 
         <button
           onClick={() => handleCheckIn(brewery)}
-          className="btn btn-primary  mt-3 w-full "
+          className="btn btn-primary   w-full "
         >
           Check In
         </button>
