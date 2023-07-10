@@ -1,6 +1,6 @@
 import { ToastContainer } from "react-toastify";
 import "./App.css";
-import { Outlet } from "react-router-dom";
+// import { Outlet } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { Navbar } from "./components/layout";
 
