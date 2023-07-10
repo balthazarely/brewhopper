@@ -45,18 +45,18 @@ app.use("/api/achievements", achievementsRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/upload-cloud", uploadRoutesCloudinary);
 
-if (process.env.NODE_ENV === "production") {
-  const __dirname = path.resolve();
+// if (process.env.NODE_ENV === "production") {
+//   const __dirname = path.resolve();
 
-  app.use(
-    express.static(path.resolve(__dirname, "./brewhopper-frontend/dist"))
-  );
-  app.get("*", (req, res) => {
-    res.sendFile(
-      path.resolve(__dirname, "./brewhopper-frontend/dist", "index.html")
-    );
-  });
-}
+//   app.use(
+//     express.static(path.resolve(__dirname, "./brewhopper-frontend/dist"))
+//   );
+//   app.get("*", (req, res) => {
+//     res.sendFile(
+//       path.resolve(__dirname, "./brewhopper-frontend/dist", "index.html")
+//     );
+//   });
+// }
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
