@@ -5,14 +5,14 @@ export default {
     extend: {},
   },
   plugins: [],
-  plugins: [require("daisyui")],
-  daisyui: {
-    themes: [
-      {
-        lemonade: {
-          ...require("daisyui/src/theming/themes")["[data-theme=lemonade]"],
-        },
-      },
-    ],
-  },
+  // plugins: [require("daisyui")],
+  // daisyui: {
+  //   themes: [
+  //     {
+  //       lemonade: {
+  //         ...require("daisyui/src/theming/themes")["[data-theme=lemonade]"],
+  //       },
+  //     },
+  //   ],
+  // },
 };
