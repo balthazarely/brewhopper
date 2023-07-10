@@ -45,19 +45,20 @@ app.use("/api/achievements", achievementsRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/upload-cloud", uploadRoutesCloudinary);
 
-// if (process.env.NODE_ENV === "production") {
-//   const __dirname = path.resolve();
+if (process.env.NODE_ENV === "production") {
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(__dirname, "/brewhopper-frontend/dist")));
 
-//   app.use(
-//     express.static(path.resolve(__dirname, "./brewhopper-frontend/dist"))
-//   );
-//   app.get("*", (req, res) => {
-//     res.sendFile(
-//       path.resolve(__dirname, "./brewhopper-frontend/dist", "index.html")
-//     );
-//   });
-// }
-
+  app.get("*", (req, res) =>
+    res.sendFile(
+      path.resolve(__dirname, "brewhopper-frontend", "dist", "index.html")
+    )
+  );
+} else {
+  app.get("/", (req, res) => {
+    res.send(`${CLOUDINDARY_CLOUD_NAME} - API is running....`);
+  });
+}
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
