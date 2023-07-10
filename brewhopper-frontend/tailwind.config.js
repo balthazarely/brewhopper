@@ -4,16 +4,15 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [require("daisyui")],
-  daisyui: {
-    themes: [
-      {
-        lemonade: {
-          ...require("daisyui/src/theming/themes")["[data-theme=lemonade]"],
-          // primary: "#6FBD43",
-          // "primary-focus": "mediumblue",
-        },
-      },
-    ],
-  },
+  plugins: [],
+  // plugins: [require("daisyui")],
+  // daisyui: {
+  //   themes: [
+  //     {
+  //       lemonade: {
+  //         ...require("daisyui/src/theming/themes")["[data-theme=lemonade]"],
+  //       },
+  //     },
+  //   ],
+  // },
 };
