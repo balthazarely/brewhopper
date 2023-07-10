@@ -1,4 +1,7 @@
-export const BASE_URL = process.env.NODE_ENV === "development" ? "" : "";
+export const BASE_URL =
+  process.env.NODE_ENV === "development"
+    ? ""
+    : "https://brewhopper.onrender.com";
 export const BREWERY_URL = "/api/breweries";
 export const BEER_URL = "/api/beer";
 export const BEER_REVIEW_URL = "/api/beer-review";
