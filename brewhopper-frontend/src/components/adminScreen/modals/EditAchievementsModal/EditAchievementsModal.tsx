@@ -1,16 +1,9 @@
-import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
-import {
-  useCreateBreweryMutation,
-  useGetBreweriesQuery,
-} from "../../../../slices/brewerySlice";
+import { useGetBreweriesQuery } from "../../../../slices/brewerySlice";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { HiX } from "react-icons/hi";
-import {
-  useAddAchievementMutation,
-  useUpdateAchievementMutation,
-} from "../../../../slices/achievementSlice";
+import { useUpdateAchievementMutation } from "../../../../slices/achievementSlice";
 import { Brewery } from "../../../../types";
 import { useEffect, useState } from "react";
 
@@ -35,13 +28,11 @@ export function EditAchievementsModal({
   setEditAchievementModalOpen,
 }: any) {
   const { userInfo } = useSelector((state: RootState) => state.auth);
-  const [updateAchievement, { isLoading: loadingAddBeer }] =
-    useUpdateAchievementMutation({});
+  const [updateAchievement] = useUpdateAchievementMutation({});
   const [selectedBreweries, setSelectedBreweries] = useState<Brewery[] | []>(
     []
   );
-  const { data: breweries, isLoading: isLoadingBreweries } =
-    useGetBreweriesQuery({});
+  const { data: breweries } = useGetBreweriesQuery({});
 
   const {
     register,
@@ -77,16 +68,16 @@ export function EditAchievementsModal({
     }
   };
 
-  type FormFieldType = {
-    name: string;
-    type: string;
-    fullWidth: boolean;
-  };
+  // type FormFieldType = {
+  //   name: string;
+  //   type: string;
+  //   fullWidth: boolean;
+  // };
 
-  const formFeilds: FormFieldType[] = [
-    { name: "name", type: "text", fullWidth: true },
-    { name: "description", type: "text", fullWidth: true },
-  ];
+  // const formFeilds: FormFieldType[] = [
+  //   { name: "name", type: "text", fullWidth: true },
+  //   { name: "description", type: "text", fullWidth: true },
+  // ];
 
   const handleSelectBrewery = (brewery: Brewery) => {
     const doesBeerExist = selectedBreweries.some(

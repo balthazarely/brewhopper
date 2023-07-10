@@ -1,17 +1,17 @@
-import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useState, ChangeEvent, FormEvent } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { useRegisterMutation } from "../slices/usersApiSlice";
 import { setCredentials } from "../slices/authSlice";
 import { toast } from "react-toastify";
-import { RootState } from "../store";
+// import { RootState } from "../store";
 
 const RegisterScreen: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [register, { isLoading }] = useRegisterMutation();
-  const { userInfo } = useSelector((state: RootState) => state.auth);
+  // const { userInfo } = useSelector((state: RootState) => state.auth);
 
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");

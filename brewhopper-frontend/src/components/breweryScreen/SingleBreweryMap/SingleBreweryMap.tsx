@@ -1,5 +1,5 @@
-import { useRef, useEffect, useState } from "react";
-import mapboxgl, { LngLatLike, Map, Marker } from "mapbox-gl";
+import { useRef, useEffect } from "react";
+import mapboxgl, { Map } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 mapboxgl.accessToken =
@@ -13,7 +13,7 @@ interface SingleBreweryMapProps {
 export function SingleBreweryMap({ lat, long }: SingleBreweryMapProps) {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<Map | null>(null);
-  const [zoom, setZoom] = useState<number>(10);
+  // const [zoom, setZoom] = useState<number>(10);
 
   useEffect(() => {
     if (map.current) return;
@@ -25,8 +25,8 @@ export function SingleBreweryMap({ lat, long }: SingleBreweryMapProps) {
       zoom: 15,
     });
 
-    const marker = new Marker().setLngLat([long, lat]).addTo(map.current);
-  }, [long, lat, zoom]);
+    // const marker = new Marker().setLngLat([long, lat]).addTo(map.current);
+  }, [long, lat, 10]);
 
   return <div className="map-container w-full h-full" ref={mapContainer} />;
 }

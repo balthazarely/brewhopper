@@ -1,9 +1,5 @@
-import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
-import {
-  useCreateBreweryMutation,
-  useGetBreweriesQuery,
-} from "../../../../slices/brewerySlice";
+import { useGetBreweriesQuery } from "../../../../slices/brewerySlice";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { HiX } from "react-icons/hi";
@@ -35,8 +31,7 @@ export function AddAchievementsModal({
   const [selectedBreweries, setSelectedBreweries] = useState<Brewery[] | []>(
     []
   );
-  const { data: breweries, isLoading: isLoadingBreweries } =
-    useGetBreweriesQuery({});
+  const { data: breweries } = useGetBreweriesQuery({});
 
   const {
     register,

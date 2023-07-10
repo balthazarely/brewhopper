@@ -3,7 +3,6 @@ import { useGetBreweryQuery } from "../slices/brewerySlice";
 import {
   CloudImage,
   FullPageLoader,
-  PageHeader,
   PageWrapper,
 } from "../components/elements";
 import { HiLocationMarker } from "react-icons/hi";

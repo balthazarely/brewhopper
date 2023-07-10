@@ -20,9 +20,9 @@ export function AddBeerModal({
   setAddBeerModalOpen,
 }: AddBeerModalProps) {
   const { userInfo } = useSelector((state: RootState) => state.auth);
-  const [addBeer, { isLoading: loadingAddBeer }] = useAddBeerMutation({});
+  const [addBeer] = useAddBeerMutation({});
   const [uploadedImage, setUploadedImage] = useState("");
-  const [uploadProductImageCloudinary, { isLoading: loadingUploadCloud }] =
+  const [uploadProductImageCloudinary] =
     useUploadProductImageCloudinaryMutation();
   const [previewUrl, setPreviewUrl] = useState<any>("");
   const [uploadedImageLoading, setUploadedImageLoading] = useState(false);

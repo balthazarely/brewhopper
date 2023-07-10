@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { PassportCard } from "..";
-import {
-  useDeletePassportBreweryMutation,
-  useGetUserProfileQuery,
-} from "../../../slices/passportSlice";
+import { useDeletePassportBreweryMutation } from "../../../slices/passportSlice";
 import { ConfirmActionModal } from "../../modals";
 import { FullPageLoader } from "../../elements";
 

@@ -8,8 +8,7 @@ import { AchievementsSection } from "../components/passportScreen/AchievementsSe
 import { useGetUserProfileQuery } from "../slices/passportSlice";
 
 export default function PassportScreen() {
-  const { data: userPassportData, isLoading: loadingUserPassportData } =
-    useGetUserProfileQuery({});
+  const { data: userPassportData } = useGetUserProfileQuery({});
   const [activeTab, setActiveTab] = useState<string>("passport");
   return (
     <PageWrapper>

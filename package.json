@@ -11,7 +11,8 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "data:import-brewery": "node brewhopper-backend/seeder.js -brew",
     "data:import-beer": "node brewhopper-backend/seeder.js -beer",
-    "data:destroy": "node brewhopper-backend/seeder.js -destroy"
+    "data:destroy": "node brewhopper-backend/seeder.js -destroy",
+    "build": "npm install && npm install --prefix brewhopper-frontend && npm run build --prefix brewhopper-frontend"
   },
   "author": "",
   "license": "ISC",

@@ -24,7 +24,7 @@ export function EditBeerModal({
 }: AddBeerModalProps) {
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const [uploadedImage, setUploadedImage] = useState("");
-  const [updateBeer, { isLoading: loadingAddBeer }] = useUpdateBeerMutation({});
+  const [updateBeer] = useUpdateBeerMutation({});
   const [uploadProductImageCloudinary, { isLoading: loadingUploadCloud }] =
     useUploadProductImageCloudinaryMutation();
   const [previewUrl, setPreviewUrl] = useState<any>("");

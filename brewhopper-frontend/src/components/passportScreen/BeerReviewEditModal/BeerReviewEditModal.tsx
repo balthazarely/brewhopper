@@ -1,5 +1,3 @@
-import { useSelector } from "react-redux";
-// import { RootState } from "../../../../store";
 import { HiX } from "react-icons/hi";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
@@ -18,8 +16,7 @@ export function BeerReviewEditModal({
   setReviewEditModalOpen,
   setReviewForEdit,
 }: AddBeerModalProps) {
-  const [updateUserReview, { isLoading: loadingUpdateReview }] =
-    useUpdateUserReviewMutation({});
+  const [updateUserReview] = useUpdateUserReviewMutation({});
 
   type Inputs = {
     review: string;
@@ -39,8 +36,7 @@ export function BeerReviewEditModal({
   const {
     register,
     handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {

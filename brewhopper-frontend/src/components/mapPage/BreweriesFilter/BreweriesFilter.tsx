@@ -1,10 +1,5 @@
 import { PageWrapper } from "../../elements";
-import {
-  FaGlassWhiskey,
-  FaBeer,
-  FaWineGlass,
-  FaRegTimesCircle,
-} from "react-icons/fa";
+import { FaBeer, FaWineGlass } from "react-icons/fa";
 import { RiPinDistanceFill } from "react-icons/ri";
 import { UserLocation } from "../../../types";
 import { HiX } from "react-icons/hi";

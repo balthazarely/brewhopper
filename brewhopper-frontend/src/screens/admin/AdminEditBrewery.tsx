@@ -34,7 +34,7 @@ export default function AdminEditBreweryScreen() {
   const [updateBrewery] = useUpdatedBreweryMutation();
   const { id: breweryId } = useParams();
   const { data: brewery, isLoading } = useGetBreweryQuery(breweryId);
-  const [uploadProductImageCloudinary, { isLoading: loadingUploadCloud }] =
+  const [uploadProductImageCloudinary] =
     useUploadProductImageCloudinaryMutation();
 
   const [uploadedImage, setUploadedImage] = useState("");

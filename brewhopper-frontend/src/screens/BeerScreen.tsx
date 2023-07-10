@@ -4,7 +4,7 @@ import { useGetBeerQuery } from "../slices/beerSlice";
 
 export default function BeerScreen() {
   const { id } = useParams();
-  const { data: beer, isLoading, error } = useGetBeerQuery(id);
+  const { data: beer, isLoading } = useGetBeerQuery(id);
   const imageUrl = "http://localhost:5001";
 
   return (

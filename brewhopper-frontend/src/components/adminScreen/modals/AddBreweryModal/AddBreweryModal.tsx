@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useCreateBreweryMutation } from "../../../../slices/brewerySlice";
 import { useSelector } from "react-redux";
@@ -24,7 +23,6 @@ export function AddBreweryModal({
   addBreweryModalOpen,
   setAddBreweryModalOpen,
 }: any) {
-  const navigate = useNavigate();
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const [createBrewery] = useCreateBreweryMutation();
 

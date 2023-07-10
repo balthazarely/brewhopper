@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FullPageLoader, PageWrapper } from "../components/elements";
-import { calcBreweryDistance, getUserCoordinates } from "../utils/mapFunctions";
+import { calcBreweryDistance } from "../utils/mapFunctions";
 import { Brewery, UserLocation } from "../types";
 import { useGetBreweriesQuery } from "../slices/brewerySlice";
 import { NearBeweryCard } from "../components/homeScreen/NearBeweryCard";
@@ -34,7 +34,7 @@ export default function HomeScreen() {
   );
 
   function CloseBreweriesCards() {
-    const { data: breweries, isLoading } = useGetBreweriesQuery({});
+    const { data: breweries } = useGetBreweriesQuery({});
     const [userLocation, setUserLocation] = useState<UserLocation | null>(null);
     const [sortedBreweries, setSortedBreweries] = useState<any>(null);
     const [checkInBrewries, setCheckInBrewries] = useState<any>(null);
@@ -43,7 +43,7 @@ export default function HomeScreen() {
     useEffect(() => {
       const fetchUserLocation = async () => {
         try {
-          const userLocation = await getUserCoordinates();
+          // const userLocation = await getUserCoordinates();
           const testCoords = {
             latitude: 44.05960988591935,
             longitude: -121.3115202399456,

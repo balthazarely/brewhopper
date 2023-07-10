@@ -1,8 +1,6 @@
 import { convertToReadableDate } from "../../../utils/dateFuncitons";
 import { CloudImage } from "../../elements";
 
-const imageUrl = "http://localhost:5001";
-
 export function BeerReviewCard({
   review,
   setReviewForDeletion,
