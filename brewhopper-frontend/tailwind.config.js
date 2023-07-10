@@ -6,13 +6,13 @@ export default {
   },
   plugins: [],
   plugins: [require("daisyui")],
-  // daisyui: {
-  //   themes: [
-  //     {
-  //       lemonade: {
-  //         ...require("daisyui/src/theming/themes")["[data-theme=lemonade]"],
-  //       },
-  //     },
-  //   ],
-  // },
+  daisyui: {
+    themes: [
+      {
+        lemonade: {
+          ...require("daisyui/src/theming/themes")["[data-theme=lemonade]"],
+        },
+      },
+    ],
+  },
 };
