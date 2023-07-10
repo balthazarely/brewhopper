@@ -70,7 +70,6 @@ export function AchievementsSection({ userPassportData }: any) {
             }
             uniqueUserBreweriesVisited={uniqueUserBreweriesVisited}
             achievement={achievement}
-            userCoupons={userCoupons}
           />
         );
       })}

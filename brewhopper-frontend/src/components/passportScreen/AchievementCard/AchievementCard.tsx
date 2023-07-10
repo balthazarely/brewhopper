@@ -1,29 +1,9 @@
-import { useEffect, useState } from "react";
-
 export function AchievementCard({
   handleOpenCouponModal,
   handlePreviewAchievemenetLocations,
   uniqueUserBreweriesVisited,
   achievement,
-  userCoupons,
 }: any) {
-  const [couponRedeemable, setCouponRedeemable] = useState(false);
-
-  useEffect(() => {
-    const isCouponRedeemable = () => {
-      const redeemed = userCoupons.find(
-        (coupon: any) => coupon.achievement == achievement._id
-      );
-
-      if (redeemed) {
-        setCouponRedeemable(redeemed.isActive);
-      } else {
-        setCouponRedeemable(true);
-      }
-    };
-    isCouponRedeemable();
-  }, []);
-
   const countMatchingItems = (arr1: any, arr2: any) => {
     const idsArr1 = arr1.map((item: any) => item._id);
     const matchingItems = arr2.filter((item: any) => idsArr1.includes(item.id));
@@ -69,11 +49,10 @@ export function AchievementCard({
               <div>
                 {isAchievementComplete && (
                   <button
-                    disabled={!couponRedeemable}
                     onClick={() => handleOpenCouponModal(achievement)}
                     className="btn btn-primary btn-sm"
                   >
-                    {couponRedeemable ? "redeem prize!" : "already used"}
+                    redeem prize!
                   </button>
                 )}
               </div>
